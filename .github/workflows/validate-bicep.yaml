@@ -1,4 +1,6 @@
 name: Validate Bicep Files
+permissions:
+  id-token: write
 
 on:
   pull_request:
