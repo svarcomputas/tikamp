@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
@@ -11,8 +10,7 @@ using Tikamp.Utilities.Authentication;
 namespace Tikamp.Utilities.OpenApi;
 
 public class ConfigureSwaggerOptions(
-    IOptions<AuthOptions> config,
-    IHostEnvironment hostEnvironment)
+    IOptions<AuthOptions> config)
     : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly AuthOptions _authOptions = config.Value;

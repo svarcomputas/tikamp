@@ -1,0 +1,40 @@
+name: Publish and Deploy Bicep Files
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.bicep'
+      - '**/*.bicepparam'
+        
+
+jobs:
+  publish-bicep:
+    name: Publish Bicep Files
+    runs-on: ubuntu-latest
+
+  deploy-arm-templates:
+    name: Deploy ARM Templates
+    needs: build-and-publish-bicep
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Download Bicep Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: ARM-template
+          path: ./bicep-artifacts
+
+      - name: Deploy ARM Templates
+        run: |
+          echo "Deploying ARM templates..."
+          az deployment group create \
+            --resource-group <your-resource-group> \
+            --template-file ./bicep-artifacts/<your-template-file>.json
+
+      - name: Complete Deployment
+        run: echo "ARM templates deployed successfully!"
