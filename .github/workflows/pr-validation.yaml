@@ -77,11 +77,8 @@ jobs:
           done
       - name: Create Docker Image
         run: dotnet publish ./Tikamp.Api/Tikamp.Api.csproj /t:PublishContainer -r linux-x64
-      - name: test
-        run: |
-          echo "env: $ENVIRONMENT"
       - name: change image tag
-        run: docker tag tikamp-api tikamp.azurecr.io/tikamp-api-f${{ env.ENVIRONMENT }}:${{ github.sha }}
+        run: docker tag tikamp-api tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}
       - uses: azure/docker-login@v1
         with:
           login-server: tikamp.azurecr.io
@@ -91,8 +88,7 @@ jobs:
       - name: Build and push image to ACR
         id: build-image
         run: |
-         echo "env: $ENVIRONMENT"
-         docker push tikamp.azurecr.io/tikamp-api-f${{ vars.environment }}:${{ github.sha }}
+         docker push tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}
 
   validate-bicep:
     name: Validate Bicep Files
