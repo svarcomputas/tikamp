@@ -89,6 +89,12 @@ jobs:
         id: build-image
         run: |
          docker push tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}
+      - name: Deploy web app
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: tikamp-${{ vars.environment }}-app
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: 'tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}'
 
   validate-bicep:
     name: Validate Bicep Files
