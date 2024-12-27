@@ -74,6 +74,10 @@ jobs:
             echo "Testing $testProject"
             dotnet test "$testProject" -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
           done
+      - name: Create Docker Image
+        run: dotnet publish ./Tikamp.Api/Tikamp.Api.csproj /t:PublishContainer -r linux-x64
+      - name: change image tag
+        run: docker tag tikamp-api tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}
       - uses: azure/docker-login@v1
         with:
           login-server: tikamp.azurecr.io
@@ -83,9 +87,7 @@ jobs:
       - name: Build and push image to ACR
         id: build-image
         run: |
-          ls
-          docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t tikamp.azurecr.io/tikamp${{ vars.environment }}:${{ github.sha }} --label dockerfile-path=Dockerfile
-          docker push tikamp.azurecr.io/tikamp${{ vars.environment }}:${{ github.sha }}
+         docker push tikamp.azurecr.io/tikamp-api-${{ vars.environment }}:${{ github.sha }}
 
   validate-bicep:
     name: Validate Bicep Files
