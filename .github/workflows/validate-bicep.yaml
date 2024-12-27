@@ -34,7 +34,16 @@ jobs:
       - name: Validate Bicep Files
         run: |
           echo "Validating Bicep files..."
+          ls
           az bicep build -f .bicep/main.bicep;
+          cd .bicep
+          ls
+                
+      - name: Validate Bicep Files2
+        run: |
+          echo "Validating Bicep files..."
+          ls
+          cd .bicep
           ls
 
       - name: Publish Bicep Artifacts
@@ -42,4 +51,4 @@ jobs:
         with:
           name: ARM-template
           path: |
-            .bicep/*.json
+            **/*.json
