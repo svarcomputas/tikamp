@@ -31,7 +31,7 @@ jobs:
           done
 
       - name: Build
-        run: dotnet build Tikamp.Api/Tikamp.Api.csproj --no-restore
+        run: dotnet build Tikamp.Database/Tikamp.Database.csproj --no-restore
 
       - name: Setup EF Tools
         run: |
