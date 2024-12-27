@@ -48,6 +48,7 @@ jobs:
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
+    environment: preprod
     steps:
       - uses: actions/checkout@v2
         with:
