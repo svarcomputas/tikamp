@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Tikamp.Database.Repositories;
 
 namespace Tikamp.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PingController : ControllerBase
+public class PingController(TikampRepository repo) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> Ping()
+    public async Task<IActionResult> Ping(CancellationToken cancellationToken)
     {
-        return Ok("pong");
+        var users = await repo.Users.ToListAsync(cancellationToken: cancellationToken);
+        return Ok(users);
     }
 
     [HttpGet]
