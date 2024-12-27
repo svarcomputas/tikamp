@@ -51,4 +51,4 @@ jobs:
         with:
           name: ARM-template
           path: |
-            /
+            .
