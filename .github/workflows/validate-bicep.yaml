@@ -41,7 +41,7 @@ jobs:
           ls
           cd .bicep
           ls
-          find .bicep -name "*.bicep" -exec az bicep build -f {} \;
+          find . -name "*.bicep" -exec az bicep build -f {} \;
           find . -name "*.bicep"
 
       - name: Publish Bicep Artifacts
