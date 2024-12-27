@@ -35,11 +35,11 @@ jobs:
         run: |
           echo "Validating Bicep files..."
           az bicep build -f .bicep/main.bicep;
+          ls
 
       - name: Publish Bicep Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ARM-template
           path: |
-            ls
             .bicep/*.json
