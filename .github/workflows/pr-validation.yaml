@@ -147,6 +147,5 @@ jobs:
       - name: Migrate Database
         shell: bash
         run: |
-          echo "'Server=${{ vars.dbserver }};Database=tikamp${{ vars.environment }}db;User Id=;Password=;Ssl Mode=VerifyCA;"
           chmod +x ./artifacts/efbundle/efbundle 
-          ./artifacts/efbundle/efbundle --connection 'Server=${{ vars.dbserver }};Database=tikamp${{ vars.environment }}db;User Id=dbAdministrator;Password=${{ secrets.dbadminpassword }};Ssl Mode=VerifyCA;' --verbose
+          ./artifacts/efbundle/efbundle --connection 'Server=${{ vars.dbserver }};Database=tikampdb${{ vars.environment }};User Id=dbAdministrator;Password=${{ secrets.dbadminpassword }};Ssl Mode=VerifyCA;' --verbose
