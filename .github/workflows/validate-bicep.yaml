@@ -29,12 +29,20 @@ jobs:
       - name: Validate Bicep Parameters Files
         run: |
           echo "Validating Bicep parameters files..."
-          find .bicep -name "*.bicepparam" -exec az bicep build-params -f {} \;
+          ls
+          cd .bicep
+          ls
+          find . -name "*.bicepparam" -exec az bicep build-params -f {} \;
+          find . -name "*.bicepparam"
 
       - name: Validate Bicep Files
         run: |
           echo "Validating Bicep files..."
+          ls
+          cd .bicep
+          ls
           find .bicep -name "*.bicep" -exec az bicep build -f {} \;
+          find . -name "*.bicep"
 
       - name: Publish Bicep Artifacts
         uses: actions/upload-artifact@v4
