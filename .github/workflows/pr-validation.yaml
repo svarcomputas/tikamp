@@ -10,8 +10,30 @@ on:
       - '**/*.bicep'
       - '**/*.bicepparam'
 
-jobs:
+jobs:  
+  create-migration-bundle:
+   name: Create EF-migrations bundle
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v2
+       with:
+         fetch-depth: 0
+     - name: Setup EF Tools
+       run: |
+         dotnet tool install --global dotnet-ef 
+         dotnet tool restore 
+     - name: Bundle EF Migrations
+       run: |
+          dotnet ef migrations bundle \ 
+          -r linux-x64 \ 
+          --project Tikamp.Api/Tikamp.Api.csproj
+     - name: Upload EF Migrations Bundle Artifact
+       uses: actions/upload-artifact@v4
+       with:
+         name: efbundle
+         path: ./efbundle
   build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
