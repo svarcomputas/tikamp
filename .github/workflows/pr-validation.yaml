@@ -87,6 +87,7 @@ jobs:
       - name: Build and push image to ACR
         id: build-image
         run: |
+          echo "env: $ENVIRONMENT"
          docker push tikamp.azurecr.io/tikamp-api-f${{ vars.environment }}:${{ github.sha }}
 
   validate-bicep:
