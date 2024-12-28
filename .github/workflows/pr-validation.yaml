@@ -133,12 +133,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: preprod
     steps:
+      - uses: actions/checkout@v1
       - name: see
         run: |
           ls
-          cd /home/runner/work/tikamp/.github/actions/migrate-database-action
-          ls
       - name: Migrate Database
-        uses: .github/actions/migrate-database-action
+        uses: ./.github/actions/migrate-database-action
         with:
           DB_NAME: tikampdb${{ vars.environment }}
