@@ -1,0 +1,32 @@
+name: 'Migrate PostgreSQL Database'
+inputs:
+  DB_NAME:
+    description: 'name of database'
+    required: true
+  DB_ADMIN_USERNAME:
+    description: 'name of admin user'
+    default: 'dbAdministrator'
+    required: true
+  EFBUNDLE_NAME:
+    description: 'name of efbundle'
+    default: 'efbundle'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Azure CLI Login
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    - name: Download EF Bundle Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.EFBUNDLE_NAME }}
+        path: artifacts/${{ inputs.EFBUNDLE_NAME }}
+    - name: Migrate Database
+      shell: bash
+      run: |
+        chmod +x ./artifacts/${{ inputs.EFBUNDLE_NAME }}/efbundle 
+        ./artifacts/${{ inputs.EFBUNDLE_NAME }}/efbundle --connection 'Server=${{ vars.dbserver }};Database=${{ inputs.DB_NAME }};User Id=${{ inputs.DB_ADMIN_USERNAME }};Password=${{ secrets.dbadminpassword }};Ssl Mode=VerifyCA;' --verbose
