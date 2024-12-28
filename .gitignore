@@ -2,6 +2,9 @@
 bin/
 obj/
 
+# Solution
+*.sln*
+
 # Rider and Visual Studio-specific files
 .idea/
 .vscode/
