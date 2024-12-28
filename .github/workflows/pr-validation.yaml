@@ -133,6 +133,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: preprod
     steps:
+      - name: see
+        run: |
+          ls
       - name: Migrate Database
         uses: ./.github/actions/migrate-database-action
         with:
