@@ -136,9 +136,9 @@ jobs:
       - name: see
         run: |
           ls
-          cd /home/runner/work/tikamp/tikamp/.github/actions/migrate-database-action
+          cd /home/runner/work/tikamp/.github/actions/migrate-database-action
           ls
       - name: Migrate Database
-        uses: ./.github/actions/migrate-database-action
+        uses: .github/actions/migrate-database-action
         with:
           DB_NAME: tikampdb${{ vars.environment }}
