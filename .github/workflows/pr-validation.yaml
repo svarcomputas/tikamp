@@ -41,7 +41,6 @@ jobs:
   printing:
     name: Printing
     runs-on: ubuntu-latest
-    if: needs.is-changes-to-bicep.outputs.shouldDeployBicep == 'true'
     steps:
       - name: print
         run: echo ${{needs.is-changes-to-bicep.outputs.shouldDeployBicep}} ${{needs.is-changes-to-bicep1.outputs.shouldDeployBicep}}
