@@ -42,6 +42,8 @@ jobs:
     name: Printing
     runs-on: ubuntu-latest
     steps:
+      - name: dummy
+        run: echo "${{needs.is-changes-to-bicep.outputs}} ${{needs.is-changes-to-bicep1.outputs}}"
       - name: paste
         run: echo "${{needs.is-changes-to-bicep.outputs.shouldDeployBicep}} ${{needs.is-changes-to-bicep1.outputs.shouldDeployBicep}}" > index.md
       - name: test
