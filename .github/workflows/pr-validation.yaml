@@ -40,6 +40,7 @@ jobs:
              - '.bicep/**'
   printing:
     name: Printing
+    needs: [ is-changes-to-bicep, is-changes-to-bicep1 ]
     runs-on: ubuntu-latest
     steps:
       - name: dummy
@@ -50,6 +51,7 @@ jobs:
         run: cat index.md
   bicep-run:
     name: bicep tun with deep 0
+    needs: [ is-changes-to-bicep, is-changes-to-bicep1 ]
     runs-on: ubuntu-latest
     if: needs.is-changes-to-bicep.outputs.shouldDeployBicep == 'true'   
     steps:
@@ -57,6 +59,7 @@ jobs:
         run: echo "deep 0"
   bicep-run1:
     name: bicep tun
+    needs: [ is-changes-to-bicep, is-changes-to-bicep1 ]
     runs-on: ubuntu-latest
     if: needs.is-changes-to-bicep1.outputs.shouldDeployBicep == 'true'
     steps:
