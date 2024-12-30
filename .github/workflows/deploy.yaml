@@ -7,7 +7,20 @@ on:
     branches:
       - main
 
-jobs:
+jobs: 
+  should-deploy-bicep:
+    name: Outputs if the bicep should be deployed
+    runs-on: ubuntu-latest
+    outputs:
+     shouldDeployBicep: ${{ steps.bicepchange.outputs.bicep }}
+    steps:
+     - uses: actions/checkout@v4
+     - uses: dorny/paths-filter@v3
+       id: bicepchange
+       with:
+         filters: |
+           bicep:
+             - '.bicep/**'
   create-migration-bundle:
     name: Create EF-migrations bundle
     runs-on: ubuntu-latest
@@ -60,13 +73,11 @@ jobs:
         run: |
           docker push tikamp.azurecr.io/tikamp-api:${{ github.sha }}
   preprod-deploy:
-    needs: [ create-migration-bundle, publish-image-to-acr ]
+    needs: [ create-migration-bundle, publish-image-to-acr, should-deploy-bicep ]
     runs-on: ubuntu-latest
     environment: preprod
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
       - name: Azure CLI Login
         uses: azure/login@v2
         with:
@@ -75,6 +86,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Deploy Bicep file
         uses: azure/arm-deploy@v1
+        if: needs.should-deploy-bicep.outputs.shouldDeployBicep == 'true'
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
@@ -93,13 +105,11 @@ jobs:
           publish-profile: ${{ secrets.azureWebAppPublishProfile }}
           images: 'tikamp.azurecr.io/tikamp-api:${{ github.sha }}'  
   prod-deploy:
-    needs: [ create-migration-bundle, publish-image-to-acr ]
+    needs: [ create-migration-bundle, publish-image-to-acr, should-deploy-bicep ]
     runs-on: ubuntu-latest
     environment: prod
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
       - name: Azure CLI Login
         uses: azure/login@v2
         with:
@@ -108,6 +118,7 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Deploy Bicep file
         uses: azure/arm-deploy@v1
+        if: needs.should-deploy-bicep.outputs.shouldDeployBicep == 'true'
         with:
           subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           resourceGroupName: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
