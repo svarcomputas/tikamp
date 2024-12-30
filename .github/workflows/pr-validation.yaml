@@ -7,12 +7,56 @@ on:
     branches:
       - main
 
-jobs:
+jobs:  
+  is-changes-to-bicep:
+   name: Is changes to bicep with deep 0
+   runs-on: ubuntu-latest
+   outputs:
+    shouldDeployBicep: ${{ steps.bicepchange.outputs.bicep }}
+   steps:
+     - uses: actions/checkout@v4
+       with:
+         fetch-depth: 0
+     - uses: dorny/paths-filter@v3
+       id: bicepchange
+       with:
+         filters: |
+           bicep:
+             - '.bicep/**'
+  is-changes-to-bicep1:
+   name: Is changes to bicep
+   runs-on: ubuntu-latest
+   outputs:
+     shouldDeployBicep: ${{ steps.bicepchange1.outputs.bicep }}
+   steps:
+     - uses: actions/checkout@v4
+       with:
+         fetch-depth: 0
+     - uses: dorny/paths-filter@v3
+       id: bicepchange1
+       with:
+         filters: |
+           bicep:
+             - '.bicep/**'
+  bicep-run:
+    name: bicep tun with deep 0
+    runs-on: ubuntu-latest
+    if: needs.is-changes-to-bicep.outputs.shouldDeployBicep == 'true'   
+    steps:
+      - name: print
+        run: echo "deep 0"
+  bicep-run1:
+    name: bicep tun
+    runs-on: ubuntu-latest
+    if: needs.is-changes-to-bicep1.outputs.shouldDeployBicep == 'true'
+    steps:
+      - name: print
+        run: echo "noot deep 0"
   create-migration-bundle:
     name: Create EF-migrations bundle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Create migration bundle
@@ -23,7 +67,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -55,7 +99,7 @@ jobs:
     environment: preprod
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Validate Bicep Parameters Files
         run: |
