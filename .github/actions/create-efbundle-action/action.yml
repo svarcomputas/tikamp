@@ -1,0 +1,34 @@
+name: 'Create migrations bundle'
+inputs:
+  DB_PROJECT:
+    description: 'csproj of the database'
+    required: true
+  EFBUNDLE_NAME:
+    description: 'name of efbundle'
+    default: 'efbundle'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      shell: bash
+      run: dotnet restore ${{ inputs.DB_PROJECT }}
+
+    - name: Build
+      shell: bash
+      run: dotnet build  ${{ inputs.DB_PROJECT }} --no-restore
+
+    - name: Setup EF Tools
+      shell: bash
+      run: |
+        dotnet tool install --global dotnet-ef --ignore-failed-sources --version 8.0.10
+        dotnet tool restore 
+    - name: Bundle EF Migrations
+      shell: bash
+      run: |
+        dotnet ef migrations bundle --target-runtime linux-x64 --self-contained --output ./${{ inputs.EFBUNDLE_NAME }} --verbose --no-build --project ${{ inputs.DB_PROJECT }}

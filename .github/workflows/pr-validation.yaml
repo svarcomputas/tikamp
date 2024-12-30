@@ -1,0 +1,68 @@
+name: Pr-Validation
+permissions:
+  id-token: write
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  create-migration-bundle:
+    name: Create EF-migrations bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Create migration bundle
+        uses: ./.github/actions/create-efbundle-action
+        with:
+          DB_PROJECT: Tikamp.Database/Tikamp.Database.csproj
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: |
+          for project in $(find . -name "*.csproj"); do
+            echo "Restoring $project"
+            dotnet restore "$project"
+          done
+
+      - name: Build
+        run: dotnet build Tikamp.Api/Tikamp.Api.csproj -c Release --no-restore
+
+      - name: Test
+        run: |
+          for testProject in $(find . -name "*Test*.csproj"); do
+            echo "Testing $testProject"
+            dotnet test "$testProject" -c Release --no-build --verbosity normal --filter "Category!=LongRunning"
+          done
+
+  validate-bicep:
+    name: Validate Bicep Files
+    runs-on: ubuntu-latest
+    environment: preprod
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Validate Bicep Parameters Files
+        run: |
+          echo "Validating Bicep parameters files..."
+          find ./.bicep -name "*.bicepparam" -exec az bicep build-params -f {} \;
+
+      - name: Validate Bicep Files
+        run: |
+          echo "Validating Bicep files..."
+          az bicep build -f .bicep/main.bicep;

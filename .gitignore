@@ -1,0 +1,29 @@
+# Ignore build outputs
+bin/
+obj/
+
+# Solution
+*.sln*
+
+# Rider and Visual Studio-specific files
+.idea/
+.vscode/
+*.vs
+*.sln.docstates
+
+# Logs and debugging
+*.log
+*.tlog
+*.svclog
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+
+# Temporary files
+*.tmp
+*.temp
+Thumbs.db
+.DS_Store

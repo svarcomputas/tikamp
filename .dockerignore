@@ -1,0 +1,5 @@
+# Exclude sources from docker build context...
+Tikamp/*
+
+# ...except for the publishing folder.
+!Tikamp/bin/Release/net8.0/publish/*

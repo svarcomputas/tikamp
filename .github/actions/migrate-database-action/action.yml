@@ -1,0 +1,32 @@
+name: 'Migrate PostgreSQL Database'
+inputs:
+  DB_NAME:
+    description: 'name of database'
+    required: true
+  DB_SERVER_NAME:
+    description: 'server name for the database'
+    required: true
+  DB_ADMIN_USERNAME:
+    description: 'name of admin user'
+    default: 'dbAdministrator'
+    required: true
+  DB_ADMIN_PASSWORD:
+    description: 'password of admin user'
+    required: true
+  EFBUNDLE_NAME:
+    description: 'name of efbundle'
+    default: 'efbundle'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Download EF Bundle Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.EFBUNDLE_NAME }}
+        path: artifacts/${{ inputs.EFBUNDLE_NAME }}
+    - name: Migrate Database
+      shell: bash
+      run: |
+        chmod +x ./artifacts/${{ inputs.EFBUNDLE_NAME }}/efbundle 
+        ./artifacts/${{ inputs.EFBUNDLE_NAME }}/efbundle --connection 'Server=${{ inputs.DB_SERVER_NAME }};Database=${{ inputs.DB_NAME }};User Id=${{ inputs.DB_ADMIN_USERNAME }};Password=${{ inputs.DB_ADMIN_PASSWORD }};Ssl Mode=VerifyCA;' --verbose

@@ -1,0 +1,127 @@
+name: Main Branch Deployment
+permissions:
+  id-token: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-migration-bundle:
+    name: Create EF-migrations bundle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Create migration bundle
+        uses: ./.github/actions/create-efbundle-action
+        with:
+          DB_PROJECT: Tikamp.Database/Tikamp.Database.csproj
+      - name: Upload EF Migrations Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: efbundle
+          path: ./efbundle
+  publish-image-to-acr:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: |
+          for project in $(find . -name "*.csproj"); do
+            echo "Restoring $project"
+            dotnet restore "$project"
+          done
+      - name: Build
+        run: dotnet build Tikamp.Api/Tikamp.Api.csproj -c Release --no-restore
+      - name: Create Docker Image
+        run: dotnet publish ./Tikamp.Api/Tikamp.Api.csproj /t:PublishContainer -r linux-x64
+      - name: change image tag
+        run: docker tag tikamp-api tikamp.azurecr.io/tikamp-api:${{ github.sha }}
+      - uses: azure/docker-login@v1
+        with:
+          login-server: tikamp.azurecr.io
+          username: ${{ secrets.acr_tikamp_username }}
+          password: ${{ secrets.acr_tikamp_password }}
+
+      - name: Build and push image to ACR
+        id: build-image
+        run: |
+          docker push tikamp.azurecr.io/tikamp-api:${{ github.sha }}
+  preprod-deploy:
+    needs: [ create-migration-bundle, publish-image-to-acr ]
+    runs-on: ubuntu-latest
+    environment: preprod
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure CLI Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy Bicep file
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
+          template: .bicep/main.bicep
+          parameters: .bicep/main.${{ vars.environment }}.bicepparam
+      - name: Migrate Database
+        uses: ./.github/actions/migrate-database-action
+        with:
+          DB_NAME: tikampdb${{ vars.environment }}
+          DB_SERVER_NAME: ${{ vars.dbserver }}
+          DB_ADMIN_PASSWORD: ${{ secrets.dbadminpassword }}
+      - name: Deploy web app
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: tikamp-${{ vars.environment }}-app
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: 'tikamp.azurecr.io/tikamp-api:${{ github.sha }}'  
+  prod-deploy:
+    needs: [ create-migration-bundle, publish-image-to-acr ]
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure CLI Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy Bicep file
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
+          template: .bicep/main.bicep
+          parameters: .bicep/main.${{ vars.environment }}.bicepparam
+      - name: Migrate Database
+        uses: ./.github/actions/migrate-database-action
+        with:
+          DB_NAME: tikampdb${{ vars.environment }}
+          DB_SERVER_NAME: ${{ vars.dbserver }}
+          DB_ADMIN_PASSWORD: ${{ secrets.dbadminpassword }}
+      - name: Deploy web app
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: tikamp-${{ vars.environment }}-app
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: 'tikamp.azurecr.io/tikamp-api:${{ github.sha }}'
