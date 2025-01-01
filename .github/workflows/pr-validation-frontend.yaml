@@ -1,4 +1,4 @@
-name: Pr-Validation frontend
+name: Pr validation frontend
 
 on:
   pull_request:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "Frontend/**"
+      - ".github/**"
 jobs:
   build:
     name: builde react app

@@ -1,4 +1,4 @@
-name: Main Branch Deployment
+name: Backend deploy main branch
 permissions:
   id-token: write
 
@@ -27,7 +27,7 @@ jobs:
     name: Create EF-migrations bundle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Create migration bundle
@@ -43,7 +43,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
