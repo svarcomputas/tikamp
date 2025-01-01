@@ -17,18 +17,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: cd frontend project1
-        shell: bash
-        run: ls
-      - name: cd frontend project
-        shell: bash
-        run: cd Frontend
-      - name: cd frontend project2
-        shell: bash
-        run: ls
       - name: Install dependencies
         shell: bash
-        run: npm ci --legacy-peer-deps
+        run: cd Frontend && npm ci --legacy-peer-deps
       - name: Build App
         shell: bash
-        run: "npm run build"
+        run: cd Frontend &&  npm run build

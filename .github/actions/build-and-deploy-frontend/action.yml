@@ -27,16 +27,13 @@ runs:
       uses: actions/setup-node@v3
       with:
         node-version: 22
-    - name: cd frontend project
-      shell: bash
-      run: cd Frontend
     - name: Install dependencies
       shell: bash
-      run: npm ci --legacy-peer-deps
+      run: cd Frontend && npm ci --legacy-peer-deps
     - name: Build App
       shell: bash
       run: ${{ inputs.build_command }}
     - name: Deploy to Azure Static Web Apps
       shell: bash
       run: |
-        npx swa deploy ./build --env production --deployment-token ${{ inputs.deployment_token }} --app-name ${{ inputs.app_name }} --resource-group ${{ inputs.resource_group }} --subscription-id ${{ inputs.subscription_id }} --tenant-id ${{ inputs.tenant_id }}
+        cd Frontend && npx swa deploy ./build --env production --deployment-token ${{ inputs.deployment_token }} --app-name ${{ inputs.app_name }} --resource-group ${{ inputs.resource_group }} --subscription-id ${{ inputs.subscription_id }} --tenant-id ${{ inputs.tenant_id }}
