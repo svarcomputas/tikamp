@@ -19,7 +19,7 @@ jobs:
           node-version: 22
       - name: Install dependencies
         shell: bash
-        run: npm ci
+        run: npm ci --legacy-peer-deps
       - name: Build App
         shell: bash
         run: "npm run build"
