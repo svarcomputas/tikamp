@@ -29,6 +29,9 @@ runs:
         node-version: 22
     - name: Install dependencies
       shell: bash
+      run: npm install -g @azure/static-web-apps-cli
+    - name: Install dependencies
+      shell: bash
       run: cd Frontend && npm ci --legacy-peer-deps
     - name: Build App
       shell: bash

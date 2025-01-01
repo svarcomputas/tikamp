@@ -1,6 +1,12 @@
 name: Frontend Deploy main branch
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Frontend/**"
+      - ".github/**"
   push:
     branches:
       - main
