@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "Frontend/**"
+      - ".github/**"
 
 jobs:
   build_and_deploy_preprod:

@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "Frontend/**"
+      - ".github/**"
 jobs:
   build:
     name: builde react app
