@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import TikampApi from './TikampApi.tsx';
+import TikampApi from './utils/TikampApi.tsx';
 
 const PingComponent: React.FC = () => {
   const [pingResponse, setPingResponse] = useState<string>('');

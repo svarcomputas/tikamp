@@ -1,6 +1,6 @@
 import { Cookies } from 'react-cookie';
-import { PingApi } from './api/api.ts';
-import { Configuration } from './api/configuration.ts';
+import { PingApi } from '../api/api.ts';
+import { Configuration } from '../api/configuration.ts';
 
 class TikampApi {
   private cookies: Cookies;
