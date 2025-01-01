@@ -6,10 +6,12 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "Frontend/**"
 
 jobs: 
   should-deploy-bicep:
-    name: Outputs if the bicep should be deployed
+    name: Should bicep be deployed
     runs-on: ubuntu-latest
     outputs:
      shouldDeployBicep: ${{ steps.bicepchange.outputs.bicep }}

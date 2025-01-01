@@ -9,12 +9,14 @@ using Tikamp.Utilities.OpenApi;
 var builder = WebApplication.CreateBuilder(args).AddConfiguration();
 builder.Services.AddControllers();
 builder.Services
-    .AddDatabase(builder.Configuration)
-    .AddSwaggerGen()
-    .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>()
-    .AddAuth(builder.Configuration);
+       .AddDatabase(builder.Configuration)
+       .AddSwaggerGen()
+       .AddCorsPolicies(builder.Configuration)
+       .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>()
+       .AddAuth(builder.Configuration);
 
 var app = builder.Build().EnsureDatabase();
+app.UseCors(); // Cors må komme tidlig o pipelinen
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
