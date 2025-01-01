@@ -19,19 +19,8 @@ public class ConfigureSwaggerOptions(
     {
         options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
         options.OperationFilter<SecurityRequirementsOperationFilter>(false, JwtBearerDefaults.AuthenticationScheme);
-        options.OperationFilter<SecurityRequirementsOperationFilter>(false, "BearerAsApiKey");
 
         if (_authOptions.AzureAd is not null)
-        {
-            options.AddSecurityDefinition(
-                "BearerAsApiKey",
-                new OpenApiSecurityScheme
-                {
-                    Description = "Please enter into field the word 'Bearer' following by space and JWT\"",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
             options.AddSecurityDefinition(
                 JwtBearerDefaults.AuthenticationScheme,
                 new OpenApiSecurityScheme
@@ -48,7 +37,6 @@ public class ConfigureSwaggerOptions(
                     },
                     Description = "OpenId Security Scheme"
                 });
-        }
     }
 
     private static Uri AuthorizationUrl(MicrosoftIdentityOptions adOptions)

@@ -1,0 +1,25 @@
+name: Pr-Validation frontend
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "Frontend/**"
+jobs:
+  build:
+    name: builde react app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install dependencies
+        shell: bash
+        run: cd Frontend && npm ci --legacy-peer-deps
+      - name: Build App
+        shell: bash
+        run: cd Frontend &&  npm run build

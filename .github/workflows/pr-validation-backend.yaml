@@ -1,4 +1,4 @@
-name: Pr-Validation
+name: Pr-Validation backend
 permissions:
   id-token: write
 
@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore: 
+      - "Frontend/**"
 
 jobs:  
   create-migration-bundle:

@@ -1,0 +1,39 @@
+name: "Build and Deploy Static Web App"
+inputs:
+  build_command:
+    description: "The npm build command"
+    required: true
+  deployment_token:
+    description: "Azure Static Web Apps deployment token"
+    required: true
+  app_name:
+    description: "Name of the existing Azure Static Web App"
+    required: true
+  resource_group:
+    description: "Resource group where the Static Web App resides"
+    required: true
+  tenant_id:
+    description: "Azure tenant ID"
+    required: true
+  subscription_id:
+    description: "Azure subscription ID"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 22
+    - name: Install dependencies
+      shell: bash
+      run: cd Frontend && npm ci --legacy-peer-deps
+    - name: Build App
+      shell: bash
+      run: ${{ inputs.build_command }}
+    - name: Deploy to Azure Static Web Apps
+      shell: bash
+      run: |
+        cd Frontend && npx swa deploy ./build --env production --deployment-token ${{ inputs.deployment_token }} --app-name ${{ inputs.app_name }} --resource-group ${{ inputs.resource_group }} --subscription-id ${{ inputs.subscription_id }} --tenant-id ${{ inputs.tenant_id }}

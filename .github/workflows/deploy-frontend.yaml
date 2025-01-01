@@ -1,0 +1,36 @@
+name: Build and Deploy to Azure Static Web Apps
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Frontend/**"
+
+jobs:
+  build_and_deploy_preprod:
+    runs-on: ubuntu-latest
+    environment: preprod
+    steps:
+      - name: Build & Deploy
+        uses: ./.github/actions/build_and_deploy
+        with:
+          build_command: "npm run build:preprod"
+          deployment_token: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+          app_name: tikamp-frontend-app-${{ vars.environment }}
+          resource_group: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  build_and_deploy_prod:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - name: Build & Deploy
+        uses: ./.github/actions/build_and_deploy
+        with:
+          build_command: "npm run build:prod"
+          deployment_token: ${{ secrets.SWA_DEPLOYMENT_TOKEN }}
+          app_name: tikamp-frontend-app-${{ vars.environment }}
+          resource_group: ${{ vars.AZURE_RESOURCEGROUP_NAME }}
+          tenant_id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription_id:  ${{ secrets.AZURE_SUBSCRIPTION_ID }}
