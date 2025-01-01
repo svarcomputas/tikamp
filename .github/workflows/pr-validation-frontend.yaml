@@ -17,6 +17,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
+      - name: cd frontend project
+        shell: bash
+        run: cd Frontend
       - name: Install dependencies
         shell: bash
         run: npm ci --legacy-peer-deps
