@@ -1,4 +1,4 @@
-name: Build and Deploy to Azure Static Web Apps
+name: Frontend Deploy main branch
 
 on:
   push:
@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: preprod
     steps:
+      - uses: actions/checkout@v4
       - name: Build & Deploy
         uses: ./.github/actions/build_and_deploy
         with:
@@ -25,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prod
     steps:
+      - uses: actions/checkout@v4
       - name: Build & Deploy
         uses: ./.github/actions/build_and_deploy
         with:

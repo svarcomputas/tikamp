@@ -1,4 +1,4 @@
-name: Pr-Validation frontend
+name: Pr validation frontend
 
 on:
   pull_request:

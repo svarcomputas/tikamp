@@ -1,4 +1,4 @@
-name: Pr-Validation backend
+name: Pr validation backend
 permissions:
   id-token: write
 
