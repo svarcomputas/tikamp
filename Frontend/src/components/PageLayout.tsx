@@ -9,7 +9,6 @@ import { Cookies } from 'react-cookie';
     
 export const PageLayout = (props: any) => {
     const { instance, inProgress, accounts } = useMsal();
-    const cookies = new Cookies();
     const isAuthenticated = useIsAuthenticated();
 
     const handleRedirect = () => {
@@ -26,12 +25,11 @@ export const PageLayout = (props: any) => {
     }
       
     useEffect(() => {
-        // If the user is signed in (accounts.length > 0),
-        // acquire an access token silently
+        const cookies = new Cookies();
         if (accounts && accounts.length > 0) {
         const request = {
-            scopes: loginRequest.scopes, // Or your actual scope
-            account: accounts[0], // The active account
+            scopes: loginRequest.scopes,
+            account: accounts[0],
         };
     
         instance.acquireTokenSilent(request)
@@ -44,7 +42,7 @@ export const PageLayout = (props: any) => {
             console.error("Silent token acquisition failed:", error);
             });
         }
-    }, [instance, accounts, cookies]);
+    }, [instance, accounts]);
     return (
         <>
             <NavigationBar />
