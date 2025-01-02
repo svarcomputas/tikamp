@@ -4,8 +4,9 @@ import TikampApi from './utils/TikampApi.tsx';
 
 const PingAuthComponent: React.FC = () => {
   const [pingResponse, setPingResponse] = useState<string>('');
-
   useEffect(() => {
+    
+    
     const api = new TikampApi();
     const pingApi = api.pingApi();
     pingApi
