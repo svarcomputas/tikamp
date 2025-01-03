@@ -8,11 +8,6 @@ export const NavigationBar = () => {
     const handleLoginRedirect = () => {
         instance.loginRedirect(loginRequest).catch((error) => console.log(error));
     };
-
-    const handleLogoutRedirect = () => {
-        instance.logoutRedirect().catch((error) => console.log(error));
-    };
-
     
     // Get the user's name from the accounts array
     const userName = accounts.length > 0 ? accounts[0].name : '';
@@ -24,9 +19,6 @@ export const NavigationBar = () => {
                         <span className="navbar-text mr-3">
                             Logged in as: {userName}
                         </span>
-                        <Button variant="warning" onClick={handleLogoutRedirect}>
-                            Sign out
-                        </Button>
                     </div>
                 </AuthenticatedTemplate>
                 <UnauthenticatedTemplate>
