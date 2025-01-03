@@ -8,7 +8,7 @@ using Tikamp.Dto;
 
 namespace Tikamp.Api.Services;
 
-public class UserActivityService(TikampRepository repository, UserService userService, ActivitiesServices activitiesServices)
+public class UserActivityService(TikampRepository repository, UserService userService, ActivitiesServices activitiesServices, LeaderboardService leaderboardService)
 {
     public async Task<MonthlyUserActivityDto?> GetActivityByMonth(int month, ClaimsPrincipal claims, string? objectId, CancellationToken cancellationToken)
     {
@@ -46,6 +46,7 @@ public class UserActivityService(TikampRepository repository, UserService userSe
         }
 
         await repository.Save(cancellationToken);
+        leaderboardService.InvalidateMonth(dto.Date.Month);
     }
 
     private static void PatchUserActivity(UserActivity existing, PutUserActivityDto updated)

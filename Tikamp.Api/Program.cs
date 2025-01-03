@@ -17,6 +17,7 @@ builder.Services
        .AddTransient<ActivitiesServices>()
        .AddTransient<UserActivityService>()
        .AddTransient<UserService>()
+       .AddTransient<LeaderboardService>()
        .AddScoped<AbstractValidator<PutActivityDto>, PutActivityDtoValidator>()
        .AddScoped<AbstractValidator<PutUserActivityDto>, PutUserActivityDtoValidator>()
        .AddTransient<ValidationService>()

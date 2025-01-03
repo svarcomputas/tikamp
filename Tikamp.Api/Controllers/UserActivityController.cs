@@ -24,6 +24,18 @@ public class UserActivityController(UserActivityService service, ValidationServi
         return result is not null ? Ok(result) : NoContent();
     }
 
+    [HttpGet("{month}/{userId}")]
+    [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(MonthlyUserActivityDto))]
+    [SwaggerResponse((int)HttpStatusCode.NoContent, "noContent")]
+    public async Task<ActionResult<MonthlyUserActivityDto?>> GetActivityForMonthAndUser(
+        [FromRoute] int month,
+        [FromRoute] string userId,
+        CancellationToken cancellationToken)
+    {
+        var result = await service.GetActivityByMonth(month, User, userId, cancellationToken);
+        return result is not null ? Ok(result) : NoContent();
+    }
+
     [HttpPut]
     [SwaggerResponse((int)HttpStatusCode.NoContent, "Ok")]
     [SwaggerResponse((int)HttpStatusCode.UnprocessableEntity, "Entity does not pass validation")]
