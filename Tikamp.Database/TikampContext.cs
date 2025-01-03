@@ -7,10 +7,21 @@ namespace Tikamp.Database;
 
 public class TikampContext(DbContextOptions<TikampContext> options) : DbContext(options)
 {
+    public DbSet<Activity> Activities { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<UserActivity> UserActivities { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<UserActivity>()
+                    .HasOne(ua => ua.User)
+                    .WithMany()
+                    .HasForeignKey(ua => ua.UserId);
+
+        modelBuilder.Entity<UserActivity>()
+                    .HasOne(ua => ua.Activity)
+                    .WithMany()
+                    .HasForeignKey(ua => ua.Month);
         base.OnModelCreating(modelBuilder);
     }
 
@@ -18,9 +29,9 @@ public class TikampContext(DbContextOptions<TikampContext> options) : DbContext(
     {
         base.ConfigureConventions(configurationBuilder);
         var propertiesConfigurationBuilder = Database.IsSqlite()
-            ? configurationBuilder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetToBinaryConverter>()
-            : configurationBuilder.Properties<DateTimeOffset>()
-                .HaveConversion<DateTimeOffsetToUniversalTimeConverter>();
+                                                 ? configurationBuilder.Properties<DateTimeOffset>().HaveConversion<DateTimeOffsetToBinaryConverter>()
+                                                 : configurationBuilder.Properties<DateTimeOffset>()
+                                                                       .HaveConversion<DateTimeOffsetToUniversalTimeConverter>();
 
         // configurationBuilder.RegisterAllInPrimitiveValueConverters();
     }
@@ -39,8 +50,8 @@ public class TikampContext(DbContextOptions<TikampContext> options) : DbContext(
         await OnBeforeSaving(cancellationToken);
 
         return await base.SaveChangesAsync(
-            acceptAllChangesOnSuccess,
-            cancellationToken);
+                   acceptAllChangesOnSuccess,
+                   cancellationToken);
     }
 
     protected virtual Task OnBeforeSaving(CancellationToken cancellationToken)
@@ -80,7 +91,5 @@ public class DateTimeOffsetToUniversalTimeConverter : ValueConverter<DateTimeOff
     public DateTimeOffsetToUniversalTimeConverter()
         : base(
             d => d.ToUniversalTime(),
-            d => d.ToUniversalTime())
-    {
-    }
+            d => d.ToUniversalTime()) { }
 }
