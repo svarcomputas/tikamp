@@ -1,28 +1,13 @@
-import { useMsal, useIsAuthenticated } from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../utils/auth/AuthConfig.tsx';
 import { NavigationBar } from './NavigationBar.tsx';
 
-import { InteractionStatus } from "@azure/msal-browser";
 import { useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 
     
 export const PageLayout = (props: any) => {
-    const { instance, inProgress, accounts } = useMsal();
-    const isAuthenticated = useIsAuthenticated();
-
-    const handleRedirect = () => {
-        instance
-            .loginRedirect({
-                ...loginRequest,
-                prompt: 'create',
-            })
-            .catch((error) => console.log(error));
-    };
-
-    if (inProgress === InteractionStatus.None && !isAuthenticated) {
-        handleRedirect();
-    }
+    const { instance, accounts } = useMsal();
       
     useEffect(() => {
         const cookies = new Cookies();
