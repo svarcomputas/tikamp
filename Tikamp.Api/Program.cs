@@ -15,7 +15,10 @@ builder.Services.AddControllers();
 builder.Services
        .AddDatabase(builder.Configuration)
        .AddTransient<ActivitiesServices>()
+       .AddTransient<UserActivityService>()
+       .AddTransient<UserService>()
        .AddScoped<AbstractValidator<PutActivityDto>, PutActivityDtoValidator>()
+       .AddScoped<AbstractValidator<PutUserActivityDto>, PutUserActivityDtoValidator>()
        .AddTransient<ValidationService>()
        .AddSwaggerGen()
        .AddCorsPolicies(builder.Configuration)

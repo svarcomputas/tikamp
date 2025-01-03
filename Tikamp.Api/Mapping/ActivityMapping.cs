@@ -10,9 +10,9 @@ public static class ActivityMapping
         return activities.Select(ToDto).ToList();
     }
 
-    private static ActivityDto ToDto(this Activity activity)
+    public static ActivityDto ToDto(this Activity activity)
     {
-        return new ActivityDto
+        return new ActivityDto()
         {
             Month = activity.Month,
             Name = activity.Name,
@@ -25,7 +25,7 @@ public static class ActivityMapping
 
     public static Activity ToModel(this PutActivityDto putActivityDto, int month)
     {
-        return new Activity
+        return new Activity()
         {
             Month = month,
             Name = putActivityDto.Name,

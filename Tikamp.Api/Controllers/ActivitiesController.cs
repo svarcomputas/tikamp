@@ -16,10 +16,10 @@ public class ActivitiesController(ActivitiesServices services, ValidationService
 {
     [HttpGet]
     [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(List<ActivityDto>))]
-    public async Task<List<ActivityDto>> GetActivity(CancellationToken cancellationToken)
+    public async Task<ActionResult<List<ActivityDto>>> GetActivity(CancellationToken cancellationToken)
     {
         var activities = await services.GetActivitiesAsync(cancellationToken);
-        return activities;
+        return Ok(activities);
     }
 
     [HttpPut("{month}")]
@@ -27,10 +27,10 @@ public class ActivitiesController(ActivitiesServices services, ValidationService
     [SwaggerResponse((int)HttpStatusCode.NoContent, "Ok")]
     [SwaggerResponse((int)HttpStatusCode.UnprocessableEntity, "Entity does not pass validation")]
     public async Task<IActionResult> UpdateActivity(
-        int month,
+        [FromRoute] int month,
         [FromBody] PutActivityDto dto,
         CancellationToken cancellationToken)
-    { 
+    {
         await validator.Validate(dto, cancellationToken);
         await services.PutActivityAsync(month, dto, cancellationToken);
         return NoContent();

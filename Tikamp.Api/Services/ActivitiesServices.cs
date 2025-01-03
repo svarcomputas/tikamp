@@ -14,6 +14,12 @@ public class ActivitiesServices(TikampRepository repository)
         return activities.ToDto();
     }
 
+    public async Task<ActivityDto?> GetActivityAsync(int month, CancellationToken cancellationToken)
+    {
+        var activity = await repository.Activities.FirstOrDefaultAsync(a => a.Month == month, cancellationToken);
+        return activity?.ToDto();
+    }
+
     public async Task PutActivityAsync(int month, PutActivityDto putActivityDto, CancellationToken cancellationToken)
     {
         var activity = await repository.Activities.Where(a => a.Month == month).FirstOrDefaultAsync(cancellationToken);

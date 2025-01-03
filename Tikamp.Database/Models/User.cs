@@ -7,5 +7,7 @@ public class User : BaseEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public required Guid Id { get; init; }
+    public required string Id { get; init; }
+
+    public required string Name { get; init; }
 }
