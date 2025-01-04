@@ -1,0 +1,21 @@
+.total-leaderboard-container {
+    flex: 1;
+    margin-right: 1rem;
+  }
+  
+  .total-leaderboard-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .total-leaderboard-container table th,
+  .total-leaderboard-container table td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+  }
+  
+  .total-leaderboard-container table tr:hover {
+    background-color: #eaeaea;
+    cursor: pointer;
+  }
+  
