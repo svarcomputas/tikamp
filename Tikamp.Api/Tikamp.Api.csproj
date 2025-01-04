@@ -10,6 +10,7 @@
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6"/>
         <PackageReference Include="Microsoft.Identity.Web" Version="3.5.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.2.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="8.0.2"/>
     </ItemGroup>
 
@@ -21,6 +22,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Tikamp.Database\Tikamp.Database.csproj"/>
+        <ProjectReference Include="..\Tikamp.Dto\Tikamp.Dto.csproj"/>
         <ProjectReference Include="..\Tikamp.Utilities\Tikamp.Utilities.csproj"/>
     </ItemGroup>
 

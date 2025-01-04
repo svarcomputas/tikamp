@@ -6,6 +6,8 @@ namespace Tikamp.Database.Repositories;
 public class TikampRepository(TikampContext context)
 {
     public DbSet<User> Users => context.Users;
+    public DbSet<Activity> Activities => context.Activities;
+    public DbSet<UserActivity> UserActivities => context.UserActivities;
 
     public async Task Save(CancellationToken cancelToken)
     {
