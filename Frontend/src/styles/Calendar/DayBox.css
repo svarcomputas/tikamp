@@ -1,5 +1,6 @@
 /* DayBox.css */
 .day-box {
+    flex: 0 0 auto;
     border: 1px solid #ccc;
     width: 80px;
     height: 80px;

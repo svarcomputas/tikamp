@@ -12,18 +12,6 @@ interface Props {
 const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity }) => {
   return (
     <div className="monthly-leaderboard">
-      <div className="activity-header">
-        <h3>{activity?.name || ''}</h3>
-        {activity?.level1 == null && activity?.level2 == null && activity?.level3 == null ? (
-          <p>{activity?.description || 'No levels set'}</p>
-        ) : (
-          <div className="levels">
-            <span>Level1: {activity?.level1}</span>
-            <span>Level2: {activity?.level2}</span>
-            <span>Level3: {activity?.level3}</span>
-          </div>
-        )}
-      </div>
       <table>
         <thead>
           <tr>
