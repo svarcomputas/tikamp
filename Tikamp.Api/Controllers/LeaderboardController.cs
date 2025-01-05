@@ -12,9 +12,8 @@ namespace Tikamp.Api.Controllers;
 [Route("api/leaderboards")]
 public class LeaderboardsController(LeaderboardService leaderboardService, ILogger<LeaderboardsController> logger) : ControllerBase
 {
-
     [HttpGet("month/{month}")]
-    [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(List<LeaderboardEntryDto>))]
+    [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(List<MonthlyLeaderboardEntryDto>))]
     public async Task<ActionResult<List<MonthlyLeaderboardEntryDto>>> GetMonthlyLeaderboard(int month)
     {
         logger.LogInformation("Getting leaderboard for month {Month}", month);

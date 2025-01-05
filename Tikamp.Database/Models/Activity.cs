@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Tikamp.Dto;
 
 namespace Tikamp.Database.Models;
 
@@ -15,4 +16,5 @@ public class Activity : BaseEntity
     public required int? Level2 { get; set; }
     public required int? Level3 { get; set; }
     public required string? Description { get; set; }
+    public required ActivityUnit? Unit { get; set; }
 }

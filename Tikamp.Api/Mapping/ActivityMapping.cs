@@ -12,27 +12,29 @@ public static class ActivityMapping
 
     public static ActivityDto ToDto(this Activity activity)
     {
-        return new ActivityDto()
+        return new ActivityDto
         {
             Month = activity.Month,
             Name = activity.Name,
             Level1 = activity.Level1,
             Level2 = activity.Level2,
             Level3 = activity.Level3,
-            Description = activity.Description
+            Description = activity.Description,
+            Unit = activity.Unit
         };
     }
 
     public static Activity ToModel(this PutActivityDto putActivityDto, int month)
     {
-        return new Activity()
+        return new Activity
         {
             Month = month,
             Name = putActivityDto.Name,
             Level1 = putActivityDto.Level1,
             Level2 = putActivityDto.Level2,
             Level3 = putActivityDto.Level3,
-            Description = putActivityDto.Description
+            Description = putActivityDto.Description,
+            Unit = putActivityDto.Unit
         };
     }
 }
