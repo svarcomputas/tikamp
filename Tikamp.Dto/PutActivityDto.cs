@@ -9,6 +9,7 @@ public class PutActivityDto
     public required int? Level2 { get; init; }
     public required int? Level3 { get; init; }
     public required string? Description { get; init; }
+    public required ActivityUnit? Unit { get; init; }
 }
 
 public class PutActivityDtoValidator : AbstractValidator<PutActivityDto>
@@ -19,11 +20,9 @@ public class PutActivityDtoValidator : AbstractValidator<PutActivityDto>
         {
             RuleFor(dto => dto.Level2).NotNull().GreaterThan(dto => dto.Level1);
             RuleFor(dto => dto.Level3).NotNull().GreaterThan(dto => dto.Level2);
+            RuleFor(dto => dto.Unit).NotNull();
         });
-        
-        When(dto => dto.Level1 is null, () =>
-        {
-            RuleFor(dto => dto.Description).NotNull();
-        });
+
+        When(dto => dto.Level1 is null, () => { RuleFor(dto => dto.Description).NotNull(); });
     }
 }

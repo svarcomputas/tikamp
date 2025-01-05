@@ -8,4 +8,5 @@ public class ActivityDto
     public required int? Level2 { get; init; }
     public required int? Level3 { get; init; }
     public required string? Description { get; init; }
+    public required ActivityUnit? Unit { get; init; }
 }
