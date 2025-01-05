@@ -1,27 +1,25 @@
 // MonthlyOverview.tsx
 import React, { useEffect, useState } from 'react';
-import { MonthlyUserActivityDto, UserActivityDto } from '../api';
-import InputNumber from 'rc-input-number';
+import Calendar from './Calendar/Calendar';
+import { MonthlyUserActivityDto, UserActivityDto, ActivityDto } from '../api';
 import '../styles/MonthlyOverview.css';
 
-const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const daysInMonth = (year: number, month: number) => {
+  return new Date(year, month + 1, 0).getDate();
+};
 
 interface Props {
   monthIndex: number;
   data: MonthlyUserActivityDto | null;
   onUpdateQuantity: (day: number, quantity: number) => void;
+  activity?: ActivityDto;
 }
 
-const MonthlyOverview: React.FC<Props> = ({ monthIndex, data, onUpdateQuantity }) => {
+const MonthlyOverview: React.FC<Props> = ({ monthIndex, data, onUpdateQuantity, activity }) => {
   const [localActivities, setLocalActivities] = useState<UserActivityDto[]>([]);
-  const [didUpdate, setDidUpdate] = useState<Boolean>(false);
   useEffect(() => {
-    if (!data) {
-      setLocalActivities([]);
-      return;
-    }
-    const totalDays = daysInMonth[monthIndex];
-    const existingActivities = data.usersActivities || [];
+    const totalDays = daysInMonth(2025, monthIndex);
+    const existingActivities = data?.usersActivities || [];
     const fullList = Array.from({ length: totalDays }, (_, i) => {
       const dayNum = i + 1;
       const found = existingActivities.find((a) => a.day === dayNum);
@@ -30,40 +28,23 @@ const MonthlyOverview: React.FC<Props> = ({ monthIndex, data, onUpdateQuantity }
     setLocalActivities(fullList);
   }, [data, monthIndex]);
 
-  const handleChange = (day: number, value: number) => {
-    console.log(""+didUpdate)
-    if (!data?.isSelf || localActivities.find(p => p.day === day)?.quantity === value) return;
-    setDidUpdate(true);
-    console.log("io<"+didUpdate)
-    setLocalActivities((prev) =>
-      prev.map((p) => (p.day === day ? { ...p, quantity: value } : p))
+  const handleDayUpdate = (day: number, newQuantity: number) => {
+    onUpdateQuantity(day, newQuantity);
+    setLocalActivities((prev) => 
+      prev.map((p) => (p.day === day ? { ...p, quantity: newQuantity } : p))
     );
-  };
-
-  const handleBlur = (day: number, value: number) => {
-    console.log("Blur" + didUpdate)
-    if (!data?.isSelf || !didUpdate) return;
-    setDidUpdate(false);
-    onUpdateQuantity(day, value);
   };
 
   return (
     <div className="monthly-overview">
-      <h3>Aktivitetsoversikt</h3>
-      {localActivities.map((ua) => (
-        <div key={ua.day} className="user-activity">
-          <label>Dag {ua.day}:</label>
-          {data?.isSelf ? (
-            <InputNumber
-              value={ua.quantity || 0}
-              onChange={(e) => handleChange(ua.day ?? -1, e ?? -1)}
-              onBlur={() => handleBlur(ua.day ?? -1, ua.quantity || 0)}
-            />
-          ) : (
-            <span>{ua.quantity}</span>
-          )}
-        </div>
-      ))}
+      <Calendar
+        year={2025}
+        monthIndex={monthIndex}
+        daysData={localActivities}
+        isSelf={!data || data.isSelf || false}
+        activity={activity}
+        onDayUpdate={handleDayUpdate}
+      />
     </div>
   );
 };
