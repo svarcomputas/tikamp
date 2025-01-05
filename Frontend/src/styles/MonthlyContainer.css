@@ -1,0 +1,25 @@
+/* MonthlyContainer.css */
+.monthly-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+
+.monthly-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.arrow-button {
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.columns-wrapper {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}

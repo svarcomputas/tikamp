@@ -1,0 +1,21 @@
+/* MainDisplay.css */
+.main-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #ececec;
+    padding: 1rem;
+  }
+  
+  /* First child (the TotalLeaderboard) takes 1/3 of the space */
+  .main-container > :first-child {
+    flex: 1;
+    /* or width: 33%; */
+  }
+  
+  /* Second child (the MonthlyContainer) takes 2/3 of the space */
+  .main-container > :nth-child(2) {
+    flex: 2;
+    /* or width: 67%; */
+  }
+  
+  

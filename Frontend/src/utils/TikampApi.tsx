@@ -1,5 +1,5 @@
 import { Cookies } from 'react-cookie';
-import { PingApi } from '../api/api.ts';
+import { ActivitiesApi, LeaderboardsApi, PingApi, UserActivityApi } from '../api/api.ts';
 import { Configuration } from '../api/configuration.ts';
 
 class TikampApi {
@@ -24,6 +24,21 @@ class TikampApi {
 
   public pingApi = () => {
     const api = new PingApi(this.configuration());
+    return api;
+  };
+
+  public activityApi = () => {
+    const api = new ActivitiesApi(this.configuration());
+    return api;
+  };
+
+  public userActivityApi = () => {
+    const api = new UserActivityApi(this.configuration());
+    return api;
+  };
+
+  public leaderboardApi = () => {
+    const api = new LeaderboardsApi(this.configuration());
     return api;
   };
 }

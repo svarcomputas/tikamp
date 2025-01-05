@@ -23,6 +23,555 @@ import type { RequestArgs } from './base';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
+/**
+ * 
+ * @export
+ * @interface ActivityDto
+ */
+export interface ActivityDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof ActivityDto
+     */
+    'month'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ActivityDto
+     */
+    'name'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ActivityDto
+     */
+    'level1'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ActivityDto
+     */
+    'level2'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ActivityDto
+     */
+    'level3'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ActivityDto
+     */
+    'description'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface LeaderboardEntryDto
+ */
+export interface LeaderboardEntryDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardEntryDto
+     */
+    'userId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof LeaderboardEntryDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof LeaderboardEntryDto
+     */
+    'points'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LeaderboardEntryDto
+     */
+    'monthPointsFromLevel'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LeaderboardEntryDto
+     */
+    'monthPlacementPoints'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MonthlyUserActivityDto
+ */
+export interface MonthlyUserActivityDto {
+    /**
+     * 
+     * @type {ActivityDto}
+     * @memberof MonthlyUserActivityDto
+     */
+    'activity'?: ActivityDto;
+    /**
+     * 
+     * @type {Array<UserActivityDto>}
+     * @memberof MonthlyUserActivityDto
+     */
+    'usersActivities'?: Array<UserActivityDto> | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MonthlyUserActivityDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MonthlyUserActivityDto
+     */
+    'isSelf'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface PutActivityDto
+ */
+export interface PutActivityDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PutActivityDto
+     */
+    'name'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PutActivityDto
+     */
+    'level1'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PutActivityDto
+     */
+    'level2'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PutActivityDto
+     */
+    'level3'?: number | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof PutActivityDto
+     */
+    'description'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface PutUserActivityDto
+ */
+export interface PutUserActivityDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof PutUserActivityDto
+     */
+    'date'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PutUserActivityDto
+     */
+    'quantity'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface UserActivityDto
+ */
+export interface UserActivityDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserActivityDto
+     */
+    'day'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserActivityDto
+     */
+    'quantity'?: number;
+}
+
+/**
+ * ActivitiesApi - axios parameter creator
+ * @export
+ */
+export const ActivitiesApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiActivitiesGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/Activities`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary  (Auth roles: Admin)
+         * @param {number} month 
+         * @param {PutActivityDto} [putActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiActivitiesMonthPut: async (month: number, putActivityDto?: PutActivityDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'month' is not null or undefined
+            assertParamExists('apiActivitiesMonthPut', 'month', month)
+            const localVarPath = `/api/Activities/{month}`
+                .replace(`{${"month"}}`, encodeURIComponent(String(month)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(putActivityDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ActivitiesApi - functional programming interface
+ * @export
+ */
+export const ActivitiesApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ActivitiesApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiActivitiesGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ActivityDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiActivitiesGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ActivitiesApi.apiActivitiesGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary  (Auth roles: Admin)
+         * @param {number} month 
+         * @param {PutActivityDto} [putActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiActivitiesMonthPut(month: number, putActivityDto?: PutActivityDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiActivitiesMonthPut(month, putActivityDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ActivitiesApi.apiActivitiesMonthPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ActivitiesApi - factory interface
+ * @export
+ */
+export const ActivitiesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ActivitiesApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiActivitiesGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<ActivityDto>> {
+            return localVarFp.apiActivitiesGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary  (Auth roles: Admin)
+         * @param {number} month 
+         * @param {PutActivityDto} [putActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiActivitiesMonthPut(month: number, putActivityDto?: PutActivityDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiActivitiesMonthPut(month, putActivityDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ActivitiesApi - object-oriented interface
+ * @export
+ * @class ActivitiesApi
+ * @extends {BaseAPI}
+ */
+export class ActivitiesApi extends BaseAPI {
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ActivitiesApi
+     */
+    public apiActivitiesGet(options?: RawAxiosRequestConfig) {
+        return ActivitiesApiFp(this.configuration).apiActivitiesGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary  (Auth roles: Admin)
+     * @param {number} month 
+     * @param {PutActivityDto} [putActivityDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ActivitiesApi
+     */
+    public apiActivitiesMonthPut(month: number, putActivityDto?: PutActivityDto, options?: RawAxiosRequestConfig) {
+        return ActivitiesApiFp(this.configuration).apiActivitiesMonthPut(month, putActivityDto, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * LeaderboardsApi - axios parameter creator
+ * @export
+ */
+export const LeaderboardsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLeaderboardsMonthMonthGet: async (month: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'month' is not null or undefined
+            assertParamExists('apiLeaderboardsMonthMonthGet', 'month', month)
+            const localVarPath = `/api/leaderboards/month/{month}`
+                .replace(`{${"month"}}`, encodeURIComponent(String(month)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLeaderboardsTotalGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/leaderboards/total`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LeaderboardsApi - functional programming interface
+ * @export
+ */
+export const LeaderboardsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = LeaderboardsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LeaderboardEntryDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLeaderboardsMonthMonthGet(month, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['LeaderboardsApi.apiLeaderboardsMonthMonthGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LeaderboardEntryDto>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiLeaderboardsTotalGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['LeaderboardsApi.apiLeaderboardsTotalGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * LeaderboardsApi - factory interface
+ * @export
+ */
+export const LeaderboardsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = LeaderboardsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<LeaderboardEntryDto>> {
+            return localVarFp.apiLeaderboardsMonthMonthGet(month, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<LeaderboardEntryDto>> {
+            return localVarFp.apiLeaderboardsTotalGet(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * LeaderboardsApi - object-oriented interface
+ * @export
+ * @class LeaderboardsApi
+ * @extends {BaseAPI}
+ */
+export class LeaderboardsApi extends BaseAPI {
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {number} month 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LeaderboardsApi
+     */
+    public apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig) {
+        return LeaderboardsApiFp(this.configuration).apiLeaderboardsMonthMonthGet(month, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LeaderboardsApi
+     */
+    public apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig) {
+        return LeaderboardsApiFp(this.configuration).apiLeaderboardsTotalGet(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * PingApi - axios parameter creator
@@ -182,6 +731,271 @@ export class PingApi extends BaseAPI {
      */
     public pingGet(options?: RawAxiosRequestConfig) {
         return PingApiFp(this.configuration).pingGet(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * UserActivityApi - axios parameter creator
+ * @export
+ */
+export const UserActivityApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityMonthGet: async (month: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'month' is not null or undefined
+            assertParamExists('apiUserActivityMonthGet', 'month', month)
+            const localVarPath = `/api/UserActivity/{month}`
+                .replace(`{${"month"}}`, encodeURIComponent(String(month)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityMonthUserIdGet: async (month: number, userId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'month' is not null or undefined
+            assertParamExists('apiUserActivityMonthUserIdGet', 'month', month)
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('apiUserActivityMonthUserIdGet', 'userId', userId)
+            const localVarPath = `/api/UserActivity/{month}/{userId}`
+                .replace(`{${"month"}}`, encodeURIComponent(String(month)))
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {PutUserActivityDto} [putUserActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityPut: async (putUserActivityDto?: PutUserActivityDto, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/UserActivity`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer required
+            // oauth required
+            await setOAuthToObject(localVarHeaderParameter, "Bearer", [], configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(putUserActivityDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UserActivityApi - functional programming interface
+ * @export
+ */
+export const UserActivityApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = UserActivityApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiUserActivityMonthGet(month: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MonthlyUserActivityDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiUserActivityMonthGet(month, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserActivityApi.apiUserActivityMonthGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiUserActivityMonthUserIdGet(month: number, userId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MonthlyUserActivityDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiUserActivityMonthUserIdGet(month, userId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserActivityApi.apiUserActivityMonthUserIdGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {PutUserActivityDto} [putUserActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiUserActivityPut(putUserActivityDto?: PutUserActivityDto, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiUserActivityPut(putUserActivityDto, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['UserActivityApi.apiUserActivityPut']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * UserActivityApi - factory interface
+ * @export
+ */
+export const UserActivityApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = UserActivityApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityMonthGet(month: number, options?: RawAxiosRequestConfig): AxiosPromise<MonthlyUserActivityDto> {
+            return localVarFp.apiUserActivityMonthGet(month, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {number} month 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityMonthUserIdGet(month: number, userId: string, options?: RawAxiosRequestConfig): AxiosPromise<MonthlyUserActivityDto> {
+            return localVarFp.apiUserActivityMonthUserIdGet(month, userId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary  (Auth)
+         * @param {PutUserActivityDto} [putUserActivityDto] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiUserActivityPut(putUserActivityDto?: PutUserActivityDto, options?: RawAxiosRequestConfig): AxiosPromise<void> {
+            return localVarFp.apiUserActivityPut(putUserActivityDto, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * UserActivityApi - object-oriented interface
+ * @export
+ * @class UserActivityApi
+ * @extends {BaseAPI}
+ */
+export class UserActivityApi extends BaseAPI {
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {number} month 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserActivityApi
+     */
+    public apiUserActivityMonthGet(month: number, options?: RawAxiosRequestConfig) {
+        return UserActivityApiFp(this.configuration).apiUserActivityMonthGet(month, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {number} month 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserActivityApi
+     */
+    public apiUserActivityMonthUserIdGet(month: number, userId: string, options?: RawAxiosRequestConfig) {
+        return UserActivityApiFp(this.configuration).apiUserActivityMonthUserIdGet(month, userId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary  (Auth)
+     * @param {PutUserActivityDto} [putUserActivityDto] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserActivityApi
+     */
+    public apiUserActivityPut(putUserActivityDto?: PutUserActivityDto, options?: RawAxiosRequestConfig) {
+        return UserActivityApiFp(this.configuration).apiUserActivityPut(putUserActivityDto, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

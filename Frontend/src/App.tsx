@@ -7,7 +7,8 @@ import { PageLayout } from './components/PageLayout';
 import { InteractionType } from '@azure/msal-browser';
 import { loginRequest } from './utils/auth/AuthConfig.tsx';
 
-import './styles/App.css';
+import './App.css';
+import MainDisplay from './components/MainDisplay.tsx';
 
 
 const App = ({ instance }: any) => {
@@ -19,6 +20,7 @@ const App = ({ instance }: any) => {
             >
                 <PageLayout>
                     <img src={logo} alt="Logo" />
+                    <MainDisplay />
                     <PingComponent />
                     <PingAuthComponenet />
                 </PageLayout>
