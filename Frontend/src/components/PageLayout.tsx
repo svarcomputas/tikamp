@@ -29,15 +29,12 @@ export const PageLayout = (props: any) => {
         }
     }, [instance, accounts]);
     return (
-        <>
+        <div className="app">
             <NavigationBar />
             <br />
-            <h5>
-                <center>Velkommen til computas-tikamp</center>
-            </h5>
             <br />
             {props.children}
             <br />
-        </>
+        </div>
     );
 }

@@ -10,7 +10,7 @@ interface CalendarProps {
   daysData: UserActivityDto[];
   isSelf: boolean;
   activity: ActivityDto | undefined;
-  onDayUpdate: (day: number, newQuantity: number) => void;
+  onDayUpdate: (day: number, newQuantity: number) => Promise<any>;
 }
 
 const Calendar: React.FC<CalendarProps> = ({
