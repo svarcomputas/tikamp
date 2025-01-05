@@ -5,7 +5,7 @@ const redirectUri = process.env.REACT_APP_URL + '/redirect'
 export const msalConfig = {
     auth: {
         clientId: '2ab7e21e-6172-4bd0-bdf3-c8f7b84333e4',
-        authority: 'https://login.microsoftonline.com/945fa749-c3d6-4e3d-a28a-283934e3cabd',
+        authority: 'https://login.microsoftonline.com/common',
         redirectUri: redirectUri,
         postLogoutRedirectUri: uri,
         navigateToLoginRequestUrl: false, 

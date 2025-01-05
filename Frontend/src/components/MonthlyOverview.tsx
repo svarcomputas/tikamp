@@ -11,7 +11,7 @@ const daysInMonth = (year: number, month: number) => {
 interface Props {
   monthIndex: number;
   data: MonthlyUserActivityDto | null;
-  onUpdateQuantity: (day: number, quantity: number) => void;
+  onUpdateQuantity: (day: number, quantity: number) => Promise<any>;
   activity?: ActivityDto;
 }
 
@@ -28,8 +28,8 @@ const MonthlyOverview: React.FC<Props> = ({ monthIndex, data, onUpdateQuantity, 
     setLocalActivities(fullList);
   }, [data, monthIndex]);
 
-  const handleDayUpdate = (day: number, newQuantity: number) => {
-    onUpdateQuantity(day, newQuantity);
+  const handleDayUpdate = async (day: number, newQuantity: number) => {
+    await onUpdateQuantity(day, newQuantity);
     setLocalActivities((prev) => 
       prev.map((p) => (p.day === day ? { ...p, quantity: newQuantity } : p))
     );

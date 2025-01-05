@@ -1,8 +1,6 @@
 /* MainDisplay.css */
 .main-container {
     display: flex;
-    min-height: 100vh;
-    background-color: #ececec;
     padding: 1rem;
   }
   

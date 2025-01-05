@@ -47,7 +47,7 @@ function MainDisplay() {
     const dayStr = String(day).padStart(2, '0');
     const monthStr = String(monthIndex + 1).padStart(2, '0');
   
-    userActivityApi.apiUserActivityPut({
+    await userActivityApi.apiUserActivityPut({
       date: `2025-${monthStr}-${dayStr}T00:00:00.000Z`,
       quantity,
     });

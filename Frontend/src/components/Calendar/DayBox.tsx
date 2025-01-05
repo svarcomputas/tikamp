@@ -10,7 +10,7 @@ interface Props {
   isEditable: boolean;
   quantity: number;
   activity: ActivityDto | undefined;
-  onUpdate: (newValue: number) => void;
+  onUpdate: (newValue: number) => Promise<any>; 
   daysInMonth: number;
 }
 
@@ -22,7 +22,6 @@ const DayBox: React.FC<Props> = ({
   onUpdate,
   daysInMonth
 }) => {
-    console.log("box: "+isEditable)
       const [localValue, setLocalValue] = useState(
         formatActivityValue(quantity, activity?.unit ?? 0)
       );
@@ -31,7 +30,6 @@ const DayBox: React.FC<Props> = ({
       
       useEffect(() => {
         setLocalValue(formatActivityValue(quantity, activity?.unit ?? 0));
-        setLoading(false);
       }, [quantity, activity]);
     
       const level1 = activity?.level1 ?? 0;
@@ -46,15 +44,16 @@ const DayBox: React.FC<Props> = ({
         } else if (rawQuantity >= level2 / daysInMonth && level2 > 0) {
           bgColor = 'silver';
         } else if (rawQuantity >= level1 / daysInMonth && level1 > 0) {
-          bgColor = 'peru'; // bronze-like color
+          bgColor = 'peru'; 
         }
       }
     
-      const handleBlur = () => {
+      const handleBlur = async () => {
         if (!isEditable || dayNumber === null || rawQuantity === initalValue) return;
         setLoading(true);
         setInitalValue(rawQuantity);
-        onUpdate(rawQuantity);
+        await onUpdate(rawQuantity);
+        setLoading(false);
       };
     
       // If dayNumber is null, it’s a placeholder (blank space) for days outside the current month

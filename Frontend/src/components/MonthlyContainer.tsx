@@ -14,7 +14,7 @@ interface Props {
   leaderboardEntries: MonthlyLeaderboardEntryDto[];
   monthlyData: MonthlyUserActivityDto | null;
   onSelectEntry: (entry: MonthlyLeaderboardEntryDto) => void;
-  onUpdateQuantity: (day: number, quantity: number) => void;
+  onUpdateQuantity: (day: number, quantity: number) => Promise<any>;
   activity?: ActivityDto;
 }
 
