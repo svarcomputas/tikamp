@@ -1,0 +1,22 @@
+/* Calendar.css */
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .calendar-row {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .header-row {
+    font-weight: bold;
+    justify-content: space-between;
+  }
+  
+  .header-row > div {
+    width: 80px;
+    text-align: center;
+  }
+  

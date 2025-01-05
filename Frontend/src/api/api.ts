@@ -65,7 +65,30 @@ export interface ActivityDto {
      * @memberof ActivityDto
      */
     'description'?: string | null;
+    /**
+     * 
+     * @type {ActivityUnit}
+     * @memberof ActivityDto
+     */
+    'unit'?: ActivityUnit;
 }
+
+
+/**
+ * 
+ * @export
+ * @enum {number}
+ */
+
+export const ActivityUnit = {
+    NUMBER_0: 0,
+    NUMBER_1: 1,
+    NUMBER_2: 2
+} as const;
+
+export type ActivityUnit = typeof ActivityUnit[keyof typeof ActivityUnit];
+
+
 /**
  * 
  * @export
@@ -102,6 +125,49 @@ export interface LeaderboardEntryDto {
      * @memberof LeaderboardEntryDto
      */
     'monthPlacementPoints'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MonthlyLeaderboardEntryDto
+ */
+export interface MonthlyLeaderboardEntryDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'userId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'points'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'monthPointsFromLevel'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'monthPlacementPoints'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'exerciseQuantity'?: number;
 }
 /**
  * 
@@ -170,7 +236,15 @@ export interface PutActivityDto {
      * @memberof PutActivityDto
      */
     'description'?: string | null;
+    /**
+     * 
+     * @type {ActivityUnit}
+     * @memberof PutActivityDto
+     */
+    'unit'?: ActivityUnit;
 }
+
+
 /**
  * 
  * @export
@@ -490,7 +564,7 @@ export const LeaderboardsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LeaderboardEntryDto>>> {
+        async apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MonthlyLeaderboardEntryDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiLeaderboardsMonthMonthGet(month, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeaderboardsApi.apiLeaderboardsMonthMonthGet']?.[localVarOperationServerIndex]?.url;
@@ -525,7 +599,7 @@ export const LeaderboardsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<LeaderboardEntryDto>> {
+        apiLeaderboardsMonthMonthGet(month: number, options?: RawAxiosRequestConfig): AxiosPromise<Array<MonthlyLeaderboardEntryDto>> {
             return localVarFp.apiLeaderboardsMonthMonthGet(month, options).then((request) => request(axios, basePath));
         },
         /**

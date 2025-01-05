@@ -1,11 +1,11 @@
 // MonthlyLeaderboard.tsx
 import React from 'react';
-import { LeaderboardEntryDto, ActivityDto } from '../api';
+import { MonthlyLeaderboardEntryDto, ActivityDto } from '../api';
 import '../styles/MonthlyLeaderboard.css';
 
 interface Props {
-  entries: LeaderboardEntryDto[];
-  onSelectEntry: (entry: LeaderboardEntryDto) => void;
+  entries: MonthlyLeaderboardEntryDto[];
+  onSelectEntry: (entry: MonthlyLeaderboardEntryDto) => void;
   activity?: ActivityDto;
 }
 
@@ -29,6 +29,7 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity 
           <tr>
             <th>#</th>
             <th>Navn</th>
+            <th>Antall</th>
             <th>Poeng</th>
             <th>Plasserings poeng</th>
             <th>Nivå poeng</th>
@@ -39,6 +40,7 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity 
             <tr key={entry.userId || idx} onClick={() => onSelectEntry(entry)}>
               <td>{idx + 1}</td>
               <td>{entry.userName}</td>
+              <td>{entry.exerciseQuantity}</td>
               <td>{entry.points}</td>
               <td>{entry.monthPlacementPoints}</td>
               <td>{entry.monthPointsFromLevel}</td>

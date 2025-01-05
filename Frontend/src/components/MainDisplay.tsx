@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import TotalLeaderboard from './TotalLeaderboard';
 import MonthlyContainer from './MonthlyContainer';
-import { LeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
+import { ActivityDto, LeaderboardEntryDto, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
 
@@ -14,8 +14,9 @@ function MainDisplay() {
 
   const [monthIndex, setMonthIndex] = useState(0);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
-  const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<LeaderboardEntryDto[]>([]);
+  const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<MonthlyLeaderboardEntryDto[]>([]);
   const [monthlyData, setMonthlyData] = useState<MonthlyUserActivityDto | null>(null);
+  const [monthlyActivity, setMonthlyActivity] = useState<ActivityDto[]>([]);
 
   const api = new TikampApi();
   const userActivityApi = api.userActivityApi();
@@ -55,8 +56,13 @@ function MainDisplay() {
   useEffect(() => {
     const apiInstance = new TikampApi();
     const leaderboardApi = apiInstance.leaderboardApi();
+    const activityApiInstance = apiInstance.activityApi();
     leaderboardApi.apiLeaderboardsTotalGet()
       .then((response) => setTotalLeaderboard(response.data))
+      .catch((error) => console.error(error));
+
+    activityApiInstance.apiActivitiesGet()
+      .then((response) => setMonthlyActivity(response.data))
       .catch((error) => console.error(error));
   }, []);
 
@@ -86,6 +92,7 @@ function MainDisplay() {
         monthlyData={monthlyData}
         onSelectEntry={handleSelectMonthlyEntry}
         onUpdateQuantity={handleUpdateQuantity}
+        activity={monthlyActivity[monthIndex]}
       />
     </div>
   );

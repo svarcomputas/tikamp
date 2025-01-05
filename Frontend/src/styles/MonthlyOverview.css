@@ -4,17 +4,6 @@
     padding: 1rem;
     min-width: 250px;
     flex: 1;
+    display: flex;
     margin-right: 1rem;
   }
-  
-  .user-activity {
-    margin-top: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .user-activity input {
-    width: 60px;
-  }
-  

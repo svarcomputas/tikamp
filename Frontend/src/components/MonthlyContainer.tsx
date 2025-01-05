@@ -2,7 +2,7 @@
 import React from 'react';
 import MonthlyLeaderboard from './MonthlyLeaderboard';
 import MonthlyOverview from './MonthlyOverview';
-import { LeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
+import { ActivityDto, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MonthlyContainer.css';
 
 interface Props {
@@ -10,10 +10,11 @@ interface Props {
   monthIndex: number;
   onNextMonth: () => void;
   onPreviousMonth: () => void;
-  leaderboardEntries: LeaderboardEntryDto[];
+  leaderboardEntries: MonthlyLeaderboardEntryDto[];
   monthlyData: MonthlyUserActivityDto | null;
-  onSelectEntry: (entry: LeaderboardEntryDto) => void;
+  onSelectEntry: (entry: MonthlyLeaderboardEntryDto) => void;
   onUpdateQuantity: (day: number, quantity: number) => void;
+  activity?: ActivityDto;
 }
 
 const MonthlyContainer: React.FC<Props> = ({
@@ -24,7 +25,8 @@ const MonthlyContainer: React.FC<Props> = ({
   leaderboardEntries,
   monthlyData,
   onSelectEntry,
-  onUpdateQuantity
+  onUpdateQuantity,
+  activity
 }) => {
   return (
     <div className="monthly-container">
@@ -49,11 +51,12 @@ const MonthlyContainer: React.FC<Props> = ({
         <MonthlyLeaderboard
           entries={leaderboardEntries}
           onSelectEntry={onSelectEntry}
-          activity={monthlyData?.activity}
+          activity={activity}
         />
         <MonthlyOverview
           monthIndex={monthIndex}
           data={monthlyData}
+          activity={activity}
           onUpdateQuantity={onUpdateQuantity}
         />
       </div>
