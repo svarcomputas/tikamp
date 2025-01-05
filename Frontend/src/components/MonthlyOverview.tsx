@@ -1,71 +1,63 @@
-import React, { useState } from 'react';
+// MonthlyOverview.tsx
+import React, { useEffect, useState } from 'react';
 import { MonthlyUserActivityDto, UserActivityDto } from '../api';
+import InputNumber from 'rc-input-number';
 import '../styles/MonthlyOverview.css';
 
-interface MonthlyOverviewProps {
-  monthName: string;
-  activityName: string | null | undefined;
-  level1: number | null | undefined;
-  level2: number | null | undefined;
-  level3: number | null | undefined;
+const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+interface Props {
+  monthIndex: number;
   data: MonthlyUserActivityDto | null;
   onUpdateQuantity: (day: number, quantity: number) => void;
 }
 
-const MonthlyOverview: React.FC<MonthlyOverviewProps> = ({
-  monthName,
-  activityName,
-  level1,
-  level2,
-  level3,
-  data,
-  onUpdateQuantity
-}) => {
-  const [localActivities, setLocalActivities] = useState<UserActivityDto[]>(data?.usersActivities || []);
-
-  const handleQuantityChange = (day: number, newQuantity: number) => {
-    if (!data?.isSelf) return;
-    const updated = localActivities.map((ua) => {
-      if (ua.day === day) {
-        return { ...ua, quantity: newQuantity };
-      }
-      return ua;
+const MonthlyOverview: React.FC<Props> = ({ monthIndex, data, onUpdateQuantity }) => {
+  const [localActivities, setLocalActivities] = useState<UserActivityDto[]>([]);
+  const [didUpdate, setDidUpdate] = useState<Boolean>(false);
+  useEffect(() => {
+    if (!data) {
+      setLocalActivities([]);
+      return;
+    }
+    const totalDays = daysInMonth[monthIndex];
+    const existingActivities = data.usersActivities || [];
+    const fullList = Array.from({ length: totalDays }, (_, i) => {
+      const dayNum = i + 1;
+      const found = existingActivities.find((a) => a.day === dayNum);
+      return found || { day: dayNum, quantity: 0 };
     });
-    setLocalActivities(updated);
+    setLocalActivities(fullList);
+  }, [data, monthIndex]);
+
+  const handleChange = (day: number, value: number) => {
+    console.log(""+didUpdate)
+    if (!data?.isSelf || localActivities.find(p => p.day === day)?.quantity === value) return;
+    setDidUpdate(true);
+    console.log("io<"+didUpdate)
+    setLocalActivities((prev) =>
+      prev.map((p) => (p.day === day ? { ...p, quantity: value } : p))
+    );
   };
 
-  const handleBlur = (day: number, quantity: number) => {
-    if (!data?.isSelf) return;
-    onUpdateQuantity(day, quantity);
+  const handleBlur = (day: number, value: number) => {
+    console.log("Blur" + didUpdate)
+    if (!data?.isSelf || !didUpdate) return;
+    setDidUpdate(false);
+    onUpdateQuantity(day, value);
   };
 
   return (
-    <div className="monthly-overview-container">
-      <div className="month-header">
-        <h2>{monthName}</h2>
-      </div>
-      <div className="activity-header">
-        <h3>{activityName}</h3>
-        {level1 === null && level2 === null && level3 === null ? (
-          <p>No levels set for this activity</p>
-        ) : (
-          <div className="levels">
-            <span>Level1: {level1}</span>
-            <span>Level2: {level2}</span>
-            <span>Level3: {level3}</span>
-          </div>
-        )}
-      </div>
-      <h4>Activity Overview</h4>
-      {localActivities.map((ua, index) => (
-        <div key={index} className="user-activity">
-          <label>Day {ua.day}:</label>
+    <div className="monthly-overview">
+      <h3>Aktivitetsoversikt</h3>
+      {localActivities.map((ua) => (
+        <div key={ua.day} className="user-activity">
+          <label>Dag {ua.day}:</label>
           {data?.isSelf ? (
-            <input
-              type="number"
+            <InputNumber
               value={ua.quantity || 0}
-              onChange={(e) => handleQuantityChange(ua.day!, parseInt(e.target.value, 10))}
-              onBlur={() => handleBlur(ua.day!, ua.quantity!)}
+              onChange={(e) => handleChange(ua.day ?? -1, e ?? -1)}
+              onBlur={() => handleBlur(ua.day ?? -1, ua.quantity || 0)}
             />
           ) : (
             <span>{ua.quantity}</span>

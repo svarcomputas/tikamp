@@ -10,14 +10,15 @@ interface TotalLeaderboardProps {
 const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({ entries, onSelectEntry }) => {
   return (
     <div className="total-leaderboard-container">
-      <h2>All-Time Leaderboard</h2>
+      <h2>Resultattavle 2025</h2>
       <table>
         <thead>
           <tr>
             <th>#</th>
-            <th>User</th>
-            <th>Points</th>
-            <th>Month Points</th>
+            <th>Navn</th>
+            <th>Poeng</th>
+            <th>Plasserings poeng</th>
+            <th>Nivå poeng</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@ const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({ entries, onSelectEn
               <td>{index + 1}</td>
               <td>{entry.userName}</td>
               <td>{entry.points}</td>
+              <td>{entry.monthPlacementPoints}</td>
               <td>{entry.monthPointsFromLevel}</td>
             </tr>
           ))}

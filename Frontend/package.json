@@ -8,6 +8,7 @@
     "@azure/msal-react": "^2.2.0",
     "axios": "^1.7.9",
     "cra-template-typescript": "1.2.0",
+    "rc-input-number": "^9.4.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.7",
     "react-cookie": "^7.2.2",

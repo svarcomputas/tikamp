@@ -1,46 +1,26 @@
+// MonthlyLeaderboard.tsx
 import React from 'react';
-import { LeaderboardEntryDto } from '../api';
+import { LeaderboardEntryDto, ActivityDto } from '../api';
 import '../styles/MonthlyLeaderboard.css';
 
-interface MonthlyLeaderboardProps {
-  monthName: string;
-  activityName: string | null | undefined;
-  level1: number | null | undefined;
-  level2: number | null | undefined;
-  level3: number | null | undefined;
+interface Props {
   entries: LeaderboardEntryDto[];
   onSelectEntry: (entry: LeaderboardEntryDto) => void;
-  onPreviousMonth: () => void;
-  onNextMonth: () => void;
+  activity?: ActivityDto;
 }
 
-const MonthlyLeaderboard: React.FC<MonthlyLeaderboardProps> = ({
-  monthName,
-  activityName,
-  level1,
-  level2,
-  level3,
-  entries,
-  onSelectEntry,
-  onPreviousMonth,
-  onNextMonth,
-}) => {
+const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity }) => {
   return (
-    <div className="monthly-leaderboard-container">
-      <div className="month-header">
-        <button onClick={onPreviousMonth} className="arrow-button">{'<'}</button>
-        <h2>{monthName}</h2>
-        <button onClick={onNextMonth} className="arrow-button">{'>'}</button>
-      </div>
+    <div className="monthly-leaderboard">
       <div className="activity-header">
-        <h3>{activityName}</h3>
-        {level1 === null && level2 === null && level3 === null ? (
-          <p>No levels set for this activity</p>
+        <h3>{activity?.name || ''}</h3>
+        {activity?.level1 == null && activity?.level2 == null && activity?.level3 == null ? (
+          <p>{activity?.description || 'No levels set'}</p>
         ) : (
           <div className="levels">
-            <span>Level1: {level1}</span>
-            <span>Level2: {level2}</span>
-            <span>Level3: {level3}</span>
+            <span>Level1: {activity?.level1}</span>
+            <span>Level2: {activity?.level2}</span>
+            <span>Level3: {activity?.level3}</span>
           </div>
         )}
       </div>
@@ -48,17 +28,19 @@ const MonthlyLeaderboard: React.FC<MonthlyLeaderboardProps> = ({
         <thead>
           <tr>
             <th>#</th>
-            <th>User</th>
-            <th>Points</th>
-            <th>Month Points</th>
+            <th>Navn</th>
+            <th>Poeng</th>
+            <th>Plasserings poeng</th>
+            <th>Nivå poeng</th>
           </tr>
         </thead>
         <tbody>
-          {entries.map((entry, index) => (
-            <tr key={entry.userId || index} onClick={() => onSelectEntry(entry)}>
-              <td>{index + 1}</td>
+          {entries.map((entry, idx) => (
+            <tr key={entry.userId || idx} onClick={() => onSelectEntry(entry)}>
+              <td>{idx + 1}</td>
               <td>{entry.userName}</td>
               <td>{entry.points}</td>
+              <td>{entry.monthPlacementPoints}</td>
               <td>{entry.monthPointsFromLevel}</td>
             </tr>
           ))}

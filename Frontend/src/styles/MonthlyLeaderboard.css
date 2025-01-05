@@ -1,43 +1,36 @@
-.monthly-leaderboard-container {
-    flex: 1;
+/* MonthlyLeaderboard.css */
+.monthly-leaderboard {
     border: 1px solid #ccc;
     padding: 1rem;
+    min-width: 300px;
+    flex: 1;
+    margin-right: 1rem;
   }
   
-  .month-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .arrow-button {
-    margin: 0 1rem;
-  }
-  
-  .activity-header {
-    margin-top: 1rem;
-  }
-  
-  .monthly-leaderboard-container table {
+  .monthly-leaderboard table {
     width: 100%;
-    margin-top: 1rem;
     border-collapse: collapse;
+    margin-top: 1rem;
   }
   
-  .monthly-leaderboard-container table th,
-  .monthly-leaderboard-container table td {
-    border: 1px solid #ccc;
+  .monthly-leaderboard table th,
+  .monthly-leaderboard table td {
+    border: 1px solid #aaa;
     padding: 0.5rem;
   }
   
-  .monthly-leaderboard-container table tr:hover {
-    background-color: #eaeaea;
+  .monthly-leaderboard table tr:hover {
+    background-color: #f5f5f5;
     cursor: pointer;
+  }
+  
+  .activity-header {
+    margin-bottom: 1rem;
   }
   
   .levels {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-top: 0.5rem;
   }
   

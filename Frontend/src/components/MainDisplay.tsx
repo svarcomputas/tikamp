@@ -1,6 +1,7 @@
+// MainDisplay.tsx
 import { useEffect, useState } from 'react';
 import TotalLeaderboard from './TotalLeaderboard';
-import MonthlyColumns from './MonthlyColumns';
+import MonthlyContainer from './MonthlyContainer';
 import { LeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
@@ -10,6 +11,7 @@ function MainDisplay() {
     'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
     'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'
   ];
+
   const [monthIndex, setMonthIndex] = useState(0);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
   const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<LeaderboardEntryDto[]>([]);
@@ -17,70 +19,67 @@ function MainDisplay() {
 
   const api = new TikampApi();
   const userActivityApi = api.userActivityApi();
+
   const handleNextMonth = () => {
-    setMonthIndex((prev) => (prev === 11 ? 0 : prev + 1));
+    setMonthIndex((prev) => (prev < 11 ? prev + 1 : prev));
   };
 
   const handlePreviousMonth = () => {
-    setMonthIndex((prev) => (prev === 0 ? 11 : prev - 1));
+    setMonthIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
   const handleSelectTotalEntry = async (entry: LeaderboardEntryDto) => {
     userActivityApi
-        .apiUserActivityMonthUserIdGet(monthIndex, entry.userId ?? '')
-        .then((response) => {
-          console.log(response.data)
-          setMonthlyData(response.data); 
-        })
-        .catch((error) => {
-          console.error(error);
-          //setUserActivtyResponse(`Error: ${error.toString()}`);
-        });
+      .apiUserActivityMonthUserIdGet(monthIndex+1, entry.userId ?? '')
+      .then((response) => setMonthlyData(response.data))
+      .catch((error) => console.error(error));
   };
 
   const handleSelectMonthlyEntry = async (entry: LeaderboardEntryDto) => {
     userActivityApi
-        .apiUserActivityMonthUserIdGet(monthIndex, entry.userId ?? '')
-        .then((response) => {
-            console.log(response.data)
-            setMonthlyData(response.data); 
-        })
-        .catch((error) => {
-            console.error(error);
-            //setUserActivtyResponse(`Error: ${error.toString()}`);
-        });
-    };
-
-  const handleUpdateQuantity = async (day: number, quantity: number) => {
-    userActivityApi.apiUserActivityPut({ date: `${monthIndex + 1}/${day}/2025 0:00:00`, quantity })
-  };
-  useEffect(() => {
-    
-    const api = new TikampApi();
-    const leaderboardApi = api.leaderboardApi();
-    leaderboardApi.apiLeaderboardsTotalGet()
-      .then((response) => {console.log("Setting total leaderboard"); setTotalLeaderboard(response.data)})
-      .catch((error) => console.error(error));
-  }, []); 
-  useEffect(() => {
-    
-    const api = new TikampApi();
-    const leaderboardApi = api.leaderboardApi();
-    const userActivityApi = api.userActivityApi();
-    leaderboardApi.apiLeaderboardsMonthMonthGet(monthIndex+1)
-      .then((response) => setMonthlyLeaderboard(response.data))
-      .catch((error) => console.error(error));
-  
-    userActivityApi.apiUserActivityMonthGet(monthIndex+1)
+      .apiUserActivityMonthUserIdGet(monthIndex+1, entry.userId ?? '')
       .then((response) => setMonthlyData(response.data))
       .catch((error) => console.error(error));
-  }, [monthIndex]); 
+  };
+
+  const handleUpdateQuantity = async (day: number, quantity: number) => {
+    const dayStr = String(day).padStart(2, '0');
+    const monthStr = String(monthIndex + 1).padStart(2, '0');
+  
+    userActivityApi.apiUserActivityPut({
+      date: `2025-${monthStr}-${dayStr}T00:00:00.000Z`,
+      quantity,
+    });
+  };
+
+  useEffect(() => {
+    const apiInstance = new TikampApi();
+    const leaderboardApi = apiInstance.leaderboardApi();
+    leaderboardApi.apiLeaderboardsTotalGet()
+      .then((response) => setTotalLeaderboard(response.data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    const apiInstance = new TikampApi();
+    const leaderboardApi = apiInstance.leaderboardApi();
+    const userActivityApiInstance = apiInstance.userActivityApi();
+
+    leaderboardApi.apiLeaderboardsMonthMonthGet(monthIndex + 1)
+      .then((response) => setMonthlyLeaderboard(response.data))
+      .catch((error) => console.error(error));
+
+    userActivityApiInstance.apiUserActivityMonthGet(monthIndex + 1)
+      .then((response) => setMonthlyData(response.data))
+      .catch((error) => console.error(error));
+  }, [monthIndex]);
 
   return (
     <div className="main-container">
       <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSelectTotalEntry} />
-      <MonthlyColumns
+      <MonthlyContainer
         monthName={months[monthIndex]}
+        monthIndex={monthIndex}
         onNextMonth={handleNextMonth}
         onPreviousMonth={handlePreviousMonth}
         leaderboardEntries={monthlyLeaderboard}
