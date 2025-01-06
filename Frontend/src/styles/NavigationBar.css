@@ -1,0 +1,83 @@
+/* NavigationBar.css */
+.custom-navbar {
+    width: 100%;
+    position: relative;
+    min-height: 100px; /* or your preferred height */
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* allow wrapping on smaller screens */
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+  
+  .center-logo {
+    max-height: 100px; /* wide but not tall */
+    width: auto;
+    border-radius: 10%;
+  }
+  
+  .emoji {
+    display: inline-block;
+  }
+  
+  .size1 {
+    font-size: 1.2rem;
+  }
+  .size2 {
+    font-size: 1.5rem;
+  }
+  .size3 {
+    font-size: 1.8rem;
+  }
+  .size4 {
+    font-size: 2.1rem;
+  }
+  
+  .top-right-text {
+    font-weight: bold;
+    text-align: right;
+    margin-left: auto;
+  }
+  
+  @media (max-width: 576px) {
+    .center-logo {
+      max-height: 50px; }
+    .custom-navbar {
+        min-height: 50px; /* or your preferred height */
+      }
+    .top-right-text {
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+  
+    .size1 {
+      font-size: 0.9rem;
+    }
+    .size2 {
+      font-size: 1.2rem;
+    }
+    .size3 {
+      font-size: 1.5rem;
+    }
+    .size4 {
+      font-size: 1.8rem;
+    }
+    .top-right-text {
+      font-weight: bold;
+      text-align: right;
+      margin-left: auto;
+      font-size: 0.7rem;
+    }
+  }
+  
