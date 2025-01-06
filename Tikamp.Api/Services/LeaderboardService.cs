@@ -53,6 +53,7 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                                     TotalCount = totalCount
                                 };
                             })
+                           .Where(x => x.TotalCount > 0)
                            .OrderByDescending(x => x.TotalCount)
                            .ToList();
         var activity = await repository.Activities
@@ -105,13 +106,6 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
 
     public async Task<List<LeaderboardEntryDto>> GetTotalLeaderboardAsync()
     {
-        var userAllActivities = await repository.UserActivities
-                                                .Include(ua => ua.User)
-                                                .Include(ua => ua.Activity)
-                                                .ToListAsync();
-
-        if (!userAllActivities.Any()) return new List<LeaderboardEntryDto>();
-
         var months = Enumerable.Range(1, 12).ToList();
         var totalScores = new Dictionary<string, List<int>>();
         var userNames = new Dictionary<string, string>();

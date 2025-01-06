@@ -13,6 +13,6 @@ public class PutUserActivityDtoValidator : AbstractValidator<PutUserActivityDto>
 {
     public PutUserActivityDtoValidator()
     {
-        RuleFor(dto => dto.Quantity).GreaterThan(0).NotNull();
+        RuleFor(dto => dto.Quantity).NotNull();
     }
 }
