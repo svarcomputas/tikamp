@@ -43,7 +43,6 @@ public class UserActivityController(UserActivityService service, ValidationServi
         [FromBody] PutUserActivityDto dto,
         CancellationToken cancellationToken)
     {
-        await Task.Delay(5000);
         await validator.Validate(dto, cancellationToken);
         await service.RegisterActivity(dto, User, cancellationToken);
         return NoContent();

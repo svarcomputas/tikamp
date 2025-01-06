@@ -27,7 +27,7 @@ builder.Services
        .AddAuth(builder.Configuration);
 
 var app = builder.Build().EnsureDatabase();
-app.UseCors(); // Cors må komme tidlig o pipelinen
+app.UseCors();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
