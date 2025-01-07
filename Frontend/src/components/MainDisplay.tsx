@@ -5,21 +5,27 @@ import MonthlyContainer from './MonthlyContainer';
 import { ActivityDto, LeaderboardEntryDto, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
+import { useMsal } from '@azure/msal-react';
 
-function MainDisplay() {
+interface MainDisplayProps {
+  api: TikampApi;
+}
+
+const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   const months = [
     'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
     'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'
   ];
 
+  const { accounts } = useMsal();
+  const idOfLoggedInUser = accounts.length > 0 ? accounts[0].localAccountId : '';
+  const [idOfDisplayedUser, setIdOfDisplayedUser] = useState<string | null>(idOfLoggedInUser);
   const [monthIndex, setMonthIndex] = useState(0);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
   const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<MonthlyLeaderboardEntryDto[]>([]);
   const [monthlyData, setMonthlyData] = useState<MonthlyUserActivityDto | null>(null);
   const [monthlyActivity, setMonthlyActivity] = useState<ActivityDto[]>([]);
-
-  const api = new TikampApi();
-  const userActivityApi = api.userActivityApi();
+  api.setLoggedInUser(idOfLoggedInUser ?? '');
 
   const handleNextMonth = () => {
     setMonthIndex((prev) => (prev < 11 ? prev + 1 : prev));
@@ -29,56 +35,45 @@ function MainDisplay() {
     setMonthIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
-  const handleSelectTotalEntry = async (entry: LeaderboardEntryDto) => {
-    userActivityApi
-      .apiUserActivityMonthUserIdGet(monthIndex+1, entry.userId ?? '')
-      .then((response) => setMonthlyData(response.data))
+  const updateMonthlyActivityForUser = async (userId: string) => {
+    await api.getMonthlyActivity(monthIndex+1, userId)
+      .then((data) => setMonthlyData(data))
       .catch((error) => console.error(error));
+  }
+
+  const handleSelectTotalEntry = async (entry: LeaderboardEntryDto) => {
+    setIdOfDisplayedUser(entry.userId ?? idOfLoggedInUser)
+    await updateMonthlyActivityForUser(entry.userId ?? '')
   };
 
   const handleSelectMonthlyEntry = async (entry: LeaderboardEntryDto) => {
-    userActivityApi
-      .apiUserActivityMonthUserIdGet(monthIndex+1, entry.userId ?? '')
-      .then((response) => setMonthlyData(response.data))
-      .catch((error) => console.error(error));
+    setIdOfDisplayedUser(entry.userId ?? idOfLoggedInUser)
+    await updateMonthlyActivityForUser(entry.userId ?? '')
   };
 
   const handleUpdateQuantity = async (day: number, quantity: number) => {
-    const dayStr = String(day).padStart(2, '0');
-    const monthStr = String(monthIndex + 1).padStart(2, '0');
-  
-    await userActivityApi.apiUserActivityPut({
-      date: `2025-${monthStr}-${dayStr}T00:00:00.000Z`,
-      quantity,
-    });
+    await api.putUserActivity(day, quantity, monthIndex +1)
   };
 
   useEffect(() => {
-    const apiInstance = new TikampApi();
-    const leaderboardApi = apiInstance.leaderboardApi();
-    const activityApiInstance = apiInstance.activityApi();
-    leaderboardApi.apiLeaderboardsTotalGet()
-      .then((response) => setTotalLeaderboard(response.data))
+    api.getTotalLeaderboard()
+      .then((data) => setTotalLeaderboard(data))
       .catch((error) => console.error(error));
 
-    activityApiInstance.apiActivitiesGet()
-      .then((response) => setMonthlyActivity(response.data))
+    api.getActivities()
+      .then((data) => setMonthlyActivity(data))
       .catch((error) => console.error(error));
-  }, []);
+  }, [api]);
 
-  useEffect(() => {
-    const apiInstance = new TikampApi();
-    const leaderboardApi = apiInstance.leaderboardApi();
-    const userActivityApiInstance = apiInstance.userActivityApi();
-
-    leaderboardApi.apiLeaderboardsMonthMonthGet(monthIndex + 1)
-      .then((response) => setMonthlyLeaderboard(response.data))
+  useEffect(() => {    
+    api.getMonthlyActivity(monthIndex+1, idOfDisplayedUser ??'')
+      .then((data) => setMonthlyData(data))
       .catch((error) => console.error(error));
 
-    userActivityApiInstance.apiUserActivityMonthGet(monthIndex + 1)
-      .then((response) => setMonthlyData(response.data))
+    api.getMonthlyLeaderboard(monthIndex + 1)
+      .then((data) => setMonthlyLeaderboard(data))
       .catch((error) => console.error(error));
-  }, [monthIndex]);
+  }, [monthIndex, api, idOfDisplayedUser]);
 
   return (
     <div className="main-container">
