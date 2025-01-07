@@ -7,7 +7,7 @@ import './styles/App.css';
 import MainDisplay from './components/MainDisplay.tsx';
 
 
-const App = ({ instance }: any) => {
+const App = ({ instance, api}: any) => {
     return (
         
         <div className="app">
@@ -17,7 +17,7 @@ const App = ({ instance }: any) => {
                 authenticationRequest={loginRequest}
             >
                 <PageLayout>
-                    <MainDisplay />
+                    <MainDisplay api={api}/>
                 </PageLayout>
             </MsalAuthenticationTemplate>
         </MsalProvider>
