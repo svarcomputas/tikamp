@@ -1,22 +1,23 @@
-// NavigationBar.tsx
-import React from 'react';
-import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from '@azure/msal-react';
-import { Navbar, Container, Button } from 'react-bootstrap';
-import { loginRequest } from '../utils/auth/AuthConfig';
-//import logo from '../assets/images/computas-tikamp-logo-4.png';
+import { useState, useEffect } from 'react';
+import { AuthenticatedTemplate, useMsal } from '@azure/msal-react';
+import { Navbar, Container } from 'react-bootstrap';
 import logo from '../assets/images/tikamp_logo.png';
-import '../styles/NavigationBar.css'; // <-- Make sure you create/import this
+import '../styles/NavigationBar.css';
 
 export const NavigationBar = () => {
-  const { instance, accounts } = useMsal();
-
-  const handleLoginRedirect = () => {
-    instance.loginRedirect(loginRequest).catch((error) => console.log(error));
-  };
+  const { accounts } = useMsal();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const userName = accounts.length > 0 ? accounts[0].name : '';
   const tenantId = accounts.length > 0 ? accounts[0].idTokenClaims?.tid : '';
   const isExternal = tenantId !== '945fa749-c3d6-4e3d-a28a-283934e3cabd';
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="custom-navbar">
@@ -35,19 +36,21 @@ export const NavigationBar = () => {
           <span role="img" aria-label="emoji1" className="emoji size1">🏃</span>
         </div>
 
-        <AuthenticatedTemplate>
-          <div className="top-right-text">
-            Logget inn som:
-            <br />
-            {userName} {isExternal ? '(Ekstern)' : ''}
-          </div>
-        </AuthenticatedTemplate>
-
-        <UnauthenticatedTemplate>
-          <Button onClick={handleLoginRedirect} variant="outline-light">
-            Sign in
-          </Button>
-        </UnauthenticatedTemplate>
+        {windowWidth < 600 ? (
+          <AuthenticatedTemplate>
+            <div className="top-right-text">
+                Logget inn som: {userName} {isExternal ? '(Ekstern)' : ''}
+            </div>
+          </AuthenticatedTemplate>
+        ) : (
+          <AuthenticatedTemplate>
+            <div className="top-right-text">
+              Logget inn som:
+              <br />
+              {userName} {isExternal ? '(Ekstern)' : ''}
+            </div>
+          </AuthenticatedTemplate>
+        )}
       </Container>
     </Navbar>
   );
