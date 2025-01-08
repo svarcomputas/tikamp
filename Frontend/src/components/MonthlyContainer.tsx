@@ -16,6 +16,7 @@ interface Props {
   onSelectEntry: (entry: MonthlyLeaderboardEntryDto) => void;
   onUpdateQuantity: (day: number, quantity: number) => Promise<any>;
   activity?: ActivityDto;
+  loggedInUserId: string;
 }
 
 const MonthlyContainer: React.FC<Props> = ({
@@ -27,7 +28,8 @@ const MonthlyContainer: React.FC<Props> = ({
   monthlyData,
   onSelectEntry,
   onUpdateQuantity,
-  activity
+  activity,
+  loggedInUserId
 }) => {
   return (
     <div className="monthly-container">
@@ -66,6 +68,7 @@ const MonthlyContainer: React.FC<Props> = ({
           entries={leaderboardEntries}
           onSelectEntry={onSelectEntry}
           activity={activity}
+          loggedInUserId={loggedInUserId}
         />
         <MonthlyOverview
           monthIndex={monthIndex}
