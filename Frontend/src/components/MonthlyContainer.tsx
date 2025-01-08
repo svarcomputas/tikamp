@@ -5,6 +5,7 @@ import MonthlyOverview from './MonthlyOverview';
 import { ActivityDto, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MonthlyContainer.css';
 import { formatActivityValue } from '../utils/conversions';
+import MonthSelector from './MonthSelector';
 
 interface Props {
   monthName: string;
@@ -33,23 +34,12 @@ const MonthlyContainer: React.FC<Props> = ({
 }) => {
   return (
     <div className="monthly-container">
-      <div className="monthly-header">
-        <button 
-          onClick={onPreviousMonth} 
-          disabled={monthIndex === 0}
-          className="arrow-button"
-        >
-          {'<'}
-        </button>
-        <h2>{monthName}</h2>
-        <button 
-          onClick={onNextMonth} 
-          disabled={monthIndex === 11}
-          className="arrow-button"
-        >
-          {'>'}
-        </button>
-      </div>
+      <MonthSelector 
+        monthName={monthName}
+        monthIndex={monthIndex}
+        onNextMonth={onNextMonth}
+        onPreviousMonth={onPreviousMonth}
+        activity={activity}/>
       <div className="activity-header">
         <h3>{activity?.name || ''}</h3>
         <h5>{activity?.description || ''}</h5>

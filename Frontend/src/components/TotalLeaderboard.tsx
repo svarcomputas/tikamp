@@ -1,6 +1,7 @@
 import React from 'react';
 import { LeaderboardEntryDto } from '../api';
 import '../styles/TotalLeaderboard.css';
+import { Table } from "flowbite-react";
 
 interface TotalLeaderboardProps {
   entries: LeaderboardEntryDto[];
@@ -11,28 +12,26 @@ const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({ entries, onSelectEn
   return (
     <div className="total-leaderboard-container">
       <h2>Resultattavle 2025</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Navn</th>
-            <th>Poeng</th>
-            <th>Plasserings poeng</th>
-            <th>Nivå poeng</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry, index) => (
-            <tr key={entry.userId || index} onClick={() => onSelectEntry(entry)}>
-              <td>{index + 1}</td>
-              <td>{entry.userName}</td>
-              <td>{entry.points}</td>
-              <td>{entry.monthPlacementPoints}</td>
-              <td>{entry.monthPointsFromLevel}</td>
-            </tr>
+      <Table striped>
+        <Table.Head>
+          <Table.HeadCell>#</Table.HeadCell>
+          <Table.HeadCell>Navn</Table.HeadCell>
+          <Table.HeadCell>Poeng</Table.HeadCell>
+          <Table.HeadCell>Plasserings poeng</Table.HeadCell>
+          <Table.HeadCell>Nivå poeng</Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="divide-y">
+        {entries.map((entry, index) => (
+          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={entry.userId || index} onClick={() => onSelectEntry(entry)}>
+            <Table.Cell>{index + 1}</Table.Cell>
+            <Table.Cell>{entry.userName}</Table.Cell>
+            <Table.Cell>{entry.points}</Table.Cell>
+            <Table.Cell>{entry.monthPlacementPoints}</Table.Cell>
+            <Table.Cell>{entry.monthPointsFromLevel} </Table.Cell>
+          </Table.Row>
           ))}
-        </tbody>
-      </table>
+        </Table.Body>
+      </Table>
     </div>
   );
 };

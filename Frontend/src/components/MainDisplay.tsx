@@ -6,6 +6,8 @@ import { ActivityDto, LeaderboardEntryDto, MonthlyLeaderboardEntryDto, MonthlyUs
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
 import { useMsal } from '@azure/msal-react';
+import { Flowbite, Tabs } from "flowbite-react";
+
 
 interface MainDisplayProps {
   api: TikampApi;
@@ -77,7 +79,30 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
 
   return (
     <div className="main-container">
-      <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSelectTotalEntry} />
+      
+    <Flowbite>
+       <Tabs aria-label="Default tabs" variant="default">
+        <Tabs.Item active title="Månedlig oversikt">
+          
+          <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSelectTotalEntry} />
+        </Tabs.Item>
+        <Tabs.Item title="Total oversikt">
+          <MonthlyContainer
+            monthName={months[monthIndex]}
+            monthIndex={monthIndex}
+            onNextMonth={handleNextMonth}
+            onPreviousMonth={handlePreviousMonth}
+            leaderboardEntries={monthlyLeaderboard}
+            monthlyData={monthlyData}
+            loggedInUserId={idOfLoggedInUser}
+            onSelectEntry={handleSelectMonthlyEntry}
+            onUpdateQuantity={handleUpdateQuantity}
+            activity={monthlyActivity[monthIndex]}
+          />
+        </Tabs.Item>
+      </Tabs>
+      </Flowbite>
+      {/* <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSelectTotalEntry} />
       <MonthlyContainer
         monthName={months[monthIndex]}
         monthIndex={monthIndex}
@@ -85,10 +110,11 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
         onPreviousMonth={handlePreviousMonth}
         leaderboardEntries={monthlyLeaderboard}
         monthlyData={monthlyData}
+        loggedInUserId={idOfLoggedInUser}
         onSelectEntry={handleSelectMonthlyEntry}
         onUpdateQuantity={handleUpdateQuantity}
         activity={monthlyActivity[monthIndex]}
-      />
+      /> */}
     </div>
   );
 }

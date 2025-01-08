@@ -9,6 +9,7 @@
     "axios": "^1.7.9",
     "axios-cache-interceptor": "^1.6.2",
     "cra-template-typescript": "1.2.0",
+    "flowbite-react": "^0.10.2",
     "rc-input-number": "^9.4.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.7",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/react-dom": "^19.0.2",
-    "env-cmd": "^10.1.0"
+    "env-cmd": "^10.1.0",
+    "tailwindcss": "^3.4.17"
   }
 }
