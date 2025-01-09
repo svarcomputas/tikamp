@@ -1,17 +1,28 @@
 /* Calendar.css */
 .calendar-container {
+  padding-top: 15px;
+  margin:auto;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0px;
     max-width: 100%;
     overflow-x: auto;
   }
-  
+  .calendar-days{
+    
+    border: 1px solid #ccc;
+  }
   .calendar-row {
     display: flex;
     flex-direction: row;
     flex: 0 0 auto;
   }
+  
+  .calendar-title {
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
   
   .header-row {
     font-weight: bold;

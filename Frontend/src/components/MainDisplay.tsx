@@ -1,94 +1,62 @@
 // MainDisplay.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import TotalLeaderboard from './TotalLeaderboard';
 import MonthlyContainer from './MonthlyContainer';
-import { ActivityDto, LeaderboardEntryDto, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
+import { LeaderboardEntryDto } from '../api';
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
 import { useMsal } from '@azure/msal-react';
+import { Flowbite, Tabs, TabsRef } from "flowbite-react";
+
 
 interface MainDisplayProps {
   api: TikampApi;
 }
 
 const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
-  const months = [
-    'Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni',
-    'Juli', 'August', 'September', 'Oktober', 'November', 'Desember'
-  ];
-
+  const tabsRef = useRef<TabsRef>(null);
+  const [, setActiveTab] = useState(0);
+  const tabsRefMonthly = useRef<TabsRef>(null);
+  const [, setActiveTabMonth] = useState(0);
   const { accounts } = useMsal();
   const idOfLoggedInUser = accounts.length > 0 ? accounts[0].localAccountId : '';
-  const [idOfDisplayedUser, setIdOfDisplayedUser] = useState<string | null>(idOfLoggedInUser);
-  const [monthIndex, setMonthIndex] = useState(0);
+  const [entryToDisplay, setEntryToDisplay] = useState<LeaderboardEntryDto | null>(null);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
-  const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<MonthlyLeaderboardEntryDto[]>([]);
-  const [monthlyData, setMonthlyData] = useState<MonthlyUserActivityDto | null>(null);
-  const [monthlyActivity, setMonthlyActivity] = useState<ActivityDto[]>([]);
   api.setLoggedInUser(idOfLoggedInUser ?? '');
 
-  const handleNextMonth = () => {
-    setMonthIndex((prev) => (prev < 11 ? prev + 1 : prev));
-  };
-
-  const handlePreviousMonth = () => {
-    setMonthIndex((prev) => (prev > 0 ? prev - 1 : prev));
-  };
-
-  const updateMonthlyActivityForUser = async (userId: string) => {
-    await api.getMonthlyActivity(monthIndex+1, userId)
-      .then((data) => setMonthlyData(data))
-      .catch((error) => console.error(error));
-  }
-
-  const handleSelectTotalEntry = async (entry: LeaderboardEntryDto) => {
-    setIdOfDisplayedUser(entry.userId ?? idOfLoggedInUser)
-    await updateMonthlyActivityForUser(entry.userId ?? '')
-  };
-
-  const handleSelectMonthlyEntry = async (entry: LeaderboardEntryDto) => {
-    setIdOfDisplayedUser(entry.userId ?? idOfLoggedInUser)
-    await updateMonthlyActivityForUser(entry.userId ?? '')
-  };
-
-  const handleUpdateQuantity = async (day: number, quantity: number) => {
-    await api.putUserActivity(day, quantity, monthIndex +1)
+  const handleSetIdOfDisplayedUser = async (entry: LeaderboardEntryDto | null) => {
+    tabsRef.current?.setActiveTab(0);
+    tabsRefMonthly.current?.setActiveTab(0);
+    setActiveTabMonth(0)
+    setEntryToDisplay(entry)
   };
 
   useEffect(() => {
     api.getTotalLeaderboard()
       .then((data) => setTotalLeaderboard(data))
       .catch((error) => console.error(error));
-
-    api.getActivities()
-      .then((data) => setMonthlyActivity(data))
-      .catch((error) => console.error(error));
   }, [api]);
-
-  useEffect(() => {    
-    api.getMonthlyActivity(monthIndex+1, idOfDisplayedUser ??'')
-      .then((data) => setMonthlyData(data))
-      .catch((error) => console.error(error));
-
-    api.getMonthlyLeaderboard(monthIndex + 1)
-      .then((data) => setMonthlyLeaderboard(data))
-      .catch((error) => console.error(error));
-  }, [monthIndex, api, idOfDisplayedUser]);
 
   return (
     <div className="main-container">
-      <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSelectTotalEntry} />
-      <MonthlyContainer
-        monthName={months[monthIndex]}
-        monthIndex={monthIndex}
-        onNextMonth={handleNextMonth}
-        onPreviousMonth={handlePreviousMonth}
-        leaderboardEntries={monthlyLeaderboard}
-        monthlyData={monthlyData}
-        onSelectEntry={handleSelectMonthlyEntry}
-        onUpdateQuantity={handleUpdateQuantity}
-        activity={monthlyActivity[monthIndex]}
-      />
+      
+    <Flowbite>
+       <Tabs className="tabs-button" aria-label="Default tabs" variant="default" ref={tabsRef} onActiveTabChange={(tab) => setActiveTab(tab)}>
+        <Tabs.Item active title="Månedlig oversikt">
+          <MonthlyContainer
+            loggedInUserId={idOfLoggedInUser}
+            entryToDisplayFor={entryToDisplay}
+            api={api}
+            onSelectEntry={handleSetIdOfDisplayedUser}
+            setActiveTab={setActiveTabMonth}
+            tabsRefMonthly={tabsRefMonthly}
+          />
+        </Tabs.Item>
+        <Tabs.Item title="Total oversikt">
+          <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSetIdOfDisplayedUser} />
+        </Tabs.Item>
+      </Tabs>
+      </Flowbite>
     </div>
   );
 }

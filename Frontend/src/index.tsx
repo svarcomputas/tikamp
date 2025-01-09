@@ -5,6 +5,7 @@ import { msalConfig } from './utils/auth/AuthConfig';
 import Axios  from 'axios';
 import {setupCache }   from 'axios-cache-interceptor';
 import TikampApi from './utils/TikampApi';
+import './index.css'
 
 async function main() {
     const msalInstance = new PublicClientApplication(msalConfig);

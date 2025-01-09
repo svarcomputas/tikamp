@@ -7,6 +7,7 @@ import '../../styles/Calendar/Calendar.css';
 interface CalendarProps {
   year: number;
   monthIndex: number;
+  monthName: string;
   daysData: UserActivityDto[];
   isSelf: boolean;
   activity: ActivityDto | undefined;
@@ -16,6 +17,7 @@ interface CalendarProps {
 const Calendar: React.FC<CalendarProps> = ({
   year,
   monthIndex,
+  monthName,
   daysData,
   isSelf,
   activity,
@@ -43,30 +45,33 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className="calendar-container">
+      <span className="calendar-title">{monthName} 2025</span>
       <div className="calendar-row header-row">
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-        <div>Sun</div>
+        <div>Man</div>
+        <div>Tir</div>
+        <div>Ons</div>
+        <div>Tor</div>
+        <div>Fre</div>
+        <div>Lør</div>
+        <div>Søn</div>
       </div>
-      {weeks.map((week, i) => (
-        <div className="calendar-row" key={i}>
-          {week.map((dayItem, idx) => (
-            <DayBox
-              key={idx}
-              dayNumber={dayItem.dayNumber}
-              quantity={dayItem.quantity}
-              isEditable={isSelf && dayItem.dayNumber !== null}
-              activity={activity}
-              onUpdate={(newVal) => onDayUpdate(dayItem.dayNumber!, newVal)}
-              daysInMonth={totalDays}
-            />
-          ))}
-        </div>
-      ))}
+      <div className="calendar-days">
+        {weeks.map((week, i) => (
+          <div className="calendar-row" key={i}>
+            {week.map((dayItem, idx) => (
+              <DayBox
+                key={idx}
+                dayNumber={dayItem.dayNumber}
+                quantity={dayItem.quantity}
+                isEditable={isSelf && dayItem.dayNumber !== null}
+                activity={activity}
+                onUpdate={(newVal) => onDayUpdate(dayItem.dayNumber!, newVal)}
+                daysInMonth={totalDays}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

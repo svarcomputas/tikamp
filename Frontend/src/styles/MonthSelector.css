@@ -1,0 +1,22 @@
+.month-selector-title{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.month-selector-display{
+    padding: 10px;
+}
+
+.month-selector-info{
+    text-align: left;
+}
+
+.month-selector{
+    margin: auto;
+}
+
+.month-selector button{
+    vertical-align: middle;
+    display: inline-block;
+    margin: 60px 10px;
+}

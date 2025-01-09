@@ -82,7 +82,7 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
               <tr
                 key={entry.userId || rowNum}
                 className={rowClass}
-                onClick={() => idx !== 0 && onSelectEntry(entry)} // Top row not clickable
+                onClick={() => onSelectEntry(entry)} // Top row not clickable
               >
                 <td>{rowNum}</td>
                 <td>
