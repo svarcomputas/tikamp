@@ -1,9 +1,23 @@
 /* MonthlyOverview.css */
 .monthly-overview {
-    border: 1px solid #ccc;
-    padding: 1rem;
+    margin:auto;
     min-width: 250px;
+    display: flex;
+    flex-direction: column;
     flex: 1;
     display: flex;
-    margin-right: 1rem;
   }
+
+.monthly-overview-other-user{
+  font-weight: bold;
+}
+
+.monthly-overview-info{
+  display: flex;
+  margin: 10px;
+  margin:auto;
+}
+
+.monthly-overview-other-user{
+  padding-right: 10px;
+}

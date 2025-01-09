@@ -1,8 +1,9 @@
 /* MainDisplay.css */
 .main-container {
-    padding: 1rem;
-    align-items: center;
     max-width: 1600px;
     margin: auto;
   }
-  
+.tabs-button div.tabs-button {
+  display: flex;
+  justify-content: center; 
+  }

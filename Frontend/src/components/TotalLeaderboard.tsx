@@ -5,13 +5,14 @@ import { Table } from "flowbite-react";
 
 interface TotalLeaderboardProps {
   entries: LeaderboardEntryDto[];
-  onSelectEntry: (entry: LeaderboardEntryDto) => void;
+  onSelectEntry: (entry: LeaderboardEntryDto | null) => void;
 }
 
 const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({ entries, onSelectEntry }) => {
   return (
     <div className="total-leaderboard-container">
-      <h2>Resultattavle 2025</h2>
+      
+      <span className="total-leaderboard-title">Resultattavle 2025</span><br/><br/>
       <Table striped>
         <Table.Head>
           <Table.HeadCell>#</Table.HeadCell>

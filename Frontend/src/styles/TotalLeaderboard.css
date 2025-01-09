@@ -18,4 +18,8 @@
     background-color: #eaeaea;
     cursor: pointer;
   }
-  
+
+  .total-leaderboard-title{
+    font-size: 1.5rem;
+    font-weight: bold;
+}

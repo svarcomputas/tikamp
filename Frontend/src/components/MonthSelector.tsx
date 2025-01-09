@@ -18,7 +18,6 @@ const MonthSelector: React.FC<Props> = ({
   onPreviousMonth,
   activity
 }) => {
-    console.log(monthIndex)
   return (
     <div className="month-selector">
         <div className="flex gap-2">
@@ -37,12 +36,13 @@ const MonthSelector: React.FC<Props> = ({
                 </Table.Head>
                 <Table.Body className="divide-y">
                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                    <Table.Cell>{formatActivityValue(activity?.level2 ?? 0, activity?.unit ?? 0)}</Table.Cell>
+                    <Table.Cell>{formatActivityValue(activity?.level1 ?? 0, activity?.unit ?? 0)}</Table.Cell>
                     <Table.Cell>{formatActivityValue(activity?.level2 ?? 0, activity?.unit ?? 0)}</Table.Cell>
                     <Table.Cell>{formatActivityValue(activity?.level3 ?? 0, activity?.unit ?? 0)}</Table.Cell>
                     </Table.Row>
                 </Table.Body>
                 </Table>
+                <span className="month-selector-info">{activity?.description}</span><br/>
             </div>
             <Button pill
                 onClick={onNextMonth} 
