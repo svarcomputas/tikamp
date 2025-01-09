@@ -15,9 +15,9 @@ interface MainDisplayProps {
 
 const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   const tabsRef = useRef<TabsRef>(null);
-  const [activeTab, setActiveTab] = useState(0);
+  const [, setActiveTab] = useState(0);
   const tabsRefMonthly = useRef<TabsRef>(null);
-  const [activeTabMonth, setActiveTabMonth] = useState(0);
+  const [, setActiveTabMonth] = useState(0);
   const { accounts } = useMsal();
   const idOfLoggedInUser = accounts.length > 0 ? accounts[0].localAccountId : '';
   const [entryToDisplay, setEntryToDisplay] = useState<LeaderboardEntryDto | null>(null);
