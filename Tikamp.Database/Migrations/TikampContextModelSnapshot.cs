@@ -66,13 +66,18 @@ namespace Tikamp.Database.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset>("UpdatedAtDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserEmail")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
