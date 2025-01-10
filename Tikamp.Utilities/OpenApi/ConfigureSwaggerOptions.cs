@@ -41,13 +41,13 @@ public class ConfigureSwaggerOptions(
 
     private static Uri AuthorizationUrl(MicrosoftIdentityOptions adOptions)
     {
-        return new Uri(
-            $"{adOptions.Instance}/{adOptions.TenantId}/oauth2/v2.0/authorize");
+        return new Uri("https://login.microsoftonline.com/945fa749-c3d6-4e3d-a28a-283934e3cabd/oauth2/v2.0/authorize");
+        //$"{adOptions.Instance}/{adOptions.TenantId}/oauth2/v2.0/authorize");
     }
 
     private static Uri TokenUrl(MicrosoftIdentityOptions adOptions)
     {
-        return new Uri(
-            $"{adOptions.Instance}/{adOptions.TenantId}/oauth2/v2.0/token");
+        return new Uri("https://login.microsoftonline.com/945fa749-c3d6-4e3d-a28a-283934e3cabd/oauth2/v2.0/token");
+        //$"{adOptions.Instance}/{adOptions.TenantId}/oauth2/v2.0/token");
     }
 }

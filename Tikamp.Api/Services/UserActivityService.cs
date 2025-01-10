@@ -5,6 +5,7 @@ using Tikamp.Api.Mapping;
 using Tikamp.Database.Models;
 using Tikamp.Database.Repositories;
 using Tikamp.Dto;
+using Tikamp.Utilities.Authentication;
 
 namespace Tikamp.Api.Services;
 
@@ -16,13 +17,14 @@ public class UserActivityService(TikampRepository repository, UserService userSe
         var userActivity = await repository.UserActivities
                                            .Include(ua => ua.Activity)
                                            .Include(ua => ua.User)
-                                           .Where(ua => ua.UserId == userIdToFetchFor && ua.Month == month).ToListAsync(cancellationToken);
+                                           .Where(ua => (ua.UserId == userIdToFetchFor || (objectId == null && ua.User!.UserEmail == claims.GetEmail())) && ua.Month == month).ToListAsync(cancellationToken);
+
         return userActivity.Any()
                    ? new MonthlyUserActivityDto
                    {
                        Activity = userActivity.First().Activity!.ToDto(),
                        UsersActivities = userActivity.ToDto(),
-                       UserName = userActivity.First().User!.Name,
+                       UserName = userActivity.First().User!.Name ?? "no-name",
                        IsSelf = objectId is null || objectId == claims.GetObjectId()
                    }
                    : null;
