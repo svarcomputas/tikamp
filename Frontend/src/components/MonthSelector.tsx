@@ -1,8 +1,7 @@
-import { Button, Table } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import { ActivityDto } from "../api";
-import '../styles/MonthSelector.css';
-import { formatActivityValue } from "../utils/conversions";
+import '../styles/MonthSelector.css'; 
 interface Props {
   monthName: string;
   monthIndex: number;

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AuthenticatedTemplate, useMsal } from '@azure/msal-react';
-import { Navbar, Container } from 'react-bootstrap';
+import { Navbar } from 'react-bootstrap';
 import logo from '../assets/images/tikamp_logo.png';
 import '../styles/NavigationBar.css';
 
