@@ -1,9 +1,12 @@
-// MonthlyOverview.tsx
 import React, { useEffect, useState } from 'react';
 import Calendar from './Calendar/Calendar';
 import { MonthlyUserActivityDto, UserActivityDto, ActivityDto, LeaderboardEntryDto } from '../api';
 import '../styles/MonthlyOverview.css';
 import { Button } from 'flowbite-react';
+import MedalGold from '../assets/svgs/medal-gold.svg';
+import MedalSilver from '../assets/svgs/medal-silver.svg';
+import MedalBronze from '../assets/svgs/medal-bronze.svg';
+import LevelInfoPopup from './LevelInfoPopup';
 
 const daysInMonth = (year: number, month: number) => {
   return new Date(year, month + 1, 0).getDate();
@@ -30,6 +33,9 @@ const MonthlyOverview: React.FC<Props> = ({
     resetSelectedEntry,
     activity }) => {
   const [localActivities, setLocalActivities] = useState<UserActivityDto[]>([]);
+  const [total, setTotal] = useState(0);
+  const [showInfo, setShowInfo] = useState(false);
+
   useEffect(() => {
     const totalDays = daysInMonth(2025, monthIndex);
     const existingActivities = data?.usersActivities || [];
@@ -41,6 +47,18 @@ const MonthlyOverview: React.FC<Props> = ({
     setLocalActivities(fullList);
   }, [data, monthIndex]);
 
+  useEffect(() => {
+    const calculatedTotal = localActivities.reduce((sum, activity) => sum + (activity.quantity || 0), 0);
+    setTotal(calculatedTotal);
+  }, [localActivities]);
+
+  const getMedal = () => {
+    if (activity?.level3 && total >= activity.level3) return MedalGold;
+    if (activity?.level2 && total >= activity.level2) return MedalSilver;
+    if (activity?.level1 && total >= activity.level1) return MedalBronze;
+    return null;
+  };
+
   const handleDayUpdate = async (day: number, newQuantity: number) => {
     await onUpdateQuantity(day, newQuantity);
     setLocalActivities((prev) => 
@@ -50,14 +68,25 @@ const MonthlyOverview: React.FC<Props> = ({
 
   return (
     <div className="monthly-overview">
-      {displayingForEntry && displayingForEntry.userId !== loggedInUserId ? 
       <div className="monthly-overview-info">
-        <span>Viser aktivitet for <span className="monthly-overview-other-user">{displayingForEntry.userName} </span></span>
-        <Button color="cyan" pill onClick={resetSelectedEntry} className="select-me-button" size="xs">
-          Vis meg
-        </Button>
-       </div>
-       : <span>Rediger din aktivitet</span>}
+        {displayingForEntry && displayingForEntry.userId !== loggedInUserId ? (
+          <>
+            <span>Viser aktivitet for <span className="monthly-overview-other-user">{displayingForEntry.userName}</span></span>
+            <Button color="cyan" pill onClick={resetSelectedEntry} className="select-me-button" size="xs">
+              Vis meg
+            </Button>
+          </>
+        ) : (
+          <span>Rediger din aktivitet</span>
+        )}
+        <div className="month-total">
+          Totalt: {total}
+          {getMedal() && <img src={getMedal()} alt="Medal" className="medal" />}
+          <Button size="xs" onClick={() => setShowInfo(true)} className="info-button">
+            Info
+          </Button>
+        </div>
+      </div>
       <Calendar
         year={2025}
         monthIndex={monthIndex}
@@ -67,6 +96,7 @@ const MonthlyOverview: React.FC<Props> = ({
         activity={activity}
         onDayUpdate={handleDayUpdate}
       />
+      {showInfo && <LevelInfoPopup onClose={() => setShowInfo(false)} activity={activity} />}
     </div>
   );
 };

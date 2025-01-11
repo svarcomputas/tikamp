@@ -32,7 +32,6 @@ export const PageLayout = (props: any) => {
         <div className="app">
             <NavigationBar />
             <br />
-            <br />
             {props.children}
             <br />
         </div>

@@ -45,7 +45,7 @@ const Calendar: React.FC<CalendarProps> = ({
 
   return (
     <div className="calendar-container">
-      <span className="calendar-title">{monthName} 2025</span>
+      {/* <span className="calendar-title">{monthName} 2025</span> */}
       <div className="calendar-row header-row">
         <div>Man</div>
         <div>Tir</div>

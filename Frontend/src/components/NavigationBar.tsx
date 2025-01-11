@@ -21,7 +21,6 @@ export const NavigationBar = () => {
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="custom-navbar">
-      <Container fluid className="navbar-container">
         <div className="logo-container">
           <span role="img" aria-label="emoji1" className="emoji size1">🏃</span>
           <span role="img" aria-label="emoji2" className="emoji size2">💪</span>
@@ -35,23 +34,21 @@ export const NavigationBar = () => {
           <span role="img" aria-label="emoji2" className="emoji size2">💪</span>
           <span role="img" aria-label="emoji1" className="emoji size1">🏃</span>
         </div>
-
-        {windowWidth < 600 ? (
-          <AuthenticatedTemplate>
-            <div className="top-right-text">
-                Logget inn som: {userName} {isExternal ? '(Ekstern)' : ''}
-            </div>
-          </AuthenticatedTemplate>
-        ) : (
-          <AuthenticatedTemplate>
-            <div className="top-right-text">
-              Logget inn som:
-              <br />
-              {userName} {isExternal ? '(Ekstern)' : ''}
-            </div>
-          </AuthenticatedTemplate>
-        )}
-      </Container>
+      {windowWidth < 800 ? (
+        <AuthenticatedTemplate>
+          <div className="top-text-under-logo">
+              Logget inn som: <span className='username-navbar'>{userName} {isExternal ? '(Ekstern)' : ''}</span>
+          </div>
+        </AuthenticatedTemplate>
+      ) : (
+        <AuthenticatedTemplate>
+          <div className="top-right-text">
+            Logget inn som:
+            <br />
+            <span className='username-navbar'>{userName} {isExternal ? '(Ekstern)' : ''}</span>
+          </div>
+        </AuthenticatedTemplate>
+      )}
     </Navbar>
   );
 };
