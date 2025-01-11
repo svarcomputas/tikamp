@@ -3,5 +3,7 @@
 @tailwind utilities;
 
 body{
-    background-color: ;
+    text-align: center;
+    background-color: azure;
+    margin: 5px;
 }

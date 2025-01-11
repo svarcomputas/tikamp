@@ -1,0 +1,44 @@
+.monthly-tab {
+  display: flex;
+  flex-direction: column;
+  width: 568px;
+  padding: 4px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.monthly-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.columns-wrapper {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.month-tabs-button div.month-tabs-button {
+  display: flex;
+  justify-content: center; 
+  }
+
+  @media (max-width: 750px) {
+    .monthly-tab {
+      width: 498px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .monthly-tab {
+      width: 428px;
+    }
+  }
+
+  @media (max-width: 475px) {
+    .monthly-tab {
+      width: 393px;
+    }
+  }

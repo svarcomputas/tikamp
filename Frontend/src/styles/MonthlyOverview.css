@@ -1,23 +1,48 @@
-/* MonthlyOverview.css */
 .monthly-overview {
-    margin:auto;
-    min-width: 250px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    display: flex;
-  }
-
-.monthly-overview-other-user{
-  font-weight: bold;
-}
-
-.monthly-overview-info{
+  margin: auto;
+  min-width: 250px;
   display: flex;
-  margin: 10px;
-  margin:auto;
+  flex-direction: column;
+  flex: 1;
 }
 
-.monthly-overview-other-user{
+.monthly-overview-other-user {
+  font-weight: bold;
   padding-right: 10px;
+}
+
+.monthly-overview-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.month-total {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.medal {
+  max-height: 30px;
+}
+
+.info-button {
+  margin-left: 10px;
+}
+
+.level-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.level-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.medal-info {
+  max-height: 30px;
 }

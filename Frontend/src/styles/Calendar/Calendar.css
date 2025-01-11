@@ -1,6 +1,6 @@
 /* Calendar.css */
 .calendar-container {
-  padding-top: 15px;
+  padding-top: 10px;
   margin:auto;
     display: flex;
     flex-direction: column;
@@ -35,4 +35,24 @@
     flex: 0 0 auto;
     text-align: center;
   }
+
+  @media (max-width: 750px) {
+    .header-row > div {
+      width: 70px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .header-row > div {
+      width: 60px;
+    }
+  }
+
+  
+  @media (max-width: 475px) {
+    .header-row > div {
+      width: 55px;
+    }
+  }
+  
   

@@ -1,8 +1,7 @@
-import { Button, Table } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 import { ActivityDto } from "../api";
-import '../styles/MonthSelector.css';
-import { formatActivityValue } from "../utils/conversions";
+import '../styles/MonthSelector.css'; 
 interface Props {
   monthName: string;
   monthIndex: number;
@@ -24,10 +23,13 @@ const MonthSelector: React.FC<Props> = ({
             <Button pill
                 onClick={onPreviousMonth} 
                 disabled={monthIndex === 0}>
-                <HiOutlineArrowLeft className="h-6 w-6" />
+                <HiOutlineArrowLeft className="h-4 w-4" />
             </Button>
             <div className="month-selector-display">
-                <span className="month-selector-title">{monthName} - {activity?.name}</span><br/>
+                <span className="month-selector-title">{monthName} - {activity?.name}</span>
+                
+                </div>
+                {/* <br/>
             <Table>
                 <Table.Head>
                     <Table.HeadCell>Nivå 1</Table.HeadCell>
@@ -43,11 +45,11 @@ const MonthSelector: React.FC<Props> = ({
                 </Table.Body>
                 </Table>
                 <span className="month-selector-info">{activity?.description}</span><br/>
-            </div>
+            </div> */}
             <Button pill
                 onClick={onNextMonth} 
                 disabled={monthIndex === 11}>
-                <HiOutlineArrowRight className="h-6 w-6" />
+                <HiOutlineArrowRight className="h-4 w-4" />
             </Button>
         </div>
     </div>

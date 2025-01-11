@@ -2,14 +2,7 @@
 .custom-navbar {
     width: 100%;
     position: relative;
-    min-height: 100px; /* or your preferred height */
-  }
-  
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* allow wrapping on smaller screens */
+    min-height: 100px; 
   }
   
   .logo-container {
@@ -22,7 +15,7 @@
   }
   
   .center-logo {
-    max-height: 100px; /* wide but not tall */
+    max-height: 100px;
     width: auto;
     border-radius: 10%;
   }
@@ -45,85 +38,87 @@
   }
   
   .top-right-text {
-    font-weight: bold;
     text-align: right;
     margin-left: auto;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  .top-text-under-logo {
+    text-align: center;
+    margin-left: 0;
+    margin-top: 5px;
+    font-size: 0.8rem;
+  }
+
+  .username-navbar {
+    font-weight: bold;
   }
   
-  @media (max-width: 961px) {
-    .center-logo {
-      max-height: 70px; }
-    .custom-navbar {
-        min-height: 70px;
-      }
-  
-    .size1 {
-      font-size: 1rem;
+@media (max-width: 961px) {
+  .center-logo {
+    max-height: 70px; }
+  .custom-navbar {
+      min-height: 70px;
     }
-    .size2 {
-      font-size: 1.3rem;
-    }
-    .size3 {
-      font-size: 1.6rem;
-    }
-    .size4 {
-      font-size: 1.9rem;
-    }
-    .top-right-text {
-      font-size: 0.9rem;
-    }
+
+  .size1 {
+    font-size: 1rem;
   }
-  
-  @media (max-width: 600px) {
-    .center-logo {
-      max-height: 45px; 
-    }
-    .custom-navbar {
-      min-height: 45px;
-    }
-    .navbar-container {
-      flex-direction: column;
-    }
-    .top-right-text {
-      text-align: center;
-      margin-left: 0;
-      margin-top: 5px;
-      font-size: 0.8rem;
-    }
-    .size1 {
-      font-size: 0.9rem;
-    }
-    .size2 {
-      font-size: 1.2rem;
-    }
-    .size3 {
-      font-size: 1.5rem;
-    }
-    .size4 {
-      font-size: 1.7rem;
-    }
-    @media (max-width: 430px) {
-      .center-logo {
-        max-height: 35px;
-      }
-      .custom-navbar {
-        min-height: 35px;
-      }
-      .size1 {
-        font-size: 0.8rem;
-      }
-      .size2 {
-        font-size: 1rem;
-      }
-      .size3 {
-        font-size: 1.2rem;
-      }
-      .size4 {
-        font-size: 1.4rem;
-      }
-      .top-right-text {
-        font-size: 0.7rem;
-      }
-    }
+  .size2 {
+    font-size: 1.3rem;
   }
+  .size3 {
+    font-size: 1.6rem;
+  }
+  .size4 {
+    font-size: 1.9rem;
+  }
+  .top-right-text {
+    font-size: 0.9rem;
+  }
+}
   
+@media (max-width: 600px) {
+  .center-logo {
+    max-height: 45px; 
+  }
+  .custom-navbar {
+    min-height: 45px;
+  }
+  .size1 {
+    font-size: 0.9rem;
+  }
+  .size2 {
+    font-size: 1.2rem;
+  }
+  .size3 {
+    font-size: 1.5rem;
+  }
+  .size4 {
+    font-size: 1.7rem;
+  }}
+@media (max-width: 430px) {
+  .center-logo {
+    max-height: 35px;
+  }
+  .custom-navbar {
+    min-height: 35px;
+  }
+  .size1 {
+    font-size: 0.8rem;
+  }
+  .size2 {
+    font-size: 1rem;
+  }
+  .size3 {
+    font-size: 1.2rem;
+  }
+  .size4 {
+    font-size: 1.4rem;
+  }
+  .top-text-under-logo {
+    font-size: 0.7rem;
+  }
+
+}
