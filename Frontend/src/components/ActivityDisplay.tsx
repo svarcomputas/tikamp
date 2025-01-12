@@ -5,7 +5,7 @@ import MedalSilver from "../assets/svgs/medal-silver.svg";
 import MedalBronze from "../assets/svgs/medal-bronze.svg";
 import SummerImage from "../assets/images/summer_vacation.png";
 import WinterImage from "../assets/images/winter_vacation.png";
-import { ActivityDto, ActivityUnit } from "../api";
+import { ActivityDto } from "../api";
 import '../styles/ActivityDisplay.css';
 import TikampApi from "../utils/TikampApi";
 import { formatActivityValue } from "../utils/conversions";
@@ -13,12 +13,6 @@ import { formatActivityValue } from "../utils/conversions";
 interface Props {
   api: TikampApi;
 }
-
-const unitMapping: Record<ActivityUnit, string> = {
-  0: "Antall",
-  1: "Minutter",
-  2: "Kilometer",
-};
 
 const monthNames = [
   "Januar",
