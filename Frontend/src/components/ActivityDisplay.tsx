@@ -38,7 +38,26 @@ const ActivityDisplay: React.FC<Props> = ({ api }) => {
         .catch((error) => console.error(error));
     }, [api]);
   return (
-    <div className="activity-year-view grid grid-cols-2 gap-4">
+    <div className="activities-view">
+    <div className="medal-info-display">
+      <div className="medal-info bronze">
+        <span>Bronsje: </span>
+        <img src={MedalBronze} alt="Bronze Medal" className="medal-icon" />
+        <span> (100 poeng)</span>
+      </div>
+      <div className="medal-info silver">
+        <span>Sølv: </span>
+        <img src={MedalSilver} alt="Silver Medal" className="medal-icon" />
+        <span> (200 poeng)</span>
+      </div>
+      <div className="medal-info gold">
+        <span>Gull: </span>
+        <img src={MedalGold} alt="Gold Medal" className="medal-icon" />
+        <span> (300 poeng)</span>
+      </div>
+    </div>
+    <br/>
+    <div className="activity-year-view">
       {monthNames.map((month, index) => {
         const activity = monthlyActivity.find(a => a.month === index +1 )
         if (!activity) {
@@ -52,7 +71,7 @@ const ActivityDisplay: React.FC<Props> = ({ api }) => {
         const { name, level1, level2, level3, description, type } = activity;
 
         return (
-          <Card key={month} className="activity-card">
+          <Card key={month} className="activity-card p-2">
             {type === 1 ? (
               <div className="special-activity">
                 <h3 className="text-lg font-bold">{month} - Sommerferie</h3>
@@ -64,25 +83,25 @@ const ActivityDisplay: React.FC<Props> = ({ api }) => {
                 <img src={WinterImage} alt="Vinterferie" className="vacation-image" />
               </div>
             ) : (
-              <div>
+              < div className="lord">
                 <h3 className="text-lg font-bold">{month} - {name}</h3>
-                <div className="levels flex items-center gap-4 mt-2">
+                <div className="medal-info-display-card">
                   {level1 && (
-                    <div className="level flex items-center gap-2">
+                    <div className="medal-info-card bronze ">
                       <img src={MedalBronze} alt="Bronze Medal" className="medal-icon" />
-                      <span>Nivå 1: {formatActivityValue(level1, activity?.unit ?? 0)}</span>
+                      <span>{formatActivityValue(level1, activity?.unit ?? 0)}</span>
                     </div>
                   )}
                   {level2 && (
-                    <div className="level flex items-center gap-2">
+                    <div className="medal-info-card silver">
                       <img src={MedalSilver} alt="Silver Medal" className="medal-icon" />
-                      <span>Nivå 2: {formatActivityValue(level2, activity?.unit ?? 0)}</span>
+                      <span>{formatActivityValue(level2, activity?.unit ?? 0)}</span>
                     </div>
                   )}
                   {level3 && (
-                    <div className="level flex items-center gap-2">
+                    <div className="medal-info-card gold">
                       <img src={MedalGold} alt="Gold Medal" className="medal-icon" />
-                      <span>Nivå 3: {formatActivityValue(level3, activity?.unit ?? 0)}</span>
+                      <span>{formatActivityValue(level3, activity?.unit ?? 0)}</span>
                     </div>
                   )}
                 </div>
@@ -92,6 +111,7 @@ const ActivityDisplay: React.FC<Props> = ({ api }) => {
           </Card>
         );
       })}
+    </div>
     </div>
   );
 };

@@ -19,9 +19,7 @@ export const PageLayout = (props: any) => {
     
         instance.acquireTokenSilent(request)
             .then((response: any) => {
-            // Store the access token in a cookie
             cookies.set("access_token", response.accessToken, { path: "/" });
-            console.log("Token set in cookie:", response.accessToken);
             })
             .catch((error: any) => {
             console.error("Silent token acquisition failed:", error);

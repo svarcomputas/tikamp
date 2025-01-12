@@ -62,6 +62,7 @@ const MonthlyOverview: React.FC<Props> = ({
   };
 
   const handleDayUpdate = async (day: number, newQuantity: number) => {
+    console.log("handle day")
     await onUpdateQuantity(day, newQuantity);
     setLocalActivities((prev) => 
       prev.map((p) => (p.day === day ? { ...p, quantity: newQuantity } : p))

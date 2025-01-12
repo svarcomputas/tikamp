@@ -25,6 +25,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   const [, setActiveTab] = useState(0);
   const { accounts } = useMsal();
   const idOfLoggedInUser = accounts.length > 0 ? accounts[0].localAccountId : '';
+  const [fetchMonthlyLeaderbaord, setFetchMonthlyLeaderbaord] = useState<Boolean>(true);
   const [entryToDisplay, setEntryToDisplay] = useState<LeaderboardEntryDto | null>(null);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
   api.setLoggedInUser(idOfLoggedInUser ?? '');
@@ -32,10 +33,12 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   
     const handleNextMonth = () => {
       setMonthIndex((prev) => (prev < 11 ? prev + 1 : prev));
+      setFetchMonthlyLeaderbaord(true)
     };
-  
+
     const handlePreviousMonth = () => {
       setMonthIndex((prev) => (prev > 0 ? prev - 1 : prev));
+      setFetchMonthlyLeaderbaord(true)
     };
   
   const resetSelectedEntry = () => {
@@ -43,10 +46,16 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   };
 
   const handleSetIdOfDisplayedUser = async (entry: LeaderboardEntryDto | null) => {
-    console.log("calling function")
     tabsRef.current?.setActiveTab(0);
     setActiveTab(0)
     setEntryToDisplay(entry)
+  };
+
+  const handleClickOnTab = async (tab: number) => {
+    setActiveTab(tab)
+    if(tab === 1){
+      resetSelectedEntry()
+    }
   };
 
   useEffect(() => {
@@ -59,13 +68,14 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
     <div className="main-container">
       
     <Flowbite>
-       <Tabs className="tabs-button" aria-label="Tabs with underline" variant="underline" ref={tabsRef} onActiveTabChange={(tab) => setActiveTab(tab)}>
-       <Tabs.Item active title="Aktivitets registrering">
+       <Tabs className="tabs-button" aria-label="Tabs with underline" variant="underline" ref={tabsRef} onActiveTabChange={(tab) => handleClickOnTab(tab)}>
+       <Tabs.Item active title="Aktivitets registrering" onClick={() => {setActiveTab(0);console.log("kok");resetSelectedEntry()}}>
           <ActivityRegistrationTab
             monthIndex={monthIndex}
             monthName={months[monthIndex]}
             onNextMonth={handleNextMonth}
             onPreviousMonth={handlePreviousMonth}
+            dataUpdated={() => setFetchMonthlyLeaderbaord(true)}
             loggedInUserId={idOfLoggedInUser}
             entryToDisplayFor={entryToDisplay}
             api={api}
@@ -78,6 +88,8 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
             monthName={months[monthIndex]}
             onNextMonth={handleNextMonth}
             onPreviousMonth={handlePreviousMonth}
+            leaderboardUpdated={() => setFetchMonthlyLeaderbaord(false)}
+            shouldFetchLeaderboard={fetchMonthlyLeaderbaord}
             loggedInUserId={idOfLoggedInUser}
             api={api}
             onSelectEntry={handleSetIdOfDisplayedUser}

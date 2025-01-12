@@ -16,8 +16,7 @@ class TikampApi {
 
   constructor(cache: AxiosCacheInstance) {
     this.cache = cache;
-    
-        this.cookies = new Cookies();
+    this.cookies = new Cookies();
     var config = new Configuration();
     config.basePath = process.env.REACT_APP_API_URL;
     config.baseOptions = {
@@ -29,18 +28,7 @@ class TikampApi {
   }
   
   private accessToken = () => {
-    console.log(this.cookies.get('access_token'))
     return this.cookies.get('access_token');
-  };
-
-
-  private configuration = () => {
-    const openapiConfig = new Configuration();
-    openapiConfig.basePath = process.env.REACT_APP_API_URL;
-    openapiConfig.baseOptions = {
-        headers: { Authorization: 'Bearer ' + this.accessToken() },
-    };
-    return openapiConfig;
   };
 
   public setLoggedInUser = (userId:string) => {
@@ -74,21 +62,20 @@ class TikampApi {
   
   public evictCache = async (month: number) => {
     let activityId = this.monthlyUserActivityRequestId[month];
-    let monthlyLedearboardId = this.monthlyUserActivityRequestId[month];
+    let monthlyLedearboardId = this.monthlyLeaderboardRequestId[month];
     this.cache.storage.remove(activityId);
     this.cache.storage.remove(this.leaderboardRequestId ?? '');
-    this.cache.storage.remove(monthlyLedearboardId);
+    //this.cache.storage.remove(monthlyLedearboardId);
   }
 
   public putUserActivity = async (day: number, quantity: number, month: number): Promise<any> => {
     const dayStr = String(day).padStart(2, '0');
     const monthStr = String(month).padStart(2, '0');
-    console.log(this.cache);
     await this.userActivityApi.apiUserActivityPut({
       date: `2025-${monthStr}-${dayStr}T00:00:00.000Z`,
       quantity,
     });
-    this.evictCache(month);
+    await this.evictCache(month);
   }
 }
 
