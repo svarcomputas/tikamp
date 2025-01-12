@@ -21,14 +21,27 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 160px;
 }
-
+.select-me-button{
+  margin-right: 50px;
+  max-height: 50px;
+  min-width: 70px;
+}
 .medal {
   max-height: 30px;
 }
 
-.info-button {
-  margin-left: 10px;
+
+.info-button{
+  margin-left: auto;
+}
+.info-button svg{
+  height: 20px;
+  width: 20px;
+}
+.info-button:hover path {
+  fill: red;
 }
 
 .level-info {

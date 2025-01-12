@@ -6,7 +6,9 @@ import { Button } from 'flowbite-react';
 import MedalGold from '../assets/svgs/medal-gold.svg';
 import MedalSilver from '../assets/svgs/medal-silver.svg';
 import MedalBronze from '../assets/svgs/medal-bronze.svg';
-import LevelInfoPopup from './LevelInfoPopup';
+import LevelInfoPopup from './Popup/LevelInfoPopup';
+import InfoButton from '../assets/svgs/info-button';
+import { formatActivityValue } from '../utils/conversions';
 
 const daysInMonth = (year: number, month: number) => {
   return new Date(year, month + 1, 0).getDate();
@@ -80,11 +82,11 @@ const MonthlyOverview: React.FC<Props> = ({
           <span>Rediger din aktivitet</span>
         )}
         <div className="month-total">
-          Totalt: {total}
+          Totalt: {formatActivityValue(total, activity?.unit ?? 0)}
           {getMedal() && <img src={getMedal()} alt="Medal" className="medal" />}
-          <Button size="xs" onClick={() => setShowInfo(true)} className="info-button">
-            Info
-          </Button>
+          <div onClick={() => setShowInfo(true)} className="info-button">
+            <InfoButton />
+          </div>
         </div>
       </div>
       <Calendar

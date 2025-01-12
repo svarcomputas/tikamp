@@ -8,7 +8,7 @@ export function formatActivityValue(value: number, unit: number): string {
     } else if (unit === 1) {
       return `${(value / 1000).toFixed(2)} km`;
     }
-    return `${value}`;
+    return `${value.toLocaleString('no-NO')}`;
   }
   
   export function parseActivityValue(displayValue: string, unit: number): number {
@@ -19,6 +19,6 @@ export function formatActivityValue(value: number, unit: number): string {
       const km = parseFloat(displayValue.replace(',', '.')) || 0;
       return Math.round(km * 1000);
     }
-    return parseInt(displayValue, 10) || 0;
+    return parseInt(displayValue.replace(/\s/g, ""), 10) || 0;
   }
   

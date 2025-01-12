@@ -2,12 +2,12 @@
 .monthly-leaderboard {
   min-width: 300px;
   flex: 1;
-  margin-right: 1rem;
 }
-
+.points-column{
+  min-width: 100px;
+}
 .monthly-leaderboard table {
   width: 100%;
-  border-collapse: collapse;
   margin-top: 1rem;
 }
 
@@ -17,51 +17,111 @@
   padding: 0.5rem;
 }
 
-/* Row styles */
-.gold-row {
-  background-color: #dbb40c;
-}
-.level-gold-row {
-  background-color: #b59410;
+.monthly-leaderboard table tr:hover {
+  background-color: #eaeaea;
+  cursor: pointer;
 }
 
-.silver-row {
-  background-color: #c0c0c0;
+.monthly-leaderboard table th {
+  font-size: 0.9rem;
+  padding: 0.5rem;
 }
-.level-silver-row {
-  background-color: #918e8c;
+.total-count{
+  text-align: left;
 }
-
-.bronze-row {
-  background-color: #bf7d10;
-}
-.level-bronze-row {
-  background-color:#aa720e; 
+.points-row{
+  display: inline-flex;
 }
 
-.user-row {
-  font-style: italic;
+.name-and-trophy{
+  display: flex;
+  align-items: flex-start;
+}
+.name-and-trophy p{
+  flex: 1;
+  margin: 0; 
+  word-wrap: break-word; 
+}
+.trophy{
+  margin-left: auto;
+}
+.trophy.first{
+  height: 50px;
+}
+.trophy.second{
+  max-height: 42px;
+}
+.trophy.third{
+  max-height: 34px;
+}
+.medal {
+  max-height: 30px;
+}
+.points-info-button{
+  margin-left: auto;
+}
+.points-info-button svg{
+  height: 20px;
+  width: 20px;
+}
+.points-header{
+  display: flex;
+  align-items: flex-start;
+}
+.points-info-button:hover path {
+  fill: red;
 }
 
-/* Level rows */
-.gold-row em,
-.silver-row em,
-.bronze-row em {
-  font-style: italic;
+@media (max-width: 750px) {
+  .trophy.first{
+    height: 45px;
+  }
+  .trophy.second{
+    max-height: 41px;
+  }
+  .trophy.third{
+    max-height: 36px;
+  }
+  .monthly-leaderboard table th {
+    font-size: 0.8rem;
+  }
+  .medal {
+    max-height: 27px;
+  }
+  .monthly-leaderboard table tr {
+    font-size: 0.9rem;
+  }
+  
 }
-
-.monthly-leaderboard table tr.gold-row:hover {
-  background-color: #d4af37;
-  cursor: default;
+ @media (max-width: 600px) {
+  .trophy.first{
+    height: 43px;
+  }
+  .trophy.second{
+    max-height: 40px;
+  }
+  .trophy.third{
+    max-height: 35px;
+  }
+  .monthly-leaderboard table th {
+    font-size: 0.8rem;
+  }
+  .medal {
+    height: 25px;
+  }
+  .monthly-leaderboard table tr {
+    font-size: 0.8rem;
+  }
 }
-
-.monthly-leaderboard table tr.silver-row:hover{
-  background-color: #b7bdc4;
-  cursor: default;
+@media (max-width: 475px) {
+  
+  .monthly-leaderboard table th {
+    font-size: 0.7rem;
+  }
+  .medal {
+    height: 22px;
+  }
+  .monthly-leaderboard table tr {
+    font-size: 0.75rem;
+  }
 }
-
-.monthly-leaderboard table tr.bronze-row:hover {
-  background-color: #b47c04;
-  cursor: default;
-}
-

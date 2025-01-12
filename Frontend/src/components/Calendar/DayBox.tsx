@@ -12,6 +12,7 @@ interface Props {
   activity: ActivityDto | undefined;
   onUpdate: (newValue: number) => Promise<any>; 
   daysInMonth: number;
+  isActive: boolean;
 }
 
 const DayBox: React.FC<Props> = ({ 
@@ -20,7 +21,8 @@ const DayBox: React.FC<Props> = ({
   quantity, 
   activity, 
   onUpdate,
-  daysInMonth
+  daysInMonth,
+  isActive
 }) => {
       const [localValue, setLocalValue] = useState(
         formatActivityValue(quantity, activity?.unit ?? 0)
@@ -36,15 +38,17 @@ const DayBox: React.FC<Props> = ({
       const level2 = activity?.level2 ?? 0;
       const level3 = activity?.level3 ?? 0;
       const rawQuantity = parseActivityValue(localValue, activity?.unit ?? 0);
-    
+      console.log(rawQuantity)
       let bgColor = 'white';
       if (dayNumber !== null) {
-        if (rawQuantity >= level3 / daysInMonth && level3 > 0) {
-          bgColor = 'gold';
+        if (rawQuantity >= (( 2 * level3) / daysInMonth) && level3 > 0) {
+          bgColor = '#28C181';
+        } else if (rawQuantity >= level3 / daysInMonth && level3 > 0) {
+          bgColor = '#3BD796';
         } else if (rawQuantity >= level2 / daysInMonth && level2 > 0) {
-          bgColor = 'silver';
+          bgColor = '#5CDEA7';
         } else if (rawQuantity >= level1 / daysInMonth && level1 > 0) {
-          bgColor = 'peru'; 
+          bgColor = '#7CE4B9'; 
         }
       }
     
@@ -60,10 +64,10 @@ const DayBox: React.FC<Props> = ({
       if (dayNumber === null) {
         return <div className="day-box blank-day" />;
       }
-    
+      
       return (
         <div className="day-box" style={{ backgroundColor: bgColor }}>
-          <div className="day-number">{dayNumber}</div>
+          <div className={`day-number ${isActive ? 'active' : ''}`}>{dayNumber}</div>
           {loading ? (
             <div className="spinner-container">
               <ClipLoader size={20} color="#000" />

@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MonthlyLeaderboardEntryDto, ActivityDto } from '../api';
 import '../styles/MonthlyLeaderboard.css';
+import MedalGold from '../assets/svgs/medal-gold.svg';
+import MedalSilver from '../assets/svgs/medal-silver.svg';
+import MedalBronze from '../assets/svgs/medal-bronze.svg';
+import Trophy1st from '../assets/svgs/trophy-1st.svg';
+import Trophy2nd from '../assets/svgs/trophy-2nd.svg';
+import Trophy3rd from '../assets/svgs/trophy-3rd.svg';
+import InfoButton from '../assets/svgs/info-button.tsx';
+import { Table } from 'flowbite-react';
+import PointsInfoPopup from './Popup/PointsInfoPopup.tsx';
+import { formatActivityValue } from '../utils/conversions.ts';
 
 interface Props {
   entries: MonthlyLeaderboardEntryDto[];
@@ -10,6 +20,9 @@ interface Props {
 }
 
 const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity, loggedInUserId }) => {
+
+  const [total, setTotal] = useState(0);
+  const [showInfo, setShowInfo] = useState(false);
   const getActivityUnitHeader = (unit: number) => {
     switch (unit) {
       case 0:
@@ -22,81 +35,73 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
         return 'Antall';
     }
   };
+  const getMedal = (total: number) => {
+    if (activity?.level3 && total >= activity.level3) return MedalGold;
+    if (activity?.level2 && total >= activity.level2) return MedalSilver;
+    if (activity?.level1 && total >= activity.level1) return MedalBronze;
+    return null;
+  };
 
-
-  // Merge level rows with entries and sort them based on exerciseQuantity
-  const mergedEntries = [
-    ...(activity?.level3 ? [{ isLevel: true, userName: 'Nivå 3', exerciseQuantity: activity.level3 }] : []),
-    ...(activity?.level2 ? [{ isLevel: true, userName: 'Nivå 2', exerciseQuantity: activity.level2 }] : []),
-    ...(activity?.level1 ? [{ isLevel: true, userName: 'Nivå 1', exerciseQuantity: activity.level1 }] : []),
-    ...entries.map(entry => ({ ...entry, isLevel: false })),
-  ].sort((a, b) => (b.exerciseQuantity || 0) - (a.exerciseQuantity || 0));
-
+  useEffect(() => {
+    const calculatedTotal = entries.reduce((sum, activity) => sum + (activity.exerciseQuantity || 0), 0);
+    setTotal(calculatedTotal);
+  }, [entries]);
   return (
     <div className="monthly-leaderboard">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Navn</th>
-            <th>{getActivityUnitHeader(activity?.unit || 0)}</th>
-            <th>Poeng</th>
-            <th>Plasserings poeng</th>
-            <th>Nivå poeng</th>
-          </tr>
-        </thead>
-        <tbody>
-          {mergedEntries.map((entry, idx) => {
-            // Determine the class name for the row based on its condition
-            let rowClass = '';
-            let rowNum = idx+1;
-            if (entry.isLevel) {
-              // Level rows get specific class
-              if (entry.userName === 'Nivå 3') rowClass = 'gold-row';
-              if (entry.userName === 'Nivå 2') rowClass = 'silver-row';
-              if (entry.userName === 'Nivå 1') rowClass = 'bronze-row';
-            } else {
-              // User rows based on points
-              if (entry.points !== undefined) {
-                if ((entry.exerciseQuantity ?? 0)  >= (activity?.level3 || 0)) rowClass = 'gold-row';
-                else if ((entry.exerciseQuantity ?? 0) >= (activity?.level2 || 0)) {rowClass = 'silver-row'; rowNum-=1;}
-                else if ((entry.exerciseQuantity ?? 0) >= (activity?.level1 || 0)) {rowClass = 'bronze-row'; rowNum -=2;}
-                else {rowNum -=3;}
-              }
-              if (entry.userId === loggedInUserId) rowClass += ' user-row'; // Logged-in user row
-            }
-
-            // Render level rows
-            if (entry.isLevel) {
-              return (
-                <tr key={`level-${entry.userName}`} className={`level-${rowClass}`}>
-                  <td colSpan={6}>
-                    <em>{entry.userName}:</em> {entry.exerciseQuantity}
-                  </td>
-                </tr>
-              );
-            }
-
-            // Regular user row
+      <Table striped>
+        <Table.Head>
+          <Table.HeadCell>#</Table.HeadCell>
+          <Table.HeadCell>Navn</Table.HeadCell>
+          <Table.HeadCell>{getActivityUnitHeader(activity?.unit || 0)}</Table.HeadCell>
+          <Table.HeadCell className='points-column'>
+            <div className='points-header'>
+              <p>Poeng</p> 
+              <div className="points-info-button" onClick={() => setShowInfo(true)} >
+                <InfoButton />
+              </div>
+  {/* <img src={InfoButton} alt="info" className="points-info-button" /> */}
+            </div>
+            </Table.HeadCell>
+        </Table.Head>
+        <Table.Body className="divide-y">
+          {entries.map((entry, index) => {
             return (
-              <tr
-                key={entry.userId || rowNum}
-                className={rowClass}
-                onClick={() => onSelectEntry(entry)} // Top row not clickable
-              >
-                <td>{rowNum}</td>
-                <td>
-                  {entry.userName} {entry.userId === loggedInUserId && <em>(deg)</em>}
-                </td>
-                <td>{entry.exerciseQuantity}</td>
-                <td>{entry.points}</td>
-                <td>{entry.monthPlacementPoints}</td>
-                <td>{entry.monthPointsFromLevel}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={entry.userId || index} onClick={() => onSelectEntry(entry)}>
+              <Table.Cell>
+                { index +1}
+                {/* <div className='placement-and-trophy'>
+                  {index === 0 ? <img src={Trophy1st} alt="Trophy-1st" className="trophy first" /> : (
+                    index === 1 ? <img src={Trophy2nd} alt="Trophy-2nd" className="trophy second" /> : (
+                      index === 2 ? <img src={Trophy3rd} alt="Trophy-3rd" className="trophy third" /> : ( index +1)
+                    )
+                  )}
+                </div> */}
+              </Table.Cell>
+              <Table.Cell>
+                <div className='name-and-trophy'>
+                    <p >{(entry.userName ?? "")} <em>{ (entry.userId === loggedInUserId ? "(deg)" : "")}</em></p>
+                {index === 0 ? <img src={Trophy1st} alt="Trophy-1st" className="trophy first" /> : (
+                    index === 1 ? <img src={Trophy2nd} alt="Trophy-2nd" className="trophy second" /> : (
+                      index === 2 ? <img src={Trophy3rd} alt="Trophy-3rd" className="trophy third" /> : ("")
+                    )
+                  )}
+                </div>
+              </Table.Cell>
+              <Table.Cell>{formatActivityValue(entry?.exerciseQuantity ?? 0, activity?.unit ?? 0)}</Table.Cell>
+              <Table.Cell>
+                <div className='points-row'>
+                  <span>{entry.points + " ("}</span>
+                  {getMedal(entry.exerciseQuantity ?? 0) !== null ? <img src={getMedal(entry.exerciseQuantity ?? 0)} alt="Medal" className="medal" /> : "0"}
+                  <span>{" + " + entry.monthPlacementPoints + ")"}</span>
+                </div>
+              </Table.Cell>
+            </Table.Row>
+            )})}
+          </Table.Body>
+        </Table>
+        {showInfo && <PointsInfoPopup onClose={() => setShowInfo(false)} activity={activity} />}
+        <br/>
+        <p className='total-count'>Totalt: {formatActivityValue(total ?? 0, activity?.unit ?? 0)}</p>
     </div>
   );
 };
