@@ -62,7 +62,7 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
         var leaderboardList = groupedByUser.Select((input, index) =>
                                             {
                                                 var placementPoints = GetPlacementPoints(index, groupedByUser.Count);
-                                                var levelPoints = input.TotalCount > activity.Level3 ? 300 : input.TotalCount > activity.Level2 ? 200 : input.TotalCount > activity.Level1 ? 100 : 0;
+                                                var levelPoints = input.TotalCount >= activity.Level3 ? 300 : input.TotalCount >= activity.Level2 ? 200 : input.TotalCount >= activity.Level1 ? 100 : 0;
                                                 return new MonthlyLeaderboardEntryDto
                                                 {
                                                     UserId = input.UserId,

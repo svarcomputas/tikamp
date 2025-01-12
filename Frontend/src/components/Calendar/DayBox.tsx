@@ -38,7 +38,6 @@ const DayBox: React.FC<Props> = ({
       const level2 = activity?.level2 ?? 0;
       const level3 = activity?.level3 ?? 0;
       const rawQuantity = parseActivityValue(localValue, activity?.unit ?? 0);
-      console.log(rawQuantity)
       let bgColor = 'white';
       if (dayNumber !== null) {
         if (rawQuantity >= (( 2 * level3) / daysInMonth) && level3 > 0) {

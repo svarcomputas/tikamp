@@ -59,7 +59,6 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
               <div className="points-info-button" onClick={() => setShowInfo(true)} >
                 <InfoButton />
               </div>
-  {/* <img src={InfoButton} alt="info" className="points-info-button" /> */}
             </div>
             </Table.HeadCell>
         </Table.Head>

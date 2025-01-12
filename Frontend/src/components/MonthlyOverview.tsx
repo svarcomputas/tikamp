@@ -73,13 +73,13 @@ const MonthlyOverview: React.FC<Props> = ({
       <div className="monthly-overview-info">
         {displayingForEntry && displayingForEntry.userId !== loggedInUserId ? (
           <>
-            <span>Viser aktivitet for <span className="monthly-overview-other-user">{displayingForEntry.userName}</span></span>
+            <span>Viser registrering for <span className="monthly-overview-other-user">{displayingForEntry.userName}</span></span>
             <Button color="cyan" pill onClick={resetSelectedEntry} className="select-me-button" size="xs">
               Vis meg
             </Button>
           </>
         ) : (
-          <span>Rediger din aktivitet</span>
+          <span>Registrer din aktivitet</span>
         )}
         <div className="month-total">
           Totalt: {formatActivityValue(total, activity?.unit ?? 0)}
