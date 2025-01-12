@@ -10,6 +10,7 @@ public class PutActivityDto
     public required int? Level3 { get; init; }
     public required string? Description { get; init; }
     public required ActivityUnit? Unit { get; init; }
+    public required ActivityType Type { get; init; }
 }
 
 public class PutActivityDtoValidator : AbstractValidator<PutActivityDto>

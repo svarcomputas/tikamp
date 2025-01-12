@@ -8,6 +8,7 @@ import { useMsal } from '@azure/msal-react';
 import { Flowbite, Tabs, TabsRef } from "flowbite-react";
 import MonthlyLeaderboardTab from './MonthlyLeaderboardTab';
 import ActivityRegistrationTab from './ActivityRegistrationTab';
+import ActivityDisplay from './ActivityDisplay';
 
 
 interface MainDisplayProps {
@@ -86,7 +87,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
           <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSetIdOfDisplayedUser} />
         </Tabs.Item>
         <Tabs.Item title="Aktiviteter">
-          <p>Her kommer aktiviteter</p>
+          <ActivityDisplay api={api}/>
         </Tabs.Item>
       </Tabs>
       </Flowbite>

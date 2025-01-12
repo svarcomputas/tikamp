@@ -17,4 +17,5 @@ public class Activity : BaseEntity
     public required int? Level3 { get; set; }
     public required string? Description { get; set; }
     public required ActivityUnit? Unit { get; set; }
+    public required ActivityType Type { get; set; }
 }

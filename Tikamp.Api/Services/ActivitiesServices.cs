@@ -44,5 +44,6 @@ public class ActivitiesServices(TikampRepository repository)
         existingActivity.Level3 = updatedActivity.Level3;
         existingActivity.Description = updatedActivity.Description;
         existingActivity.Unit = updatedActivity.Unit;
+        existingActivity.Type = updatedActivity.Type;
     }
 }

@@ -1,0 +1,21 @@
+.activity-year-view {
+    margin: auto;
+    max-width: 800px;
+  }
+  
+  .activity-card {
+    min-height: 200px;
+  }
+  .vacation-image{
+    max-height: 150px;
+    margin: auto;
+  }
+  
+  .medal-icon {
+    height: 20px;
+    width: 20px;
+  }
+  
+  .special-activity {
+    text-align: center;
+  }
