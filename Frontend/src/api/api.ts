@@ -71,7 +71,28 @@ export interface ActivityDto {
      * @memberof ActivityDto
      */
     'unit'?: ActivityUnit;
+    /**
+     * 
+     * @type {ActivityType}
+     * @memberof ActivityDto
+     */
+    'type'?: ActivityType;
 }
+
+
+/**
+ * 
+ * @export
+ * @enum {number}
+ */
+
+export const ActivityType = {
+    NUMBER_0: 0,
+    NUMBER_1: 1,
+    NUMBER_2: 2
+} as const;
+
+export type ActivityType = typeof ActivityType[keyof typeof ActivityType];
 
 
 /**
@@ -242,6 +263,12 @@ export interface PutActivityDto {
      * @memberof PutActivityDto
      */
     'unit'?: ActivityUnit;
+    /**
+     * 
+     * @type {ActivityType}
+     * @memberof PutActivityDto
+     */
+    'type'?: ActivityType;
 }
 
 

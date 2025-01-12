@@ -20,7 +20,8 @@ public static class ActivityMapping
             Level2 = activity.Level2,
             Level3 = activity.Level3,
             Description = activity.Description,
-            Unit = activity.Unit
+            Unit = activity.Unit,
+            Type = activity.Type
         };
     }
 
@@ -34,7 +35,8 @@ public static class ActivityMapping
             Level2 = putActivityDto.Level2,
             Level3 = putActivityDto.Level3,
             Description = putActivityDto.Description,
-            Unit = putActivityDto.Unit
+            Unit = putActivityDto.Unit,
+            Type = putActivityDto.Type
         };
     }
 }
