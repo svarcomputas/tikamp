@@ -24,7 +24,6 @@ const DayBox: React.FC<Props> = ({
   daysInMonth,
   isActive
 }) => {
-  if(dayNumber === 1)console.log(quantity)
       const [localValue, setLocalValue] = useState(
         formatActivityValue(quantity, activity?.unit ?? 0)
       );
@@ -53,13 +52,6 @@ const DayBox: React.FC<Props> = ({
       }
     
       const handleBlur = async () => {
-        console.log(rawQuantity)
-        console.log(initalValue)
-        console.log("blur func")
-        console.log(!isEditable)
-        console.log(dayNumber === null)
-        console.log(rawQuantity === initalValue)
-
         if (!isEditable || dayNumber === null || rawQuantity === initalValue) return;
         setLoading(true);
         setInitalValue(rawQuantity);

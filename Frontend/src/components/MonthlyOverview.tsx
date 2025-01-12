@@ -62,7 +62,6 @@ const MonthlyOverview: React.FC<Props> = ({
   };
 
   const handleDayUpdate = async (day: number, newQuantity: number) => {
-    console.log("handle day")
     await onUpdateQuantity(day, newQuantity);
     setLocalActivities((prev) => 
       prev.map((p) => (p.day === day ? { ...p, quantity: newQuantity } : p))
@@ -74,13 +73,13 @@ const MonthlyOverview: React.FC<Props> = ({
       <div className="monthly-overview-info">
         {displayingForEntry && displayingForEntry.userId !== loggedInUserId ? (
           <>
-            <span>Viser aktivitet for <span className="monthly-overview-other-user">{displayingForEntry.userName}</span></span>
+            <span>Viser registrering for <span className="monthly-overview-other-user">{displayingForEntry.userName}</span></span>
             <Button color="cyan" pill onClick={resetSelectedEntry} className="select-me-button" size="xs">
               Vis meg
             </Button>
           </>
         ) : (
-          <span>Rediger din aktivitet</span>
+          <span>Registrer din aktivitet</span>
         )}
         <div className="month-total">
           Totalt: {formatActivityValue(total, activity?.unit ?? 0)}

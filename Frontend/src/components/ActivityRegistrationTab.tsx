@@ -36,7 +36,6 @@ const ActivityRegistrationTab: React.FC<Props> = ({
   const [monthlyActivity, setMonthlyActivity] = useState<ActivityDto[]>([]);
 
   const handleUpdateQuantity = async (day: number, quantity: number) => {
-    console.log("updating calling from tab")
     await api.putUserActivity(day, quantity, monthIndex +1)
     dataUpdated();
   };

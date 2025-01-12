@@ -69,7 +69,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
       
     <Flowbite>
        <Tabs className="tabs-button" aria-label="Tabs with underline" variant="underline" ref={tabsRef} onActiveTabChange={(tab) => handleClickOnTab(tab)}>
-       <Tabs.Item active title="Aktivitets registrering" onClick={() => {setActiveTab(0);console.log("kok");resetSelectedEntry()}}>
+       <Tabs.Item active title="Registrering">
           <ActivityRegistrationTab
             monthIndex={monthIndex}
             monthName={months[monthIndex]}
@@ -95,7 +95,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
             onSelectEntry={handleSetIdOfDisplayedUser}
           />
         </Tabs.Item>
-        <Tabs.Item title="Total oversikt">
+        <Tabs.Item title="Totalt">
           <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSetIdOfDisplayedUser} />
         </Tabs.Item>
         <Tabs.Item title="Aktiviteter">

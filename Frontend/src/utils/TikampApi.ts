@@ -65,7 +65,7 @@ class TikampApi {
     let monthlyLedearboardId = this.monthlyLeaderboardRequestId[month];
     this.cache.storage.remove(activityId);
     this.cache.storage.remove(this.leaderboardRequestId ?? '');
-    //this.cache.storage.remove(monthlyLedearboardId);
+    this.cache.storage.remove(monthlyLedearboardId);
   }
 
   public putUserActivity = async (day: number, quantity: number, month: number): Promise<any> => {
