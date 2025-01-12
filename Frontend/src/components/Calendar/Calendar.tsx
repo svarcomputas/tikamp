@@ -23,6 +23,7 @@ const Calendar: React.FC<CalendarProps> = ({
   activity,
   onDayUpdate
 }) => {
+  const currentDate = new Date();
   const firstDayOfMonth = new Date(year, monthIndex, 1);
   const startDay = (firstDayOfMonth.getDay() + 6) % 7; 
   const totalDays = daysData.length;
@@ -42,7 +43,6 @@ const Calendar: React.FC<CalendarProps> = ({
   for (let i = 0; i < allDayBoxes.length; i += 7) {
     weeks.push(allDayBoxes.slice(i, i + 7));
   }
-
   return (
     <div className="calendar-container">
       {/* <span className="calendar-title">{monthName} 2025</span> */}
@@ -67,6 +67,7 @@ const Calendar: React.FC<CalendarProps> = ({
                 activity={activity}
                 onUpdate={(newVal) => onDayUpdate(dayItem.dayNumber!, newVal)}
                 daysInMonth={totalDays}
+                isActive={currentDate.getMonth() === monthIndex && currentDate.getDate() === dayItem.dayNumber}
               />
             ))}
           </div>
