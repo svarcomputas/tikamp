@@ -14,10 +14,11 @@ public class UserActivityService(TikampRepository repository, UserService userSe
     public async Task<MonthlyUserActivityDto?> GetActivityByMonth(int month, ClaimsPrincipal claims, string? objectId, CancellationToken cancellationToken)
     {
         var userIdToFetchFor = objectId ?? claims.GetObjectId();
+        var isSelf = objectId is null || objectId == claims.GetObjectId();
         var userActivity = await repository.UserActivities
                                            .Include(ua => ua.Activity)
                                            .Include(ua => ua.User)
-                                           .Where(ua => (ua.UserId == userIdToFetchFor || (objectId == null && ua.User!.UserEmail == claims.GetEmail())) && ua.Month == month).ToListAsync(cancellationToken);
+                                           .Where(ua => (ua.UserId == userIdToFetchFor || (isSelf && ua.User!.UserEmail == claims.GetEmail())) && ua.Month == month).ToListAsync(cancellationToken);
 
         return userActivity.Any()
                    ? new MonthlyUserActivityDto
@@ -25,7 +26,7 @@ public class UserActivityService(TikampRepository repository, UserService userSe
                        Activity = userActivity.First().Activity!.ToDto(),
                        UsersActivities = userActivity.ToDto(),
                        UserName = userActivity.First().User!.Name ?? "no-name",
-                       IsSelf = objectId is null || objectId == claims.GetObjectId()
+                       IsSelf = isSelf
                    }
                    : null;
     }

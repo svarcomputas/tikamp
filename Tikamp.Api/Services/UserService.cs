@@ -54,7 +54,8 @@ public class UserService(TikampRepository repository, IOptions<AuthOptions> auth
         var user = new User
         {
             Id = oid,
-            Name = (claims.FindFirstValue(ClaimConstants.Name) ?? "Default name") + (isComputasUser ? "" : " (Ekstern)")
+            Name = (claims.FindFirstValue(ClaimConstants.Name) ?? "Default name") + (isComputasUser ? "" : " (Ekstern)"),
+            UserEmail = claims.GetEmail(),
         };
         await repository.Users.AddAsync(user, cancellationToken);
         return user;
