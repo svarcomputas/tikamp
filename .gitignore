@@ -21,6 +21,9 @@ obj/
 *.db-shm
 *.db-wal
 
+# Migrering
+*.xlsx
+/Migrasjoner/*.sql
 
 # dependencies
 Frontend/node_modules

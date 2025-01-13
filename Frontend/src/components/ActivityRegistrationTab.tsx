@@ -4,6 +4,7 @@ import MonthlyOverview from './MonthlyOverview';
 import { ActivityDto, LeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MonthlyTab.css';
 import MonthSelector from './MonthSelector';
+import ErrorDisplay from './ErrorDisplay';
 import TikampApi from '../utils/TikampApi';
 import { ClipLoader } from 'react-spinners';
 
@@ -33,6 +34,7 @@ const ActivityRegistrationTab: React.FC<Props> = ({
   const [monthlyData, setMonthlyData] = useState<MonthlyUserActivityDto | null>(null);
   const [loadingUserActivity, setLoadingUserActivity] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
+  const [errorOccurd, setErrorOccurd] = useState(false);
   const [monthlyActivity, setMonthlyActivity] = useState<ActivityDto[]>([]);
 
   const handleUpdateQuantity = async (day: number, quantity: number) => {
@@ -44,8 +46,10 @@ const ActivityRegistrationTab: React.FC<Props> = ({
     const fetchData = async () => {
       setLoadingUserActivity(true);
       await api.getMonthlyActivity(monthIndex+1, entryToDisplayFor?.userId ?? loggedInUserId)
-        .then((data) => setMonthlyData(data))
-        .catch((error) => console.error(error));
+        .then((data) => {setMonthlyData(data); setErrorOccurd(false);})
+        .catch((error) => {
+          setErrorOccurd(true);
+          console.error(" Got error fecting monthly data: "+error)});
       setLoadingUserActivity(false);
     }
     fetchData();
@@ -66,7 +70,7 @@ const ActivityRegistrationTab: React.FC<Props> = ({
             <div className="spinner-container">
               <ClipLoader size={40} color="#000" />
             </div>
-          ) : (
+          ) : (errorOccurd ? (<ErrorDisplay /> ) : (
       <>
         <MonthSelector 
           monthName={monthName}
@@ -91,7 +95,7 @@ const ActivityRegistrationTab: React.FC<Props> = ({
             />
           )}
         </>
-      )}
+      ))}
     </div>
   );
 };

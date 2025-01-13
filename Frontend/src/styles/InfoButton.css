@@ -1,0 +1,20 @@
+.info-button-component {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #eaeaea;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .info-button-component:hover {
+    background-color: #c8c5c5;
+  }
+  
+  .info-button-component svg {
+    width: 20px;
+    height: 20px;
+  }
+  

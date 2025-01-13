@@ -1,6 +1,6 @@
 import { LogLevel } from '@azure/msal-browser';
 const uri = process.env.REACT_APP_URL;
-const redirectUri = process.env.REACT_APP_URL + '/redirect'
+const redirectUri = process.env.REACT_APP_URL;
  
 export const msalConfig = {
     auth: {

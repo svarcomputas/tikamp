@@ -7,7 +7,7 @@ import MedalGold from '../assets/svgs/medal-gold.svg';
 import MedalSilver from '../assets/svgs/medal-silver.svg';
 import MedalBronze from '../assets/svgs/medal-bronze.svg';
 import LevelInfoPopup from './Popup/LevelInfoPopup';
-import InfoButton from '../assets/svgs/info-button';
+import InfoButton from './InfoButton';
 import { formatActivityValue } from '../utils/conversions';
 
 const daysInMonth = (year: number, month: number) => {
@@ -82,11 +82,9 @@ const MonthlyOverview: React.FC<Props> = ({
           <span>Registrer din aktivitet</span>
         )}
         <div className="month-total">
-          Totalt: {formatActivityValue(total, activity?.unit ?? 0)}
+          Totalt: <span className='total-count'> {formatActivityValue(total, activity?.unit ?? 0)}</span>
           {getMedal() && <img src={getMedal()} alt="Medal" className="medal" />}
-          <div onClick={() => setShowInfo(true)} className="info-button">
-            <InfoButton />
-          </div>
+          <InfoButton onClick={() => setShowInfo(true)} className="info-button"/>
         </div>
       </div>
       <Calendar
