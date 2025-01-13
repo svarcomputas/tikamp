@@ -60,18 +60,10 @@
 .points-info-button{
   margin-left: auto;
 }
-.points-info-button svg{
-  height: 20px;
-  width: 20px;
-}
 .points-header{
   display: flex;
   align-items: flex-start;
 }
-.points-info-button:hover path {
-  fill: red;
-}
-
 @media (max-width: 750px) {
   .trophy.first{
     height: 45px;

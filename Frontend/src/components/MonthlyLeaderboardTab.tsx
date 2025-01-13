@@ -6,6 +6,7 @@ import MonthSelector from './MonthSelector';
 import TikampApi from '../utils/TikampApi';
 import MonthlyLeaderboard from './MonthlyLeaderboard';
 import { ClipLoader } from 'react-spinners';
+import ErrorDisplay from './ErrorDisplay';
 
 interface Props {
   monthIndex: number;
@@ -34,13 +35,16 @@ const MonthlyLeaderboardTab: React.FC<Props> = ({
   const [monthlyLeaderboard, setMonthlyLeaderboard] = useState<MonthlyLeaderboardEntryDto[]>([]);
   const [loadingLeaderboard, setLoadingLeaderboard] = useState(true);
   const [loadingActivities, setLoadingActivities] = useState(true);
+  const [errorOccurd, setErrorOccurd] = useState(false);
   useEffect(() => {
     if(shouldFetchLeaderboard){
       setLoadingLeaderboard(true);
       const fetchData = async () => {
         await api.getMonthlyLeaderboard(monthIndex + 1)
         .then((data) => setMonthlyLeaderboard(data))
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          setErrorOccurd(true);
+          console.error(error)});
         leaderboardUpdated();
         setLoadingLeaderboard(false);
       }
@@ -64,7 +68,7 @@ const MonthlyLeaderboardTab: React.FC<Props> = ({
         <div className="spinner-container">
           <ClipLoader size={40} color="#000" />
         </div>
-      ) : (
+      ) : (errorOccurd ? (<ErrorDisplay /> ) : (
         <>
           <MonthSelector 
             monthName={monthName}
@@ -85,7 +89,7 @@ const MonthlyLeaderboardTab: React.FC<Props> = ({
               />
           )}
         </>
-      )}
+      ))}
     </div>
   );
 };

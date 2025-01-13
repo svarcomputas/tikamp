@@ -7,7 +7,7 @@ import MedalBronze from '../assets/svgs/medal-bronze.svg';
 import Trophy1st from '../assets/svgs/trophy-1st.svg';
 import Trophy2nd from '../assets/svgs/trophy-2nd.svg';
 import Trophy3rd from '../assets/svgs/trophy-3rd.svg';
-import InfoButton from '../assets/svgs/info-button.tsx';
+import InfoButton from './InfoButton.tsx';
 import { Table } from 'flowbite-react';
 import PointsInfoPopup from './Popup/PointsInfoPopup.tsx';
 import { formatActivityValue } from '../utils/conversions.ts';
@@ -56,9 +56,7 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
           <Table.HeadCell className='points-column'>
             <div className='points-header'>
               <p>Poeng</p> 
-              <div className="points-info-button" onClick={() => setShowInfo(true)} >
-                <InfoButton />
-              </div>
+              <InfoButton onClick={() => setShowInfo(true)} className="points-info-button"/>
             </div>
             </Table.HeadCell>
         </Table.Head>

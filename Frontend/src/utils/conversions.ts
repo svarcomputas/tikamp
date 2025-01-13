@@ -6,7 +6,9 @@ export function formatActivityValue(value: number, unit: number): string {
       const seconds = totalSeconds % 60;
       return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     } else if (unit === 1) {
-      return `${(value / 1000).toFixed(2)} km`;
+      const kmValue = value / 1000;
+      const rounded = parseFloat(kmValue.toFixed(2));
+      return `${rounded} km`;
     }
     return `${value.toLocaleString('no-NO')}`;
   }
