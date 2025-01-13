@@ -7,6 +7,9 @@ import TikampApi from '../utils/TikampApi';
 import MonthlyLeaderboard from './MonthlyLeaderboard';
 import { ClipLoader } from 'react-spinners';
 import ErrorDisplay from './ErrorDisplay';
+import SummerImage from "../assets/images/summer_vacation.png";
+import WinterImage from "../assets/images/winter_vacation.png";
+import EmptyReg from "../assets/images/empty-reg.jpg";
 
 interface Props {
   monthIndex: number;
@@ -76,18 +79,27 @@ const MonthlyLeaderboardTab: React.FC<Props> = ({
             onNextMonth={onNextMonth}
             onPreviousMonth={onPreviousMonth}
             activity={monthlyActivity[monthIndex]}/>
-          {loadingLeaderboard ? (
-            <div className="spinner-container">
-              <ClipLoader size={40} color="#000" />
-            </div>
-          ) : (
-            <MonthlyLeaderboard
-              entries={monthlyLeaderboard}
-              onSelectEntry={onSelectEntry}
-              activity={monthlyActivity[monthIndex]}
-              loggedInUserId={loggedInUserId}
-              />
-          )}
+          
+          {(monthlyActivity[monthIndex]?.type !== 0) ? (
+            (monthlyActivity[monthIndex]?.type === 1) ? (
+              <img src={SummerImage} alt="Sommerferie" className="vacation-image " />
+            ) : (<img src={WinterImage} alt="Vinterferie" className="vacation-image " />)
+            ):(loadingLeaderboard ? (
+              <div className="spinner-container">
+                <ClipLoader size={40} color="#000" />
+              </div>
+            ) : (monthlyLeaderboard.length === 0 ? (
+                <>
+                <h4>Ingen data registrert</h4>
+                <img src={EmptyReg} alt="Ingenting registrert" className="vacation-image " />
+                </>) : (
+              <MonthlyLeaderboard
+                entries={monthlyLeaderboard}
+                onSelectEntry={onSelectEntry}
+                activity={monthlyActivity[monthIndex]}
+                loggedInUserId={loggedInUserId}
+                />
+            )))}
         </>
       ))}
     </div>
