@@ -84,13 +84,14 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
                   )}
                 </div>
               </Table.Cell>
-              <Table.Cell>{formatActivityValue(entry?.exerciseQuantity ?? 0, activity?.unit ?? 0)}</Table.Cell>
               <Table.Cell>
-                <div className='points-row'>
-                  <span>{entry.points + " ("}</span>
-                  {getMedal(entry.exerciseQuantity ?? 0) !== null ? <img src={getMedal(entry.exerciseQuantity ?? 0)} alt="Medal" className="medal" /> : "0"}
-                  <span>{" + " + entry.monthPlacementPoints + ")"}</span>
+              <div className='points-row'>
+                {formatActivityValue(entry?.exerciseQuantity ?? 0, activity?.unit ?? 0)}
+                {getMedal(entry.exerciseQuantity ?? 0) !== null ? <img src={getMedal(entry.exerciseQuantity ?? 0)} alt="Medal" className="medal" /> : <></>}
                 </div>
+              </Table.Cell>
+              <Table.Cell>
+                  <span>{entry.points + " (" + entry.monthPointsFromLevel + "+" + entry.monthPlacementPoints + ")"}</span>
               </Table.Cell>
             </Table.Row>
             )})}
