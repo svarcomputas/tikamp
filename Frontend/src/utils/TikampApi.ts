@@ -57,7 +57,7 @@ class TikampApi {
 
   public getActivities = async (): Promise<ActivityDto[]> => {
     var resp = await this.activitiesApi.apiActivitiesGet();
-    return resp.data;
+    return resp.data.toSorted(a => a.month ?? 0);
   }
   
   public evictCache = async (month: number) => {
