@@ -26,7 +26,7 @@ def generate_sql_from_excel(file_path, excluded_sheets):
 
         # Append the User INSERT query
         sql_script.append(f"-- Sheet: {sheet_name}")
-        sql_script.append(f"INSERT INTO \"Users\" (\"Id\", \"UserEmail\", \"Name\",  \"CreatedAtDate\", \"UpdatedAtDate\") VALUES ('{user_guid}', '{{UserEmail}}', /* {sheet_name} */ '{{UserName}}', '2025-01-13 16:18:20.07363+00', '2025-01-13 16:18:20.07363+00');\n")
+        sql_script.append(f"INSERT INTO \"Users\" (\"Id\", \"UserEmail\", \"Name\",  \"CreatedAtDate\", \"UpdatedAtDate\") VALUES ('{user_guid}', '{{UserEmail}}', /* {sheet_name} */ '{{UserName}} ', '2025-01-13 16:18:20.07363+00', '2025-01-13 16:18:20.07363+00');\n")
 
         # Process data rows (from row 7 to 30, 0-indexed is 6 to 29)
         for index, row in df.iterrows():
@@ -63,11 +63,9 @@ def generate_sql_from_excel(file_path, excluded_sheets):
 
 
 file_path = "computas-tikamp.xlsx"
-print(file_path)
 excluded_sheets = ["readme", "poeng", "totaloversikt"]
 
 sql_script = generate_sql_from_excel(file_path, excluded_sheets)
-print(sql_script)
 with open("output_script.sql", "w") as file:
     file.write(sql_script)
 
