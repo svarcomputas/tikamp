@@ -29,7 +29,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   const [entryToDisplay, setEntryToDisplay] = useState<LeaderboardEntryDto | null>(null);
   const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
   api.setLoggedInUser(idOfLoggedInUser ?? '');
-    const [monthIndex, setMonthIndex] = useState(0); // TODO get current
+    const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   
     const handleNextMonth = () => {
       setMonthIndex((prev) => (prev < 11 ? prev + 1 : prev));

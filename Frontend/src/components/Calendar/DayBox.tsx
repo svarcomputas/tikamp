@@ -4,6 +4,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { parseActivityValue, formatActivityValue } from '../../utils/conversions';
 import { ActivityDto } from '../../api';
 import '../../styles/Calendar/DayBox.css';
+import ErrorToast from '../ErrorToast';
 
 interface Props {
   dayNumber: number | null;
@@ -29,7 +30,7 @@ const DayBox: React.FC<Props> = ({
       );
       const [loading, setLoading] = useState(false);
       const [initalValue, setInitalValue] = useState(quantity);
-      
+      const [showErrorToast, setShowErrorToast] = useState(false);
       useEffect(() => {
         setLocalValue(formatActivityValue(quantity, activity?.unit ?? 0));
       }, [quantity, activity]);
@@ -40,7 +41,12 @@ const DayBox: React.FC<Props> = ({
       const rawQuantity = parseActivityValue(localValue, activity?.unit ?? 0);
       let bgColor = 'white';
       if (dayNumber !== null) {
-        if (rawQuantity >= (( 2 * level3) / daysInMonth) && level3 > 0) {
+        if (((rawQuantity >= (( 10 * level3) / daysInMonth) && activity?.unit === 0) ||
+          (rawQuantity >= ( 1.5 * level3) && activity?.unit === 1) || 
+          (rawQuantity >= (( 10 * level3) / daysInMonth) && activity?.unit === 2) )
+          && level3 > 0) {
+          bgColor = '#0d402b';
+        } else if (rawQuantity >= (( 2 * level3) / daysInMonth) && level3 > 0) {
           bgColor = '#28C181';
         } else if (rawQuantity >= level3 / daysInMonth && level3 > 0) {
           bgColor = '#3BD796';
@@ -48,24 +54,32 @@ const DayBox: React.FC<Props> = ({
           bgColor = '#5CDEA7';
         } else if (rawQuantity >= level1 / daysInMonth && level1 > 0) {
           bgColor = '#7CE4B9'; 
+        } else if ( rawQuantity > 0) {
+          bgColor = '#a6edd0'; 
         }
       }
     
       const handleBlur = async () => {
-        if (!isEditable || dayNumber === null || rawQuantity === initalValue) return;
+        if(!isEditable || dayNumber === null || rawQuantity === initalValue || isNaN(rawQuantity)){
+          setShowErrorToast(true);
+          setTimeout(() => setShowErrorToast(false), 3000);
+          setLocalValue(formatActivityValue(initalValue, activity?.unit ?? 0));
+          return;
+        }
+        console.log(rawQuantity)
         setLoading(true);
         setInitalValue(rawQuantity);
         await onUpdate(rawQuantity);
         setLoading(false);
       };
     
-      // If dayNumber is null, it’s a placeholder (blank space) for days outside the current month
       if (dayNumber === null) {
         return <div className="day-box blank-day" />;
       }
       
       return (
         <div className="day-box" style={{ backgroundColor: bgColor }}>
+          {showErrorToast && <ErrorToast />}
           <div className={`day-number ${isActive ? 'active' : ''}`}>{dayNumber}</div>
           {loading ? (
             <div className="spinner-container">
