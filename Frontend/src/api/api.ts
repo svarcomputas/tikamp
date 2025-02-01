@@ -113,40 +113,19 @@ export type ActivityUnit = typeof ActivityUnit[keyof typeof ActivityUnit];
 /**
  * 
  * @export
- * @interface LeaderboardEntryDto
+ * @enum {number}
  */
-export interface LeaderboardEntryDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof LeaderboardEntryDto
-     */
-    'userId'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof LeaderboardEntryDto
-     */
-    'userName'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof LeaderboardEntryDto
-     */
-    'points'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LeaderboardEntryDto
-     */
-    'monthPointsFromLevel'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof LeaderboardEntryDto
-     */
-    'monthPlacementPoints'?: number;
-}
+
+export const MedalTypeDto = {
+    NUMBER_0: 0,
+    NUMBER_1: 1,
+    NUMBER_2: 2,
+    NUMBER_3: 3
+} as const;
+
+export type MedalTypeDto = typeof MedalTypeDto[keyof typeof MedalTypeDto];
+
+
 /**
  * 
  * @export
@@ -189,7 +168,15 @@ export interface MonthlyLeaderboardEntryDto {
      * @memberof MonthlyLeaderboardEntryDto
      */
     'exerciseQuantity'?: number;
+    /**
+     * 
+     * @type {MedalTypeDto}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
+    'medal'?: MedalTypeDto;
 }
+
+
 /**
  * 
  * @export
@@ -290,6 +277,49 @@ export interface PutUserActivityDto {
      * @memberof PutUserActivityDto
      */
     'quantity'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface TotalLeaderboardEntryDto
+ */
+export interface TotalLeaderboardEntryDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'userId'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'points'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'monthPointsFromLevel'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'monthPlacementPoints'?: number;
+    /**
+     * 
+     * @type {Array<MedalTypeDto>}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'medals'?: Array<MedalTypeDto> | null;
 }
 /**
  * 
@@ -603,7 +633,7 @@ export const LeaderboardsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<LeaderboardEntryDto>>> {
+        async apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TotalLeaderboardEntryDto>>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiLeaderboardsTotalGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['LeaderboardsApi.apiLeaderboardsTotalGet']?.[localVarOperationServerIndex]?.url;
@@ -635,7 +665,7 @@ export const LeaderboardsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<LeaderboardEntryDto>> {
+        apiLeaderboardsTotalGet(options?: RawAxiosRequestConfig): AxiosPromise<Array<TotalLeaderboardEntryDto>> {
             return localVarFp.apiLeaderboardsTotalGet(options).then((request) => request(axios, basePath));
         },
     };

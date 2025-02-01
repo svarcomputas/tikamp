@@ -1,7 +1,7 @@
 // MainDisplay.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import TotalLeaderboard from './TotalLeaderboard';
-import { LeaderboardEntryDto } from '../api';
+import { TotalLeaderboardEntryDto } from '../api';
 import '../styles/MainDisplay.css';
 import TikampApi from '../utils/TikampApi';
 import { useMsal } from '@azure/msal-react';
@@ -26,8 +26,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
   const { accounts } = useMsal();
   const idOfLoggedInUser = accounts.length > 0 ? accounts[0].localAccountId : '';
   const [fetchMonthlyLeaderbaord, setFetchMonthlyLeaderbaord] = useState<Boolean>(true);
-  const [entryToDisplay, setEntryToDisplay] = useState<LeaderboardEntryDto | null>(null);
-  const [totalLeaderboard, setTotalLeaderboard] = useState<LeaderboardEntryDto[]>([]);
+  const [entryToDisplay, setEntryToDisplay] = useState<TotalLeaderboardEntryDto | null>(null);
   api.setLoggedInUser(idOfLoggedInUser ?? '');
     const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   
@@ -45,7 +44,7 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
     setEntryToDisplay(null)
   };
 
-  const handleSetIdOfDisplayedUser = async (entry: LeaderboardEntryDto | null) => {
+  const handleSetIdOfDisplayedUser = async (entry: TotalLeaderboardEntryDto | null) => {
     tabsRef.current?.setActiveTab(0);
     setActiveTab(0)
     setEntryToDisplay(entry)
@@ -57,12 +56,6 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
       resetSelectedEntry()
     }
   };
-
-  useEffect(() => {
-    api.getTotalLeaderboard()
-      .then((data) => setTotalLeaderboard(data))
-      .catch((error) => console.error(error));
-  }, [api]);
 
   return (
     <div className="main-container">
@@ -96,7 +89,13 @@ const  MainDisplay: React.FC<MainDisplayProps> = ({ api }) => {
           />
         </Tabs.Item>
         <Tabs.Item title="Totalt">
-          <TotalLeaderboard entries={totalLeaderboard} onSelectEntry={handleSetIdOfDisplayedUser} />
+          <TotalLeaderboard
+            onSelectEntry={handleSetIdOfDisplayedUser} 
+            leaderboardUpdated={() => setFetchMonthlyLeaderbaord(false)}
+            shouldFetchLeaderboard={fetchMonthlyLeaderbaord}
+            api={api}
+            loggedInUserId={idOfLoggedInUser}
+          />
         </Tabs.Item>
         <Tabs.Item title="Aktiviteter">
           <ActivityDisplay api={api}/>

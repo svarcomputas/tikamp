@@ -1,5 +1,5 @@
 import { Cookies } from 'react-cookie';
-import { ActivitiesApi, ActivityDto, LeaderboardEntryDto, LeaderboardsApi, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto, UserActivityApi } from '../api/api.ts';
+import { ActivitiesApi, ActivityDto, TotalLeaderboardEntryDto, LeaderboardsApi, MonthlyLeaderboardEntryDto, MonthlyUserActivityDto, UserActivityApi } from '../api/api.ts';
 import { Configuration } from '../api/configuration.ts';
 
 import { AxiosCacheInstance, CacheAxiosResponse } from 'axios-cache-interceptor';
@@ -49,7 +49,7 @@ class TikampApi {
     return resp.data;
   }
 
-  public getTotalLeaderboard = async (): Promise<LeaderboardEntryDto[]> => {
+  public getTotalLeaderboard = async (): Promise<TotalLeaderboardEntryDto[]> => {
     var resp = await this.leaderboardsApi.apiLeaderboardsTotalGet();
     this.leaderboardRequestId = (resp as CacheAxiosResponse).id;
     return resp.data;
@@ -63,6 +63,7 @@ class TikampApi {
   public evictCache = async (month: number) => {
     let activityId = this.monthlyUserActivityRequestId[month];
     let monthlyLedearboardId = this.monthlyLeaderboardRequestId[month];
+    console.log("ecivint "+ (this.leaderboardRequestId ?? ''))
     this.cache.storage.remove(activityId);
     this.cache.storage.remove(this.leaderboardRequestId ?? '');
     this.cache.storage.remove(monthlyLedearboardId);

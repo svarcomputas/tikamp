@@ -4,7 +4,7 @@ import '../styles/Sponsorer.css';
 // Import local images from your repo
 
 import SqueezeLogo from '../assets/svgs/Squeeze-Logo-Beige.svg';
-import OksLogo from '../assets/svgs/OKS-Flat-Dark.svg';
+import OsloKlatrepark from '../assets/svgs/oslo-klatrepark.svg';
 // Import additional images as needed...
 
 // If you plan to pass in images as props, you can adjust this interface.
@@ -60,7 +60,7 @@ const Sponsorer: React.FC<SponsorerProps> = ({ logos }) => {
 };
 
 export const SponsorerWithImportedLogos: React.FC = () => {
-  const logos = [OksLogo, SqueezeLogo];
+  const logos = [OsloKlatrepark, SqueezeLogo];
   return <Sponsorer logos={logos} />;
 };
 
