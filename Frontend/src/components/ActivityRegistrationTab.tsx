@@ -7,6 +7,7 @@ import MonthSelector from './MonthSelector';
 import ErrorDisplay from './ErrorDisplay';
 import TikampApi from '../utils/TikampApi';
 import { ClipLoader } from 'react-spinners';
+import { SponsorerWithImportedLogos } from './Sponsorer';
 
 interface Props {
   monthIndex: number;
@@ -94,6 +95,7 @@ const ActivityRegistrationTab: React.FC<Props> = ({
             resetSelectedEntry={resetSelectedEntry}
             />
           )}
+          <SponsorerWithImportedLogos />
         </>
       ))}
     </div>

@@ -9,6 +9,7 @@ import { ActivityDto } from "../api";
 import '../styles/ActivityDisplay.css';
 import TikampApi from "../utils/TikampApi";
 import { formatActivityValue } from "../utils/conversions";
+import { SponsorerWithImportedLogos } from "./Sponsorer";
 
 interface Props {
   api: TikampApi;
@@ -111,6 +112,7 @@ const ActivityDisplay: React.FC<Props> = ({ api }) => {
           </Card>
         );
       })}
+      <SponsorerWithImportedLogos />
     </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { LeaderboardEntryDto } from '../api';
 import '../styles/TotalLeaderboard.css';
 import { Table } from "flowbite-react";
+import { SponsorerWithImportedLogos } from './Sponsorer';
 
 interface TotalLeaderboardProps {
   entries: LeaderboardEntryDto[];
@@ -33,6 +34,7 @@ const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({ entries, onSelectEn
           ))}
         </Table.Body>
       </Table>
+      <SponsorerWithImportedLogos />
     </div>
   );
 };
