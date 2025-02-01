@@ -35,17 +35,33 @@
   justify-content: flex-start;
 }
 
+/* Grouping medals of a single type */
+.medal-group {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
 .medal-icon {
   width: 20px;
   height: 20px;
 }
 
-.medal-abbr {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
 .medal-count {
   font-size: 0.8rem;
+  /* Ensure the plus indicator occupies similar space as a medal icon */
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+}
+
+@media (max-width: 475px) {
+  
+  .medal-count {
+    font-size: 0.7rem;
+  }
+  .medal-icon {
+    width: 18px;
+    height: 18px;
+  }
 }

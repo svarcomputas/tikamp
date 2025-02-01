@@ -1,5 +1,5 @@
 // MainDisplay.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import TotalLeaderboard from './TotalLeaderboard';
 import { TotalLeaderboardEntryDto } from '../api';
 import '../styles/MainDisplay.css';
