@@ -22,8 +22,8 @@ public class LeaderboardsController(LeaderboardService leaderboardService, ILogg
     }
 
     [HttpGet("total")]
-    [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(List<LeaderboardEntryDto>))]
-    public async Task<ActionResult<List<LeaderboardEntryDto>>> GetTotalLeaderboard()
+    [SwaggerResponse((int)HttpStatusCode.OK, "Ok", typeof(List<TotalLeaderboardEntryDto>))]
+    public async Task<ActionResult<List<TotalLeaderboardEntryDto>>> GetTotalLeaderboard()
     {
         logger.LogInformation("Getting total leaderboard");
         var leaderboard = await leaderboardService.GetTotalLeaderboardAsync();
