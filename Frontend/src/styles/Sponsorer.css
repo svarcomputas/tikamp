@@ -1,0 +1,37 @@
+/* Container for the entire component */
+.sponsorer-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  /* Each row is a flex container that centers its content */
+  .sponsorer-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Each logo container takes equal width */
+  .sponsorer-logo {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Optional: add a max-width so logos don't get too big on very large screens */
+    max-width: 200px;
+    margin: 0 10px;
+  }
+  
+  /* Ensure the logo images are sized appropriately without stretching */
+  .sponsorer-logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .sponsor-header{
+    font-size: larger;
+    font-weight: bold;
+    font-style: italic;
+    padding-bottom: 10px;
+  }

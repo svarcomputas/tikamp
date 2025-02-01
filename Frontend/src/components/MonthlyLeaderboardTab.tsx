@@ -10,6 +10,7 @@ import ErrorDisplay from './ErrorDisplay';
 import SummerImage from "../assets/images/summer_vacation.png";
 import WinterImage from "../assets/images/winter_vacation.png";
 import EmptyReg from "../assets/images/empty-reg.jpg";
+import { SponsorerWithImportedLogos } from './Sponsorer';
 
 interface Props {
   monthIndex: number;
@@ -100,6 +101,7 @@ const MonthlyLeaderboardTab: React.FC<Props> = ({
                 loggedInUserId={loggedInUserId}
                 />
             )))}
+          <SponsorerWithImportedLogos />
         </>
       ))}
     </div>
