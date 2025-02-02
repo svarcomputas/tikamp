@@ -1,13 +1,15 @@
 // MonthlyContainer.tsx
 import React, { useEffect, useState } from 'react';
 import MonthlyOverview from './MonthlyOverview';
-import { ActivityDto, LeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
+import { ActivityDto, TotalLeaderboardEntryDto, MonthlyUserActivityDto } from '../api';
 import '../styles/MonthlyTab.css';
 import MonthSelector from './MonthSelector';
 import ErrorDisplay from './ErrorDisplay';
 import TikampApi from '../utils/TikampApi';
 import { ClipLoader } from 'react-spinners';
 import { SponsorerWithImportedLogos } from './Sponsorer';
+import SummerImage from "../assets/images/summer_vacation.png";
+import WinterImage from "../assets/images/winter_vacation.png";
 
 interface Props {
   monthIndex: number;
@@ -16,7 +18,7 @@ interface Props {
   onPreviousMonth: () => void;
   dataUpdated: () => void;
   loggedInUserId: string;
-  entryToDisplayFor: LeaderboardEntryDto | null;
+  entryToDisplayFor: TotalLeaderboardEntryDto | null;
   api: TikampApi;
   resetSelectedEntry: () => void;
 }
@@ -79,22 +81,27 @@ const ActivityRegistrationTab: React.FC<Props> = ({
           onNextMonth={onNextMonth}
           onPreviousMonth={onPreviousMonth}
           activity={monthlyActivity[monthIndex]}/>
-        {loadingUserActivity ? (
-          <div className="spinner-container">
-            <ClipLoader size={40} color="#000" />
-          </div>
-          ) : (
-          <MonthlyOverview
-            monthIndex={monthIndex}
-            monthName={monthName}
-            loggedInUserId={loggedInUserId}
-            data={monthlyData}
-            displayingForEntry={entryToDisplayFor}
-            activity={monthlyActivity[monthIndex]}
-            onUpdateQuantity={handleUpdateQuantity}
-            resetSelectedEntry={resetSelectedEntry}
-            />
-          )}
+        {(monthlyActivity[monthIndex]?.type !== 0) ? (
+            (monthlyActivity[monthIndex]?.type === 1) ? (
+              <img src={SummerImage} alt="Sommerferie" className="vacation-image " />
+            ) : (<img src={WinterImage} alt="Vinterferie" className="vacation-image " />)
+            ) : loadingUserActivity ? (
+              <div className="spinner-container">
+                <ClipLoader size={40} color="#000" />
+              </div>
+              ) : (
+                <MonthlyOverview
+                  monthIndex={monthIndex}
+                  monthName={monthName}
+                  loggedInUserId={loggedInUserId}
+                  data={monthlyData}
+                  displayingForEntry={entryToDisplayFor}
+                  activity={monthlyActivity[monthIndex]}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  resetSelectedEntry={resetSelectedEntry}
+                />
+              )
+          }
           <SponsorerWithImportedLogos />
         </>
       ))}

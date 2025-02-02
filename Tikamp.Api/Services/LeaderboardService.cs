@@ -31,6 +31,20 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
         if (MonthlyCache.TryGetValue(month, out var cacheEntry))
             if (!cacheEntry.ShouldBeUpdated)
                 return cacheEntry.Leaderboard;
+        var activity = await repository.Activities
+                                       .Where(activity => activity.Month == month)
+                                       .FirstAsync();
+        if (activity.Type != ActivityType.Activity)
+        {
+            var emptyLeaderboard = new List<MonthlyLeaderboardEntryDto>();
+            MonthlyCache[month] = new MonthlyLeaderboardCache
+            {
+                LastUpdated = DateTimeOffset.UtcNow,
+                Leaderboard = emptyLeaderboard,
+                ShouldBeUpdated = false
+            };
+            return emptyLeaderboard;
+        }
 
         var userActivities = await repository.UserActivities
                                              .Include(ua => ua.User)
@@ -66,9 +80,6 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                            .Where(x => x.TotalCount > 0)
                            .OrderByDescending(x => x.TotalCount)
                            .ToList();
-        var activity = await repository.Activities
-                                       .Where(activity => activity.Month == month)
-                                       .FirstAsync();
         var leaderboardList = groupedByUser.Select((input, index) =>
                                             {
                                                 var placementPoints = GetPlacementPoints(index, groupedByUser.Count);

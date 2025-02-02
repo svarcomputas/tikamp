@@ -15,12 +15,17 @@ export function formatActivityValue(value: number, unit: number): string {
   
   export function parseActivityValue(displayValue: string, unit: number): number {
     if (unit === 2) {
-      const [m, s] = displayValue.split(':').map((x) => parseInt(x, 10) || 0);
+      const [m, s] = displayValue.split(':').map((x) => parseInt(x, 10));
+      if(isNaN(m)) return NaN;
+      if(isNaN(s)) return m*60;
       return m * 60 + s;
     } else if (unit === 1) {
-      const km = parseFloat(displayValue.replace(',', '.')) || 0;
+      const km = parseFloat(displayValue.replace(',', '.'));
+      if(isNaN(km)) return NaN;
       return Math.round(km * 1000);
     }
-    return parseInt(displayValue.replace(/\s/g, ""), 10) || 0;
+
+    const value = parseInt(displayValue.replace(/\s/g, ""), 10);
+    return isNaN(value) ? NaN : value;
   }
   
