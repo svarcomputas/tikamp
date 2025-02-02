@@ -33,8 +33,8 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                 return cacheEntry.Leaderboard;
         var activity = await repository.Activities
                                        .Where(activity => activity.Month == month)
-                                       .FirstAsync();
-        if (activity.Type != ActivityType.Activity)
+                                       .FirstOrDefaultAsync();
+        if (activity is null || activity.Type != ActivityType.Activity)
         {
             var emptyLeaderboard = new List<MonthlyLeaderboardEntryDto>();
             MonthlyCache[month] = new MonthlyLeaderboardCache
