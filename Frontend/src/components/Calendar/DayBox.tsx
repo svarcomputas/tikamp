@@ -60,13 +60,16 @@ const DayBox: React.FC<Props> = ({
       }
     
       const handleBlur = async () => {
-        if(!isEditable || dayNumber === null || rawQuantity === initalValue || isNaN(rawQuantity)){
+        if(rawQuantity === initalValue){
+          setLocalValue(formatActivityValue(initalValue, activity?.unit ?? 0));
+          return;
+        }
+        if(!isEditable || dayNumber === null  || isNaN(rawQuantity)){
           setShowErrorToast(true);
           setTimeout(() => setShowErrorToast(false), 3000);
           setLocalValue(formatActivityValue(initalValue, activity?.unit ?? 0));
           return;
         }
-        console.log(rawQuantity)
         setLoading(true);
         setInitalValue(rawQuantity);
         await onUpdate(rawQuantity);

@@ -63,7 +63,6 @@ class TikampApi {
   public evictCache = async (month: number) => {
     let activityId = this.monthlyUserActivityRequestId[month];
     let monthlyLedearboardId = this.monthlyLeaderboardRequestId[month];
-    console.log("ecivint "+ (this.leaderboardRequestId ?? ''))
     this.cache.storage.remove(activityId);
     this.cache.storage.remove(this.leaderboardRequestId ?? '');
     this.cache.storage.remove(monthlyLedearboardId);
