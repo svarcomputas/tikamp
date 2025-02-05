@@ -28,10 +28,25 @@
     height: auto;
     display: block;
   }
+  .info-button{
+    display: inline;
+  }
   
   .sponsor-header{
+    display: inline;
     font-size: larger;
     font-weight: bold;
     font-style: italic;
     padding-bottom: 10px;
+  }
+  
+  .popup-logo {
+    justify-content: center;
+    align-items: center;
+    /* Optional: add a max-width so logos don't get too big on very large screens */
+    max-width: 200px;
+    margin: auto;
+  }.popup-sponsor {
+    align-items: center;
+    padding: 20px;
   }

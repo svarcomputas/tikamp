@@ -1,25 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Sponsorer.css';
-
-// Import local images from your repo
-
+import { Modal } from 'flowbite-react';
 import SqueezeLogo from '../assets/svgs/Squeeze-Logo-Beige.svg';
-import OsloKlatrepark from '../assets/svgs/oslo-klatrepark.svg';
-// Import additional images as needed...
+import OsloKlatrepark from '../assets/images/osloklatrepark_logo.jpg';
+import InfoButton from './InfoButton';
 
-// If you plan to pass in images as props, you can adjust this interface.
-interface SponsorerProps {
-  logos: string[];
+interface Sponsor {
+  logo: string;
+  text: string;
 }
 
-const Sponsorer: React.FC<SponsorerProps> = ({ logos }) => {
-  // State to track whether we are on a small screen
-  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+interface SponsorerProps {
+  sponsors: Sponsor[];
+}
+const SponsorPopup: React.FC<{ sponsors: Sponsor[], show: boolean, onClose: () => void }> = ({ sponsors, show, onClose }) => {
+  return (
+    <Modal show={show} onClose={onClose} size="lg">
+      <Modal.Header>Sponsorer</Modal.Header>
+      <Modal.Body>
+        <div className="popup-content">
+          {sponsors.map((sponsor, index) => (
+            <div key={index} className="popup-sponsor">
+              <img src={sponsor.logo} alt={`Sponsor ${index + 1}`} className="popup-logo" />
+              <p>{sponsor.text}</p>
+              <br />
+            </div>
+          ))}
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
-  // Check screen size on mount and on window resize
+const Sponsorer: React.FC<SponsorerProps> = ({ sponsors }) => {
+  const [isSmallScreen, setIsSmallScreen] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
   useEffect(() => {
     const checkScreenSize = () => {
-      // Adjust threshold as needed (768px here is just an example)
       setIsSmallScreen(window.innerWidth < 768);
     };
     checkScreenSize();
@@ -27,41 +45,50 @@ const Sponsorer: React.FC<SponsorerProps> = ({ logos }) => {
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Hardcoded row configuration: large screens will have up to five per row,
-  // and small screens will have up to three per row.
   const rowConfig = isSmallScreen ? [3, 3, 3] : [5, 5, 5];
 
-  // Split the logos array into rows based on the configuration.
-  const rows: string[][] = [];
+  const rows: Sponsor[][] = [];
   let start = 0;
   let configIndex = 0;
-  while (start < logos.length) {
-    // Use the configured number for this row, or the last number if we run out of config entries.
+  while (start < sponsors.length) {
     const logosInThisRow = rowConfig[configIndex] || rowConfig[rowConfig.length - 1];
-    rows.push(logos.slice(start, start + logosInThisRow));
+    rows.push(sponsors.slice(start, start + logosInThisRow));
     start += logosInThisRow;
     configIndex++;
   }
-
+console.log(showPopup)
   return (
     <div className="sponsorer-container">
-      <h2 className='sponsor-header'>Sponsorer av Tikamp</h2>
+      <div className="sponsor-header-container">
+        <h2 className="sponsor-header">Sponsorer av Tikamp</h2>
+        <InfoButton onClick={() => setShowPopup(true)} className="info-button"/>
+      </div>
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="sponsorer-row">
-          {row.map((logo, logoIndex) => (
-            <div key={logoIndex} className="sponsorer-logo">
-              <img src={logo} alt={`Sponsor ${rowIndex * 10 + logoIndex + 1}`} />
+          {row.map((sponsor, logoIndex) => (
+            <div key={logoIndex} className="sponsorer-logo" onClick={() => { setShowPopup(true); }}>
+              <img src={sponsor.logo} alt={`Sponsor ${rowIndex * 10 + logoIndex + 1}`} />
             </div>
           ))}
         </div>
       ))}
+
+      
+<SponsorPopup sponsors={sponsors} show={showPopup} onClose={() => setShowPopup(false)} />
     </div>
   );
 };
 
 export const SponsorerWithImportedLogos: React.FC = () => {
-  const logos = [OsloKlatrepark, SqueezeLogo];
-  return <Sponsorer logos={logos} />;
+  const sponsors = [
+    { logo: OsloKlatrepark, text: "Oslo Klatrepark er en klatrepark i vill og vakker natur med tolv spennende løyper, 80 elementer i trærne, samt løyper med hopp og flere ziplines. Løypene er bygd i forskjellige høyder og vanskelighetsgrader, så her er det noe for alle og enhver. Klatreparken har som mål å bidra til en sunnere, mer aktiv og spennende hverdag for alle, der man kan utprøve og utvikle sine ferdigheter. Den skal gi utfordringer på alle nivåer, slik at alle uansett forutsetninger kan oppleve mestring og glede ved fysisk aktivitet." },
+    { logo: SqueezeLogo, text: "Massasje reduserer stress, stivhet og muskelspenninger, forbedrer søvnkvaliteten, og øker energinivå og fokus. Hos Squeeze får du profesjonell massasje med lange åpningstider." }
+  ];
+  return <Sponsorer sponsors={sponsors} />;
 };
 
 export default Sponsorer;
+
+
+
+
