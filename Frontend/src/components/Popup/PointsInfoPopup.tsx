@@ -58,31 +58,55 @@ const PointsInfoPopup: React.FC<PointsInfoPopupProps> = ({ onClose, activity }) 
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>1</Table.Cell>
-                    <Table.Cell>300</Table.Cell>
+                    <Table.Cell>400</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>2</Table.Cell>
-                    <Table.Cell>260</Table.Cell>
+                    <Table.Cell>360</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>3</Table.Cell>
-                    <Table.Cell>220</Table.Cell>
+                    <Table.Cell>330</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Top 25%</Table.Cell>
-                    <Table.Cell>180</Table.Cell>
+                    <Table.Cell>4</Table.Cell>
+                    <Table.Cell>300</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 20%</Table.Cell>
+                    <Table.Cell>270</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 30%</Table.Cell>
+                    <Table.Cell>240</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 40%</Table.Cell>
+                    <Table.Cell>210</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>Top 50%</Table.Cell>
-                    <Table.Cell>140</Table.Cell>
+                    <Table.Cell>180</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Top 75%</Table.Cell>
-                    <Table.Cell>100</Table.Cell>
+                    <Table.Cell>Top 60%</Table.Cell>
+                    <Table.Cell>150</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 70%</Table.Cell>
+                    <Table.Cell>120</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 80%</Table.Cell>
+                    <Table.Cell>90</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>Top 90%</Table.Cell>
+                    <Table.Cell>60</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>Deltatt</Table.Cell>
-                    <Table.Cell>50</Table.Cell>
+                    <Table.Cell>30</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>

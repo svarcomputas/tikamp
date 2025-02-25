@@ -7,4 +7,5 @@ public class LeaderboardEntryDto
     public required int Points { get; init; }
     public required int MonthPointsFromLevel { get; init; }
     public required int MonthPlacementPoints { get; init; }
+    public required int Placement { get; init; }
 }

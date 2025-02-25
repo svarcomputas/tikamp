@@ -80,10 +80,18 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                            .Where(x => x.TotalCount > 0)
                            .OrderByDescending(x => x.TotalCount)
                            .ToList();
+        var prevCount = -1;
+        var prevScore = -1;
+        var prevPlacement = -1;
         var leaderboardList = groupedByUser.Select((input, index) =>
                                             {
-                                                var placementPoints = GetPlacementPoints(index, groupedByUser.Count);
+                                                var placementPoints = prevCount == input.TotalCount ? prevScore : GetPlacementPoints(index, groupedByUser.Count);
+                                                var placement = prevCount == input.TotalCount ? prevPlacement : index + 1;
                                                 var (levelPoints, medal) = GetMedalAndLevelPoints(input.TotalCount, activity);
+                                                
+                                                prevCount = input.TotalCount;
+                                                prevScore = placementPoints;
+                                                prevPlacement = placement;
                                                 return new MonthlyLeaderboardEntryDto
                                                 {
                                                     UserId = input.UserId,
@@ -92,7 +100,8 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                                                     ExerciseQuantity = input.TotalCount,
                                                     MonthPointsFromLevel = levelPoints,
                                                     MonthPlacementPoints = placementPoints,
-                                                    Medal = medal
+                                                    Medal = medal,
+                                                    Placement = placement,
                                                 };
                                             })
                                            .OrderByDescending(x => x.Points)
@@ -113,15 +122,21 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
         var percentile = (double)(placement + 1) / totalPlacements;
         return placement switch
         {
-            0 => 300,
-            1 => 260,
-            2 => 220,
+            0 => 400,
+            1 => 360,
+            2 => 330,
+            3 => 300,
             _ => percentile switch
             {
-                <= 0.25 => 180,
-                <= 0.50 => 140,
-                <= 0.75 => 100,
-                _ => 50
+                <= 0.2 => 270,
+                <= 0.3 => 240,
+                <= 0.4 => 210,
+                <= 0.5 => 180,
+                <= 0.6 => 150,
+                <= 0.7 => 120,
+                <= 0.8 => 90,
+                <= 0.9 => 60,
+                _ => 30
             }
         };
     }
@@ -163,6 +178,8 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
             }
         }
 
+        var prevScore = -1;
+        var prevPlacement = -1;
         var result = totalScores
                     .Select(x => new TotalLeaderboardEntryDto
                      {
@@ -171,9 +188,27 @@ public class LeaderboardService(TikampRepository repository, ILogger<Leaderboard
                          Points = x.Value[0],
                          MonthPlacementPoints = x.Value[1],
                          MonthPointsFromLevel = x.Value[2],
-                         Medals = medals[x.Key].Where(m => m != MedalTypeDto.None).ToList()
+                         Medals = medals[x.Key]
+                                 .Where(m => m != MedalTypeDto.None)
+                                 .ToList(),
+                         Placement = -1
                      })
                     .OrderByDescending(x => x.Points)
+                    .Select((x, index) =>
+                     {
+                         var placement = prevScore == x.Points ? prevPlacement : index + 1;
+                         prevPlacement = placement;
+                         return new TotalLeaderboardEntryDto
+                         {
+                             UserId = x.UserId,
+                             UserName = x.UserName,
+                             Points = x.Points,
+                             MonthPlacementPoints = x.MonthPlacementPoints,
+                             MonthPointsFromLevel = x.MonthPointsFromLevel,
+                             Medals = x.Medals,
+                             Placement = placement
+                         };
+                     })
                     .ToList();
 
         TotalCache[TotalCacheKey] = new TotalLeaderboardCache
