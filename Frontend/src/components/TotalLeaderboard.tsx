@@ -158,7 +158,7 @@ const TotalLeaderboard: React.FC<TotalLeaderboardProps> = ({
                 key={entry.userId || index}
                 onClick={() => onSelectEntry(entry)}
               >
-                <Table.Cell>{index + 1}</Table.Cell>
+                <Table.Cell>{entry.placement}</Table.Cell>
                 <Table.Cell>
                   <p>
                     {entry.userName ?? ""} <em>{entry.userId === loggedInUserId ? "(deg)" : ""}</em>

@@ -167,6 +167,12 @@ export interface MonthlyLeaderboardEntryDto {
      * @type {number}
      * @memberof MonthlyLeaderboardEntryDto
      */
+    'placement'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MonthlyLeaderboardEntryDto
+     */
     'exerciseQuantity'?: number;
     /**
      * 
@@ -314,6 +320,12 @@ export interface TotalLeaderboardEntryDto {
      * @memberof TotalLeaderboardEntryDto
      */
     'monthPlacementPoints'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof TotalLeaderboardEntryDto
+     */
+    'placement'?: number;
     /**
      * 
      * @type {Array<MedalTypeDto>}

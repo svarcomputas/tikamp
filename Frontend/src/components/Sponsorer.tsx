@@ -3,11 +3,14 @@ import '../styles/Sponsorer.css';
 import { Modal } from 'flowbite-react';
 import SqueezeLogo from '../assets/svgs/Squeeze-Logo-Beige.svg';
 import OsloKlatrepark from '../assets/images/osloklatrepark_logo.jpg';
+import OBB from '../assets/svgs/obb.svg';
+import RedbullcomLogo from '../assets/svgs/redbullcom-logo.svg';
 import InfoButton from './InfoButton';
 
 interface Sponsor {
   logo: string;
   text: string;
+  name: string | undefined;
 }
 
 interface SponsorerProps {
@@ -22,6 +25,7 @@ const SponsorPopup: React.FC<{ sponsors: Sponsor[], show: boolean, onClose: () =
           {sponsors.map((sponsor, index) => (
             <div key={index} className="popup-sponsor">
               <img src={sponsor.logo} alt={`Sponsor ${index + 1}`} className="popup-logo" />
+              {sponsor.name ? <p style={{fontWeight: "bold"}}>{sponsor.name}</p> : <></>}
               <p>{sponsor.text}</p>
               <br />
             </div>
@@ -56,7 +60,7 @@ const Sponsorer: React.FC<SponsorerProps> = ({ sponsors }) => {
     start += logosInThisRow;
     configIndex++;
   }
-console.log(showPopup)
+
   return (
     <div className="sponsorer-container">
       <div className="sponsor-header-container">
@@ -81,8 +85,10 @@ console.log(showPopup)
 
 export const SponsorerWithImportedLogos: React.FC = () => {
   const sponsors = [
+    { logo: SqueezeLogo, text: "Massasje reduserer stress, stivhet og muskelspenninger, forbedrer søvnkvaliteten, og øker energinivå og fokus. Hos Squeeze får du profesjonell massasje med lange åpningstider." },
+    { logo: RedbullcomLogo, text: "RED BULL GIR DEG VIIINGER" },
+    { logo: OBB, name:"Oslo Bar & Bowling", text: "Bowling, biljard, bar og lounge – hos oss finner du alt du trenger for en hyggelig helaften ute i godt selskap med venner, familie eller kolleger. \nAlt på ett sted. Velkommen til oss!" },
     { logo: OsloKlatrepark, text: "Oslo Klatrepark er en klatrepark i vill og vakker natur med tolv spennende løyper, 80 elementer i trærne, samt løyper med hopp og flere ziplines. Løypene er bygd i forskjellige høyder og vanskelighetsgrader, så her er det noe for alle og enhver. Klatreparken har som mål å bidra til en sunnere, mer aktiv og spennende hverdag for alle, der man kan utprøve og utvikle sine ferdigheter. Den skal gi utfordringer på alle nivåer, slik at alle uansett forutsetninger kan oppleve mestring og glede ved fysisk aktivitet." },
-    { logo: SqueezeLogo, text: "Massasje reduserer stress, stivhet og muskelspenninger, forbedrer søvnkvaliteten, og øker energinivå og fokus. Hos Squeeze får du profesjonell massasje med lange åpningstider." }
   ];
   return <Sponsorer sponsors={sponsors} />;
 };
