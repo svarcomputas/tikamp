@@ -65,14 +65,14 @@ const MonthlyLeaderboard: React.FC<Props> = ({ entries, onSelectEntry, activity,
             return (
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={entry.userId || index} onClick={() => onSelectEntry(entry)}>
               <Table.Cell>
-                { index +1}
+                { entry.placement }
               </Table.Cell>
               <Table.Cell>
                 <div className='name-and-trophy'>
                     <p >{(entry.userName ?? "")} <em>{ (entry.userId === loggedInUserId ? "(deg)" : "")}</em></p>
-                {index === 0 ? <img src={Trophy1st} alt="Trophy-1st" className="trophy first" /> : (
-                    index === 1 ? <img src={Trophy2nd} alt="Trophy-2nd" className="trophy second" /> : (
-                      index === 2 ? <img src={Trophy3rd} alt="Trophy-3rd" className="trophy third" /> : ("")
+                {entry.placement === 1 ? <img src={Trophy1st} alt="Trophy-1st" className="trophy first" /> : (
+                    entry.placement === 2 ? <img src={Trophy2nd} alt="Trophy-2nd" className="trophy second" /> : (
+                      entry.placement === 3 ? <img src={Trophy3rd} alt="Trophy-3rd" className="trophy third" /> : ("")
                     )
                   )}
                 </div>
